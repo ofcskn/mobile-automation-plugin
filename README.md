@@ -182,6 +182,104 @@ cd /path/to/your/expo/app && eas build --platform all --profile production && ea
 - Google What's New: **500 chars** (not 4,000 like iOS)
 - Android versionCode: monotonically increasing, never decrement
 
+## How commands and workflows execute (concurrency overview)
+
+The plugin has two execution modes — **sequential gates** and **parallel dispatch** — and a **hook side-channel** that runs independently of both.
+
+```mermaid
+flowchart LR
+    subgraph SEQ ["Sequential gates (/msd-release)"]
+        direction TB
+        G1[Gate 1\nVersion] --> G2[Gate 2\nMetadata] --> G3[Gate 3\nLocalization] --> G4[Gate 4\nScreenshots] --> G5[Gate 5\nPre-flight]
+    end
+
+    subgraph PAR ["Parallel dispatch (after Gate 5)"]
+        direction TB
+        P1[EAS iOS submit]
+        P2[EAS Android submit]
+    end
+
+    subgraph HOOK ["Hook side-channel (always)"]
+        direction TB
+        H1["PostToolUse → validate-metadata.js\n(fires on every metadata/ write)"]
+        H2["PostToolUse → validate-translations.js\n(fires on every locales/ write)"]
+    end
+
+    G5 --> PAR
+    HOOK -.->|parallel, non-blocking| SEQ
+
+    style SEQ fill:#e3f2fd
+    style PAR fill:#e8f5e9
+    style HOOK fill:#fff8e1
+```
+
+- **Sequential gates** enforce correctness: each gate must exit 0 before the next starts.
+- **Parallel dispatch** applies to EAS builds/submits (iOS + Android fire simultaneously) and multi-locale validation reads.
+- **Hook side-channel** auto-validates metadata and translation files on every write, independent of the active command.
+
+### Full pipeline — agents, gates, and parallel submit
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor User
+    participant RC as release-coordinator
+    participant VM as version-manager
+    participant MV as metadata-validator
+    participant LA as localization-auditor
+    participant SP as screenshot-pipeline
+    participant CL as checklist-runner
+    participant EAS
+
+    User->>RC: /msd-release {appId}
+    RC->>RC: Read config/{appId}.config.json
+    RC->>RC: Confirm: bump type, platform, locales
+
+    rect rgb(220, 240, 220)
+        note over RC,VM: GATE 1 — Version
+        RC->>VM: Delegate: bump + sync version
+        VM-->>RC: version.json updated ✓
+    end
+
+    rect rgb(220, 220, 240)
+        note over RC,MV: GATE 2 — Metadata
+        RC->>MV: Delegate: validate all locales
+        MV-->>RC: validate-metadata.js → exit 0 ✓
+    end
+
+    rect rgb(240, 220, 220)
+        note over RC,LA: GATE 3 — Localization
+        RC->>LA: Delegate: validate i18n keys
+        LA-->>RC: validate-translations.js → exit 0 ✓
+    end
+
+    rect rgb(240, 240, 200)
+        note over RC,SP: GATE 4 — Screenshots
+        RC->>SP: Confirm designed assets exist
+        SP-->>RC: screenshots/{appId}/designed/ confirmed ✓
+    end
+
+    rect rgb(230, 215, 255)
+        note over RC,CL: GATE 5 — Pre-flight (7 checks)
+        RC->>CL: Run release-checklist.js {appId}
+        CL-->>RC: All 7 gates pass ✓
+    end
+
+    rect rgb(200, 230, 255)
+        note over RC,EAS: GATE 6 — Submit [PARALLEL]
+        par iOS submit
+            RC->>EAS: eas submit --platform ios
+        and Android submit
+            RC->>EAS: eas submit --platform android
+        end
+        EAS-->>RC: Both submissions confirmed ✓
+    end
+
+    RC-->>User: Release complete. iOS + Android submitted.
+```
+
+See **[docs/CONCURRENCY.md](docs/CONCURRENCY.md)** for full diagrams, agent dispatch rules, and a decision reference for AI models.
+
 ## Automatic hooks
 
 The plugin validates metadata character limits when you edit any file under `metadata/`

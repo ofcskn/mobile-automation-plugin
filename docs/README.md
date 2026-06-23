@@ -11,6 +11,7 @@
 7. [Release Notes](#release-notes)
 8. [Metadata Reference](#metadata-reference)
 9. [Troubleshooting](#troubleshooting)
+10. [Concurrency & Parallelism →](CONCURRENCY.md)
 
 ---
 
