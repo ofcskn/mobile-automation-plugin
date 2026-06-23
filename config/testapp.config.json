@@ -1,0 +1,16 @@
+{
+  "appId": "com.test.testapp",
+  "displayName": "Test App",
+  "platforms": ["ios", "android"],
+  "locales": [
+    {
+      "i18next": "en",
+      "ios": "en-US",
+      "android_config": "en-US",
+      "android_folder": "values-en-rUS",
+      "playConsole": "en-US",
+      "rtl": false,
+      "primary": true
+    }
+  ]
+}
