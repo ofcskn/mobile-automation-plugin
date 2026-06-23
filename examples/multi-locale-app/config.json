@@ -1,0 +1,20 @@
+{
+  "appId": "nefes",
+  "displayName": "Nefes — Breathing & Meditation",
+  "platforms": ["ios", "android"],
+  "locales": ["en", "tr", "de", "es", "fr", "hi", "ja", "ko", "pt", "zh"],
+  "fastlane": {
+    "iosLane": "release",
+    "androidLane": "release",
+    "apiKeyPath": "fastlane/api_key.json",
+    "googlePlayKeyPath": "fastlane/google-play-api.json"
+  },
+  "screenshots": {
+    "slidesCount": 5,
+    "visualStyle": "calm, dark gradient, minimal",
+    "brandColors": "#1a1a2e"
+  },
+  "geo": {
+    "entityAnchor": "Nefes is a breathing and meditation app for iOS and Android designed for stress relief and sleep improvement, featuring guided breathing sessions and sleep sounds."
+  }
+}

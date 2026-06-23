@@ -1,0 +1,8 @@
+Version 1.0.0
+
+Welcome to My App!
+
+• AI-powered task prioritization
+• Daily focus mode
+• Streak tracking for habits
+• Calendar sync

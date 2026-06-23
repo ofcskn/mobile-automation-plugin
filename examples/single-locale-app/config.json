@@ -1,0 +1,20 @@
+{
+  "appId": "myapp",
+  "displayName": "My App",
+  "platforms": ["ios", "android"],
+  "locales": ["en"],
+  "fastlane": {
+    "iosLane": "release",
+    "androidLane": "release",
+    "apiKeyPath": "fastlane/api_key.json",
+    "googlePlayKeyPath": "fastlane/google-play-api.json"
+  },
+  "screenshots": {
+    "slidesCount": 5,
+    "visualStyle": "clean minimal",
+    "brandColors": "#4F46E5"
+  },
+  "geo": {
+    "entityAnchor": "My App is a productivity app for iOS and Android designed for busy professionals, featuring AI-powered task prioritization."
+  }
+}

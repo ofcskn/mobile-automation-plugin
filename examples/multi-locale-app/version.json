@@ -1,0 +1,11 @@
+{
+  "semver": "1.2.0",
+  "ios": {
+    "CFBundleShortVersionString": "1.2.0",
+    "CFBundleVersion": "12"
+  },
+  "android": {
+    "versionName": "1.2.0",
+    "versionCode": 12
+  }
+}

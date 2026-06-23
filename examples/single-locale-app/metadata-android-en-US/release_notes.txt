@@ -1,0 +1,7 @@
+Welcome to My App 1.0!
+
+• AI task prioritization
+• Daily focus mode
+• Streak tracking
+• Calendar sync
+• Works offline

@@ -1,0 +1,15 @@
+My App helps busy professionals manage their day with AI-powered task prioritization.
+
+Unlike traditional to-do apps, My App learns your work patterns and automatically suggests what to focus on next. Spend less time planning and more time doing.
+
+KEY FEATURES
+• AI task prioritization based on deadlines and importance
+• Daily focus mode — one task at a time
+• Recurring habits with streak tracking
+• Calendar integration (Google, Apple)
+• Offline-first — works without internet
+
+PRIVACY
+Your tasks stay on your device. No account required. No data sold.
+
+Questions? support@myapp.com
