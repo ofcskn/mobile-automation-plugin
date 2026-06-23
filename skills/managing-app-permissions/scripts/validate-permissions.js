@@ -33,27 +33,11 @@ try {
   process.exit(1);
 }
 
-const DANGEROUS_ANDROID = [
-  'CAMERA', 'RECORD_AUDIO', 'READ_CONTACTS', 'WRITE_CONTACTS',
-  'ACCESS_FINE_LOCATION', 'ACCESS_COARSE_LOCATION', 'ACCESS_BACKGROUND_LOCATION',
-  'READ_EXTERNAL_STORAGE', 'WRITE_EXTERNAL_STORAGE',
-  'READ_PHONE_STATE', 'CALL_PHONE', 'READ_CALL_LOG',
-  'READ_SMS', 'RECEIVE_SMS', 'SEND_SMS',
-  'USE_BIOMETRIC', 'USE_FINGERPRINT',
-  'BLUETOOTH_SCAN', 'BLUETOOTH_CONNECT',
-  'ACTIVITY_RECOGNITION', 'BODY_SENSORS',
-];
-
-const DEPRECATED_ANDROID = {
-  'WRITE_EXTERNAL_STORAGE': 'Use READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_MEDIA_AUDIO instead (Android 13+)',
-  'READ_EXTERNAL_STORAGE': 'Use READ_MEDIA_* permissions instead (Android 13+)',
-};
-
-const GENERIC_DESCRIPTIONS = [
-  'camera access', 'camera', 'microphone access', 'microphone',
-  'location access', 'location', 'photos access', 'contacts access',
-  'needed', 'required', 'permission', 'access',
-];
+const permsRefPath = path.resolve(__dirname, '../../../config/permissions-reference.json');
+const permsRef = JSON.parse(fs.readFileSync(permsRefPath, 'utf8'));
+const DANGEROUS_ANDROID = permsRef.dangerousAndroid;
+const DEPRECATED_ANDROID = permsRef.deprecatedAndroid;
+const GENERIC_DESCRIPTIONS = permsRef.genericDescriptions;
 
 let errors = 0;
 let warnings = 0;

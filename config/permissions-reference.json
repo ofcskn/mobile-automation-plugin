@@ -1,0 +1,34 @@
+{
+  "dangerousAndroid": [
+    "CAMERA",
+    "RECORD_AUDIO",
+    "READ_CONTACTS",
+    "WRITE_CONTACTS",
+    "ACCESS_FINE_LOCATION",
+    "ACCESS_COARSE_LOCATION",
+    "ACCESS_BACKGROUND_LOCATION",
+    "READ_EXTERNAL_STORAGE",
+    "WRITE_EXTERNAL_STORAGE",
+    "READ_PHONE_STATE",
+    "CALL_PHONE",
+    "READ_CALL_LOG",
+    "READ_SMS",
+    "RECEIVE_SMS",
+    "SEND_SMS",
+    "USE_BIOMETRIC",
+    "USE_FINGERPRINT",
+    "BLUETOOTH_SCAN",
+    "BLUETOOTH_CONNECT",
+    "ACTIVITY_RECOGNITION",
+    "BODY_SENSORS"
+  ],
+  "deprecatedAndroid": {
+    "WRITE_EXTERNAL_STORAGE": "Use READ_MEDIA_IMAGES, READ_MEDIA_VIDEO, READ_MEDIA_AUDIO instead (Android 13+)",
+    "READ_EXTERNAL_STORAGE":  "Use READ_MEDIA_* permissions instead (Android 13+)"
+  },
+  "genericDescriptions": [
+    "camera access", "camera", "microphone access", "microphone",
+    "location access", "location", "photos access", "contacts access",
+    "needed", "required", "permission", "access"
+  ]
+}

@@ -15,22 +15,10 @@ if (!appId) { console.error('Usage: node validate-metadata.js <app-id>'); proces
 
 const metaRoot = path.resolve(__dirname, `../../../metadata/${appId}`);
 
-// Hard limits — these cause silent store rejection on violation
-const APPLE_LIMITS = {
-  'name.txt':        { max: 30,   label: 'App Name',        indexed: true  },
-  'subtitle.txt':    { max: 30,   label: 'Subtitle',        indexed: true  },
-  'keywords.txt':    { max: 100,  label: 'Keywords',        indexed: true  },
-  'promotional.txt': { max: 170,  label: 'Promotional Text',indexed: false },
-  'description.txt': { max: 4000, label: 'Description',     indexed: false },
-  'release_notes.txt':{ max: 4000,label: "What's New",      indexed: false },
-};
-
-const GOOGLE_LIMITS = {
-  'title.txt':             { max: 30,   label: 'Title',             indexed: true  },
-  'short_description.txt': { max: 80,   label: 'Short Description', indexed: true  },
-  'full_description.txt':  { max: 4000, label: 'Full Description',  indexed: true  },
-  'release_notes.txt':     { max: 500,  label: "What's New",        indexed: false },
-};
+const limitsPath = path.resolve(__dirname, '../../../config/store-limits.json');
+const storeLimits = JSON.parse(fs.readFileSync(limitsPath, 'utf8'));
+const APPLE_LIMITS = storeLimits.apple;
+const GOOGLE_LIMITS = storeLimits.google;
 
 let errors = 0;
 let warnings = 0;

@@ -1,0 +1,16 @@
+{
+  "apple": {
+    "name.txt":         { "max": 30,   "label": "App Name",         "indexed": true  },
+    "subtitle.txt":     { "max": 30,   "label": "Subtitle",         "indexed": true  },
+    "keywords.txt":     { "max": 100,  "label": "Keywords",         "indexed": true  },
+    "promotional.txt":  { "max": 170,  "label": "Promotional Text", "indexed": false },
+    "description.txt":  { "max": 4000, "label": "Description",      "indexed": false },
+    "release_notes.txt":{ "max": 4000, "label": "What's New",       "indexed": false }
+  },
+  "google": {
+    "title.txt":             { "max": 30,   "label": "Title",             "indexed": true  },
+    "short_description.txt": { "max": 80,   "label": "Short Description", "indexed": true  },
+    "full_description.txt":  { "max": 4000, "label": "Full Description",  "indexed": true  },
+    "release_notes.txt":     { "max": 500,  "label": "What's New",        "indexed": false }
+  }
+}

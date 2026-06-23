@@ -19,12 +19,6 @@
       "type": "string",
       "description": "Default app ID to use when not specified (e.g. com.yourcompany.yourapp)",
       "required": false
-    },
-    "LENSERFIGHT_API_KEY": {
-      "type": "string",
-      "sensitive": true,
-      "description": "LenserFight Cloud MCP API key for brand kit and icon generation",
-      "required": false
     }
   }
 }
