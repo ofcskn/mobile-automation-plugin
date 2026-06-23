@@ -26,7 +26,7 @@ const LOCALE_MAP = {
   'fr':    { ios: 'fr-FR',   android_config: 'fr',     android_folder: 'values-fr',     playConsole: 'fr-FR',  rtl: false },
   'fr-CA': { ios: 'fr-CA',   android_config: 'fr-CA',  android_folder: 'values-fr-rCA', playConsole: 'fr-CA',  rtl: false },
   'es':    { ios: 'es-ES',   android_config: 'es',     android_folder: 'values-es',     playConsole: 'es-ES',  rtl: false },
-  'es-MX': { ios: 'es-MX',   android_config: 'es-US',  android_folder: 'values-es-rUS', playConsole: 'es-419', rtl: false },
+  'es-MX': { ios: 'es-MX',   android_config: 'es-419', android_folder: 'values-es-rMX', playConsole: 'es-419', rtl: false },
   'pt-BR': { ios: 'pt-BR',   android_config: 'pt-BR',  android_folder: 'values-pt-rBR', playConsole: 'pt-BR',  rtl: false },
   'pt-PT': { ios: 'pt-PT',   android_config: 'pt-PT',  android_folder: 'values-pt-rPT', playConsole: 'pt-PT',  rtl: false },
   'ja':    { ios: 'ja',      android_config: 'ja',     android_folder: 'values-ja',     playConsole: 'ja-JP',  rtl: false },
@@ -55,13 +55,13 @@ const LOCALE_MAP = {
   'uk':    { ios: 'uk',      android_config: 'uk',     android_folder: 'values-uk',     playConsole: 'uk',     rtl: false },
 };
 
-const locales = localeInput.split(',').map(l => l.trim().toLowerCase());
+const locales = localeInput.split(',').map(l => l.trim());
 const resolved = [];
 const unknown = [];
 const rtlWarnings = [];
 
 locales.forEach((code, idx) => {
-  const map = LOCALE_MAP[code];
+  const map = LOCALE_MAP[code] || LOCALE_MAP[Object.keys(LOCALE_MAP).find(k => k.toLowerCase() === code.toLowerCase())];
   if (!map) { unknown.push(code); return; }
   resolved.push({ i18next: code, ...map, primary: idx === 0 });
   if (map.rtl) rtlWarnings.push(code);
