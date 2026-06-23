@@ -9,6 +9,8 @@
   ],
   "author": "mobile-store-deploy",
   "license": "MIT",
+  "homepage": "https://github.com/mobile-store-deploy/mobile-store-deploy",
+  "repository": "https://github.com/mobile-store-deploy/mobile-store-deploy",
   "userConfig": {
     "DEFAULT_APP_ID": {
       "type": "string",

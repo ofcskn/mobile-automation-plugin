@@ -1,1 +1,3 @@
 .data/*
+fastlane/api_key.json
+fastlane/google-play-api.json
