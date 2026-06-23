@@ -2,7 +2,7 @@
 name: submitting-app-release
 description: >
   Runs pre-flight validation gates and submits the app to App Store Connect and Google
-  Play Console via fastlane. Use when the user says "release", "submit to store",
+  Play Console via EAS CLI. Use when the user says "release", "submit to store",
   "publish", "deploy app", or "submit for review". Always runs release-checklist.js
   first — never submits past a failing gate without explicit user confirmation.
 ---
@@ -14,8 +14,8 @@ description: >
 | Request | Action |
 |---|---|
 | "submit app" / "release" | Run checklist → submit both platforms |
-| "submit iOS only" | Run checklist --platform ios → fastlane ios release |
-| "submit Android only" | Run checklist --platform android → fastlane android release |
+| "submit iOS only" | Run checklist --platform ios → eas submit --platform ios |
+| "submit Android only" | Run checklist --platform android → eas submit --platform android |
 | "pre-flight check" | Run release-checklist.js only, no submission |
 
 ## Release sequence
@@ -28,10 +28,10 @@ description: >
 2. If all gates pass:
    ```bash
    # iOS — phased release (7-day automatic rollout)
-   bundle exec fastlane ios release
+   eas submit --platform ios --profile production
 
    # Android — staged rollout (10% initial)
-   bundle exec fastlane android release
+   eas submit --platform android --profile production
    ```
 
 3. Report submitted version and review status to user.
@@ -43,23 +43,24 @@ description: >
 3. Metadata passes all character limit validation
 4. All translation keys present across all locales
 5. Designed screenshots exist for required device sizes
-6. Fastlane credentials configured (api_key.json or env vars)
+6. EAS credentials configured (`eas whoami` passes, secrets set)
 7. CHANGELOG.md includes the current version number
 
 ## Rules
 
 - **Never auto-proceed past a failing gate.** Stop and report to user.
-- **iOS staged release:** `phased_release: true` in Deliverfile (7-day automatic rollout)
-- **Android staged rollout:** start at 10% (`rollout: 0.1`), expand manually after 48h monitoring
-- App Store Connect API is more reliable than fastlane deliver for complex locales
+- **iOS staged release:** enable phased release in App Store Connect after submission
+- **Android staged rollout:** set rollout to 10% in Google Play Console, expand after 48h monitoring
 
-## Fastlane environment variables
+## EAS environment variables
 
 | Variable | Purpose |
 |---|---|
-| `FASTLANE_API_KEY_PATH` | Path to App Store Connect API key JSON |
-| `SUPPLY_JSON_KEY_DATA` | Google Play service account JSON (inline) |
-| `SUPPLY_JSON_KEY` | Google Play service account JSON (file path) |
+| `EXPO_TOKEN` | EAS authentication token (CI/CD) |
+| `APP_STORE_CONNECT_API_KEY_ID` | App Store Connect API key ID |
+| `APP_STORE_CONNECT_ISSUER_ID` | App Store Connect issuer ID |
+| `APP_STORE_CONNECT_API_KEY_CONTENT` | App Store Connect API private key (base64) |
+| `GOOGLE_SERVICES_JSON` | Google Play service account key (JSON string) |
 
 ## EAS Build profiles
 

@@ -12,4 +12,4 @@ Run in sequence, capturing output from each:
 3. `node skills/submitting-app-release/scripts/release-checklist.js {appId}`
 
 Report pass/fail for each gate with specific failure details.
-Do not run fastlane or submit anything — validation only.
+Do not submit anything — validation only.

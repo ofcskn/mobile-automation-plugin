@@ -8,11 +8,9 @@
     "ios": ["iPhone 16 Pro Max", "iPhone 11 Pro Max"],
     "android": ["Pixel 7"]
   },
-  "fastlane": {
-    "iosLane": "release",
-    "androidLane": "release",
-    "apiKeyPath": "fastlane/api_key.json",
-    "googlePlayKeyPath": "fastlane/google-play-api.json"
+  "eas": {
+    "projectId": "",
+    "profile": "production"
   },
   "screenshots": {
     "slidesCount": 5,

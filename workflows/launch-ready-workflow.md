@@ -186,8 +186,8 @@ After all 4 lenses complete:
 node skills/submitting-app-release/scripts/release-checklist.js {app-id}
 
 # Submit
-bundle exec fastlane ios release
-bundle exec fastlane android release
+eas submit --platform ios --profile production
+eas submit --platform android --profile production
 ```
 
 ---

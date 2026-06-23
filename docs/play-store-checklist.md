@@ -24,7 +24,7 @@
 | 11 | Create Google Cloud Project and enable Play API | 🔴 MANUAL | console.cloud.google.com → Create project → Enable Google Play Android Developer API |
 | 12 | Create service account | 🔴 MANUAL | IAM & Admin → Service accounts → Create → Download JSON key |
 | 13 | Grant service account Play Console access | 🔴 MANUAL | Play Console → Setup → API access → Grant access → Role: Release Manager |
-| 14 | Save key to plugin | 🔴 MANUAL | Save downloaded JSON to `fastlane/google-play-api.json`. Never commit. |
+| 14 | Store key as EAS secret | 🔴 MANUAL | Run `eas secret:create --scope project --name GOOGLE_SERVICES_JSON --value "$(cat key.json)"`. Never commit the file. |
 | 15 | Write store listing | 🟡 AI-ASSISTED | `/msd-aso` — AI writes title, short desc, full desc per locale. You approve. |
 | 16 | Write feature graphic brief | 🟡 AI-ASSISTED | 1024×500 banner image required. AI can brief a designer or use LenserFight. |
 | 17 | Generate screenshots | 🟡 AI-ASSISTED | Phone (min 320dp), 7" tablet, 10" tablet optional |

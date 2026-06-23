@@ -20,7 +20,7 @@ This plugin automates the five hardest parts of mobile app distribution:
 2. **Platform management** — iOS App Store Connect and Google Play Console configuration
 3. **Device management** — screenshot matrix across all required device sizes and locales
 4. **Internationalisation (i18n)** — translation files, store metadata per locale
-5. **Store submission** — fastlane-powered deliver (iOS) and supply (Android)
+5. **Store submission** — EAS-powered `eas submit` for iOS and Android
 
 ## When to use which sub-skill
 

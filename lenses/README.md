@@ -26,7 +26,7 @@ structured, validated output for each step of the release pipeline.
 
 ```
 Brand Kit (Step 0) → Locale Selector (Step 1) → ASO Optimizer (Step 2)
-→ GEO Optimizer (Step 3) → Screenshot Designer (Step 4) → fastlane (Step 5)
+→ GEO Optimizer (Step 3) → Screenshot Designer (Step 4) → EAS Submit (Step 5)
 ```
 
 Full workflow: `workflows/launch-ready-workflow.md`

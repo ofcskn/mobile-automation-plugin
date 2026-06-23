@@ -3,11 +3,9 @@
   "displayName": "Nefes — Breathing & Meditation",
   "platforms": ["ios", "android"],
   "locales": ["en", "tr", "de", "es", "fr", "hi", "ja", "ko", "pt", "zh"],
-  "fastlane": {
-    "iosLane": "release",
-    "androidLane": "release",
-    "apiKeyPath": "fastlane/api_key.json",
-    "googlePlayKeyPath": "fastlane/google-play-api.json"
+  "eas": {
+    "projectId": "",
+    "profile": "production"
   },
   "screenshots": {
     "slidesCount": 5,

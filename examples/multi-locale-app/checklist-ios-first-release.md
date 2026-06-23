@@ -7,7 +7,7 @@ Run: `/msd-checklist nefes ios`
 - [ ] Apple Developer account created and enrolled ($99/year)
 - [ ] Bundle ID created: `com.yourname.nefes`
 - [ ] App created in App Store Connect
-- [ ] App Store Connect API key created and saved to `fastlane/api_key.json`
+- [ ] App Store Connect API key created and stored as EAS secret (`eas secret:create`)
 
 ## What the AI handles automatically
 

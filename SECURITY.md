@@ -13,7 +13,7 @@
 
 **Do not file a public GitHub issue for security vulnerabilities.**
 
-Please report security issues by emailing **security@mobile-store-deploy.dev** (or open a [GitHub private security advisory](https://github.com/mobile-store-deploy/mobile-store-deploy/security/advisories/new) if email is unavailable).
+Please report security issues by emailing **security@mobile-store-deploy.dev** (or open a [GitHub private security advisory](https://github.com/ofcskn/mobile-automation-plugin/security/advisories/new) if email is unavailable).
 
 Include:
 
@@ -27,12 +27,12 @@ You will receive an acknowledgement within **48 hours** and a status update with
 
 ## Credential Handling
 
-This plugin manages paths to sensitive credential files used by Fastlane and EAS. The following files are **intentionally gitignored** and must never be committed:
+This plugin manages paths to sensitive credential files used by EAS. The following are **intentionally excluded from version control** and must never be committed:
 
-| File | Purpose |
+| Credential | Where it lives |
 |---|---|
-| `fastlane/api_key.json` | App Store Connect API private key |
-| `fastlane/google-play-api.json` | Google Play service account key |
+| App Store Connect API key | EAS secret (`eas secret:create`) or local env var `APP_STORE_CONNECT_API_KEY_*` |
+| Google Play service account JSON | EAS secret (`eas secret:create`) or local env var `GOOGLE_SERVICES_JSON` |
 
 If you discover a credential leak (e.g., a committed `.json` key), **rotate the credential immediately** before doing anything else, then report the repository state via the channel above.
 
@@ -40,7 +40,7 @@ If you discover a credential leak (e.g., a committed `.json` key), **rotate the 
 
 ## Dependency Scope
 
-This plugin ships **zero npm runtime dependencies**. All scripts use Node.js built-ins. The only external tools are optional CLI tools invoked by the user (Fastlane, EAS CLI, app-store-screenshots). Security issues in those tools should be reported to their respective upstream projects.
+This plugin ships **zero npm runtime dependencies**. All scripts use Node.js built-ins. The only external tools are optional CLI tools invoked by the user (EAS CLI, app-store-screenshots). Security issues in those tools should be reported to their respective upstream projects.
 
 ---
 

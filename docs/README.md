@@ -33,9 +33,6 @@ plugin root/
 │       └── {locale}.json
 ├── screenshots/             ← Captured screenshot files
 │   └── {app-id}/
-├── fastlane/                ← API credentials (gitignored)
-│   ├── api_key.json         ← App Store Connect API key
-│   └── google-play-api.json ← Google Play service account key
 ├── skills/                  ← Knowledge + validation scripts
 ├── agents/                  ← Specialized AI subagents
 ├── commands/                ← Slash commands (/msd-*)
@@ -63,16 +60,7 @@ plugin root/
 | 8 | Set Pricing (Free or Paid) | Pricing and Availability tab |
 | 9 | Set Available Territories | Pricing and Availability tab |
 | 10 | Create App Store Connect API Key | ASC → Users → Keys → + |
-| 11 | Add key details to `fastlane/api_key.json` | See format below |
-
-**`fastlane/api_key.json` format:**
-```json
-{
-  "key_id": "XXXXXXXXXX",
-  "issuer_id": "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
-  "key": "-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----"
-}
-```
+| 11 | Store key as EAS secret | `eas secret:create --scope project --name APP_STORE_CONNECT_API_KEY_ID --value "..."` |
 
 ### AI-assisted steps (AI prepares, you approve)
 
@@ -112,7 +100,7 @@ plugin root/
 | 8 | Set Pricing (Free/Paid) | Monetization setup |
 | 9 | Create service account & download API key | Play Console → Setup → API access → Create service account |
 | 10 | Grant service account permissions (Release Manager) | Users and permissions |
-| 11 | Save key to `fastlane/google-play-api.json` | File from Google Cloud Console |
+| 11 | Store key as EAS secret | `eas secret:create --scope project --name GOOGLE_SERVICES_JSON --value "$(cat key.json)"` |
 
 ### AI-assisted steps
 
@@ -309,7 +297,7 @@ node skills/managing-app-versions/scripts/sync-build-numbers.js {appId} \
 ```
 
 ### First EAS submit fails
-Ensure `fastlane/api_key.json` (iOS) or `fastlane/google-play-api.json` (Android) exists with valid credentials. These files are gitignored — never commit real keys.
+Ensure EAS credentials are configured: run `eas whoami` to verify authentication, and use `eas secret:list` to confirm your App Store Connect / Google Play secrets are set.
 
 ---
 
@@ -335,6 +323,6 @@ Replace `myapp` with your actual app ID. The `testapp` fixtures and `.template.c
 
 ### What is NOT committed
 - `screenshots/*` — generated files, can be large
-- `fastlane/api_key.json`, `fastlane/google-play-api.json` — credentials
+- EAS secrets — stored in EAS cloud, never local files
 - `.data/*` — archived source files
 - Your personal app configs and data (add to `.gitignore` as shown above)

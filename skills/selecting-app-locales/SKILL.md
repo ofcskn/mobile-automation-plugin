@@ -15,7 +15,7 @@ description: >
 ## Why this must run first
 
 Every downstream task — metadata validation, i18n JSON files, screenshot locales,
-fastlane Snapfile, App Store Connect locale folders, Google Play metadata folders —
+App Store Connect locale folders, Google Play metadata folders —
 depends on a confirmed locale list. Starting without one causes rework.
 
 **The agent MUST ask the user before assuming any locale set.**

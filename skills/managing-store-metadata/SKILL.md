@@ -44,7 +44,7 @@ metadata/{app-id}/
 3. **Always validate after editing:**
    `node skills/managing-store-metadata/scripts/validate-metadata.js {appId}`
 4. Fix any ❌ errors before uploading
-5. Upload via fastlane: `bundle exec fastlane ios metadata` or `bundle exec fastlane android metadata`
+5. Upload: `eas submit --platform ios` / `eas submit --platform android`, or paste directly into App Store Connect / Google Play Console
 
 ## Critical rules
 

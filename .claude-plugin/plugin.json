@@ -1,19 +1,19 @@
 {
-  "name": "mobile-store-deploy",
-  "version": "1.0.0",
+  "name": "mobile-automation-plugin",
+  "version": "1.0.1",
   "description": "Automates the full mobile app release pipeline — version management, localized metadata, multi-device screenshot generation, i18n translations, and store submission for iOS and Android. Enforces Apple and Google character limits. Works with Expo, React Native, and native iOS/Android projects.",
   "keywords": [
     "mobile", "ios", "android", "app-store", "google-play",
     "deployment", "localization", "i18n", "screenshots",
-    "fastlane", "expo", "react-native", "versioning", "aso"
+    "eas", "expo", "react-native", "versioning", "aso"
   ],
   "author": {
-    "name": "mobile-store-deploy contributors",
-    "url": "https://github.com/mobile-store-deploy/mobile-store-deploy"
+    "name": "mobile-automation-plugin contributors",
+    "url": "https://github.com/ofcskn/mobile-automation-plugin"
   },
   "license": "MIT",
-  "homepage": "https://github.com/mobile-store-deploy/mobile-store-deploy",
-  "repository": "https://github.com/mobile-store-deploy/mobile-store-deploy",
+  "homepage": "https://github.com/ofcskn/mobile-automation-plugin",
+  "repository": "https://github.com/ofcskn/mobile-automation-plugin",
   "userConfig": {
     "DEFAULT_APP_ID": {
       "type": "string",

@@ -2,7 +2,7 @@
 name: generating-store-screenshots
 description: >
   Manages the two-phase store screenshot pipeline: Phase 1 captures raw screenshots
-  via fastlane snapshot (iOS) and screengrab (Android); Phase 2 adds design layers
+  from the iOS Simulator or Android Emulator; Phase 2 adds design layers
   (device frames, headlines, backgrounds) via ParthJadhav/app-store-screenshots or
   storeshots.org. Use when the user says "generate screenshots", "update store images",
   "take screenshots", "design marketing slides", or "screenshot pipeline".
@@ -15,21 +15,23 @@ description: >
 | Request | Action |
 |---|---|
 | "generate screenshots" | Run full pipeline (capture + design + validate) |
-| "capture screenshots" | Phase 1 only (fastlane) |
+| "capture screenshots" | Phase 1 only (simulator) |
 | "design screenshots" | Phase 2 only (app-store-screenshots editor) |
 | "validate screenshots" | Check dimensions and count only |
 
 ## Two-phase pipeline
 
-### Phase 1: Capture (fastlane)
+### Phase 1: Capture (simulator / emulator)
 
 ```bash
-# iOS — runs UI tests via Snapfile
-bundle exec fastlane snapshot
+# iOS — boot simulator, run app, capture via xcrun
+xcrun simctl io booted screenshot screenshots/{appId}/raw/{device}/{locale}/screen.png
 
-# Android — runs instrumented tests via Screengrabfile
-bundle exec fastlane screengrab
+# Android — boot emulator, run app, capture via adb
+adb exec-out screencap -p > screenshots/{appId}/raw/{device}/{locale}/screen.png
 ```
+
+Alternatively, capture manually from the running simulator (Cmd+S in iOS Simulator, or use the emulator toolbar). Repeat per device size and locale.
 
 Output lands in `screenshots/{appId}/raw/{device}/{locale}/`
 

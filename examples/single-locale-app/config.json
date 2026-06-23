@@ -3,11 +3,9 @@
   "displayName": "My App",
   "platforms": ["ios", "android"],
   "locales": ["en"],
-  "fastlane": {
-    "iosLane": "release",
-    "androidLane": "release",
-    "apiKeyPath": "fastlane/api_key.json",
-    "googlePlayKeyPath": "fastlane/google-play-api.json"
+  "eas": {
+    "projectId": "",
+    "profile": "production"
   },
   "screenshots": {
     "slidesCount": 5,

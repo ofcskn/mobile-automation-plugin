@@ -1,0 +1,14 @@
+{
+  "name": "mobile-automation-plugin",
+  "version": "1.0.1",
+  "description": "Claude Code plugin for mobile app release automation — metadata, localization, screenshots, versioning, and EAS submission.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ofcskn/mobile-automation-plugin"
+  },
+  "keywords": ["claude-plugin", "mobile", "expo", "eas", "ios", "android", "app-store", "google-play"]
+}

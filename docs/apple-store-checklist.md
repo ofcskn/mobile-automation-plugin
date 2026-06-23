@@ -23,7 +23,7 @@
 | 10 | Set Pricing | 🔴 MANUAL | Pricing and Availability → Free or tier |
 | 11 | Set Availability (countries) | 🔴 MANUAL | Select all or specific territories |
 | 12 | Create App Store Connect API Key | 🔴 MANUAL | ASC → Users and Access → Integrations → App Store Connect API → + → Role: Developer or App Manager |
-| 13 | Save API key to plugin | 🔴 MANUAL | Download `.p8` file. Add to `fastlane/api_key.json`. Never commit. |
+| 13 | Store API key as EAS secret | 🔴 MANUAL | Download `.p8` file. Run `eas secret:create --scope project --name APP_STORE_CONNECT_API_KEY_CONTENT --value "..."`. Never commit the file. |
 | 14 | Write metadata | 🟡 AI-ASSISTED | Run `/msd-aso` — AI generates name, subtitle, keywords, description per locale. You approve. |
 | 15 | Write screenshots brief | 🟡 AI-ASSISTED | Run `/msd-screenshots` — AI generates screenshot content brief. You capture with EAS/Simulator. |
 | 16 | Upload screenshots | 🟡 AI-ASSISTED | Required sizes: iPhone 6.9" (1320×2868) **required from 2026**, iPhone 6.5" (1242×2688), iPad Pro 13" optional |
@@ -60,7 +60,7 @@
 - ❌ Repeating App Name words in Keywords field (Apple auto-indexes cross-field, wastes space)
 - ❌ Subtitle exactly 30 chars — leave 1 char buffer (Apple bug)
 - ❌ Description over 4,000 chars — validator catches this
-- ❌ Committing `fastlane/api_key.json` with real credentials — it's gitignored, keep it that way
+- ❌ Committing API keys or credential files — use `eas secret:create` to store them in EAS instead
 
 ---
 

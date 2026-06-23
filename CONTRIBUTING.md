@@ -1,4 +1,4 @@
-# Contributing to mobile-store-deploy
+# Contributing to mobile-automation-plugin
 
 Thank you for taking the time to contribute! This document covers how to report issues, propose changes, and submit pull requests.
 
@@ -31,8 +31,8 @@ This project follows the [Contributor Covenant Code of Conduct](https://www.cont
 ### Run the plugin locally
 
 ```bash
-git clone https://github.com/mobile-store-deploy/mobile-store-deploy
-cd mobile-store-deploy
+git clone https://github.com/ofcskn/mobile-automation-plugin
+cd mobile-automation-plugin
 claude --plugin-dir .
 ```
 
@@ -99,4 +99,4 @@ Do **not** open a public issue for security vulnerabilities. See [SECURITY.md](S
 
 ## Questions?
 
-Open a [GitHub Discussion](https://github.com/mobile-store-deploy/mobile-store-deploy/discussions) for general questions, or file an issue for anything specific.
+Open a [GitHub Discussion](https://github.com/ofcskn/mobile-automation-plugin/discussions) for general questions, or file an issue for anything specific.

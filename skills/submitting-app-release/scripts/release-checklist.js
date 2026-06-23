@@ -78,13 +78,14 @@ gate('Screenshot files present for required device sizes', () => {
   if (platforms.length === 0) throw new Error('No platform folders in designed screenshots');
 });
 
-// Gate 6: Fastlane credentials
-gate('Fastlane credentials configured', () => {
-  const apiKey = path.join(root, 'fastlane', 'api_key.json');
-  const serviceAccount = path.join(root, 'fastlane', 'google-play-api.json');
-  const hasIOS = fs.existsSync(apiKey) || process.env.FASTLANE_API_KEY_PATH;
-  const hasAndroid = fs.existsSync(serviceAccount) || process.env.SUPPLY_JSON_KEY_DATA;
-  if (!hasIOS && !hasAndroid) throw new Error('No Fastlane credentials found. Set env vars or add key files.');
+// Gate 6: EAS credentials
+gate('EAS credentials configured', () => {
+  const hasIOS = process.env.EXPO_TOKEN ||
+    process.env.APP_STORE_CONNECT_API_KEY_ID ||
+    process.env.APP_STORE_CONNECT_API_KEY_CONTENT;
+  const hasAndroid = process.env.EXPO_TOKEN ||
+    process.env.GOOGLE_SERVICES_JSON;
+  if (!hasIOS && !hasAndroid) throw new Error('No EAS credentials found. Set EXPO_TOKEN or App Store Connect / Google Play env vars. See skills/submitting-app-release/references/submission-checklist.md');
 });
 
 // Gate 7: CHANGELOG updated
@@ -110,8 +111,8 @@ console.log('─'.repeat(50));
 if (failed === 0) {
   console.log('✅ All gates passed. Safe to submit.\n');
   console.log('Next steps:');
-  console.log(`  iOS:     bundle exec fastlane ios release`);
-  console.log(`  Android: bundle exec fastlane android release\n`);
+  console.log(`  iOS:     eas submit --platform ios --profile production`);
+  console.log(`  Android: eas submit --platform android --profile production\n`);
   process.exit(0);
 } else {
   console.error(`❌ ${failed} gate(s) failed. Fix before submitting.\n`);

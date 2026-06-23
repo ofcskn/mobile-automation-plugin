@@ -34,11 +34,9 @@ Edit `config/myapp.config.json`:
   "displayName": "My App",
   "platforms": ["ios", "android"],
   "locales": ["en"],
-  "fastlane": {
-    "iosLane": "release",
-    "androidLane": "release",
-    "apiKeyPath": "fastlane/api_key.json",
-    "googlePlayKeyPath": "fastlane/google-play-api.json"
+  "eas": {
+    "projectId": "",
+    "profile": "production"
   },
   "geo": { "entityAnchor": "" }
 }
@@ -156,13 +154,20 @@ cd /path/to/your/expo/app && eas build --platform all --profile production && ea
 | `/msd-select-locales` | Select or update app's supported locales |
 | `/msd-aso` | ASO keyword research and metadata optimization |
 | `/msd-geo` | GEO content — schema markup, entity anchor, ProductHunt |
+| `/msd-init` | Register a new app — creates config, versions, and metadata directories |
+| `/msd-build` | Build with EAS — development, preview, or production profile |
+| `/msd-status` | Show version, locale coverage, and pending actions for a registered app |
+| `/msd-checklist` | Interactive first-release checklist for App Store or Play Store |
+| `/msd-permissions` | Validate iOS NSUsageDescription strings and Android dangerous permissions |
+| `/msd-release-notes` | Draft "What's New" release notes for all configured locales |
+| `/msd-discover` | Scan a directory to find all Expo/React Native apps and registration status |
 
 ## What it solves
 
 | Problem | Solution |
 |---|---|
 | Version numbers diverge across iOS, Android, app.json | `versions/{app-id}/version.json` — single source of truth |
-| 300+ screenshots per release | 2-phase pipeline: fastlane capture → app-store-screenshots design |
+| 300+ screenshots per release | 2-phase pipeline: simulator capture → app-store-screenshots design |
 | Metadata silently rejected for char limit violations | `validate-metadata.js` enforces hard limits pre-upload |
 | i18n keys missing from some locales | `validate-translations.js` blocks CI until all keys present |
 | No pre-submission validation pipeline | `release-checklist.js` runs 7 sequential gates |
@@ -184,7 +189,6 @@ and checks translation completeness when you edit files under `locales/`.
 
 ## External OSS tools
 
-- [fastlane](https://github.com/fastlane/fastlane) — MIT — build, sign, capture, submit
 - [ParthJadhav/app-store-screenshots](https://github.com/ParthJadhav/app-store-screenshots) — MIT — screenshot design
 - [i18next](https://github.com/i18next/i18next) — MIT — runtime i18n
 - [expo/eas-cli](https://github.com/expo/eas-cli) — MIT — Expo builds
