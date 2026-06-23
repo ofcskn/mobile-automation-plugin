@@ -17,6 +17,131 @@
 npx skills add mobile-store-deploy
 ```
 
+## Quick Start
+
+### Step 1 — Register your app
+
+```bash
+# Copy the config template for your app (replace "myapp" with your app ID)
+cp config/.template.config.json config/myapp.config.json
+```
+
+Edit `config/myapp.config.json`:
+```json
+{
+  "appId": "myapp",
+  "displayName": "My App",
+  "platforms": ["ios", "android"],
+  "locales": ["en"],
+  "fastlane": {
+    "iosLane": "release",
+    "androidLane": "release",
+    "apiKeyPath": "fastlane/api_key.json",
+    "googlePlayKeyPath": "fastlane/google-play-api.json"
+  },
+  "geo": { "entityAnchor": "" }
+}
+```
+
+### Step 2 — Initialize version tracking
+
+```bash
+mkdir -p versions/myapp
+cat > versions/myapp/version.json << 'EOF'
+{
+  "semver": "1.0.0",
+  "ios": { "CFBundleShortVersionString": "1.0.0", "CFBundleVersion": "1" },
+  "android": { "versionName": "1.0.0", "versionCode": 1 }
+}
+EOF
+```
+
+### Step 3 — Write store metadata
+
+```bash
+mkdir -p metadata/myapp/ios/en-US metadata/myapp/android/en-US
+
+# iOS (Apple App Store)
+echo "My App"              > metadata/myapp/ios/en-US/name.txt           # max 30 chars
+echo "Short tagline here"  > metadata/myapp/ios/en-US/subtitle.txt       # max 30 chars
+echo "habit,daily,tracker" > metadata/myapp/ios/en-US/keywords.txt       # max 100 chars, no spaces after commas
+echo "Full description..." > metadata/myapp/ios/en-US/description.txt    # max 4000 chars
+echo "Promo text here"     > metadata/myapp/ios/en-US/promotional.txt    # max 170 chars
+echo "Bug fixes"           > metadata/myapp/ios/en-US/release_notes.txt  # max 4000 chars
+
+# Android (Google Play)
+echo "My App"              > metadata/myapp/android/en-US/title.txt              # max 30 chars
+echo "Short description"   > metadata/myapp/android/en-US/short_description.txt  # max 80 chars
+echo "Full description..."  > metadata/myapp/android/en-US/full_description.txt  # max 4000 chars, IS indexed
+echo "Bug fixes"           > metadata/myapp/android/en-US/release_notes.txt      # max 500 chars (NOT 4000)
+```
+
+### Step 4 — Validate metadata
+
+```bash
+node skills/managing-store-metadata/scripts/validate-metadata.js myapp
+# Fix any character limit violations before continuing
+```
+
+### Step 5 — Set up translations (if multi-locale)
+
+```bash
+mkdir -p locales/myapp
+# Create en.json as the source of truth
+echo '{ "welcome": "Welcome", "start": "Start" }' > locales/myapp/en.json
+# Create one file per locale
+echo '{ "welcome": "Hoş geldiniz", "start": "Başla" }' > locales/myapp/tr.json
+
+node skills/managing-app-localizations/scripts/validate-translations.js myapp
+```
+
+### Step 6 — Run pre-flight checklist
+
+```bash
+node skills/submitting-app-release/scripts/release-checklist.js myapp
+# All 7 gates must pass. Fix any failures before submitting.
+```
+
+### Step 7 — Sync version to your app
+
+```bash
+# Bumps patch version (1.0.0 → 1.0.1) and syncs to app.json, Info.plist, build.gradle
+node skills/managing-app-versions/scripts/bump-version.js myapp patch
+node skills/managing-app-versions/scripts/sync-build-numbers.js myapp \
+  --project-root /path/to/your/expo/app
+```
+
+### Step 8 — Build and submit (Expo EAS)
+
+```bash
+cd /path/to/your/expo/app
+eas build --platform all --profile production
+eas submit --platform all --profile production
+```
+
+### For subsequent releases
+
+```bash
+# 1. Bump version
+node skills/managing-app-versions/scripts/bump-version.js myapp patch
+
+# 2. Update release notes per locale
+echo "New feature: ..." > metadata/myapp/ios/en-US/release_notes.txt
+echo "New feature: ..." > metadata/myapp/android/en-US/release_notes.txt
+
+# 3. Validate everything
+node skills/submitting-app-release/scripts/release-checklist.js myapp
+
+# 4. Sync version to app
+node skills/managing-app-versions/scripts/sync-build-numbers.js myapp \
+  --project-root /path/to/your/expo/app
+
+# 5. Build and submit
+cd /path/to/your/expo/app && eas build --platform all --profile production && eas submit --platform all --profile production
+```
+
+> **See `docs/README.md`** for the full platform setup guides, Apple Store checklist, Play Store checklist, and multi-app management.
+
 ## Slash commands
 
 | Command | What it does |
