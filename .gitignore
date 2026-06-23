@@ -1,3 +1,15 @@
 .data/*
 fastlane/api_key.json
 fastlane/google-play-api.json
+
+# ── Runtime directories (user data — never commit) ──────────────────
+# Screenshots are always generated, never committed
+screenshots/*
+!screenshots/.gitkeep
+
+# To keep your personal app data local (recommended for global plugin use),
+# add lines like these for each of your app IDs:
+# config/myapp.config.json
+# versions/myapp/
+# metadata/myapp/
+# locales/myapp/

@@ -310,3 +310,31 @@ node skills/managing-app-versions/scripts/sync-build-numbers.js {appId} \
 
 ### First EAS submit fails
 Ensure `fastlane/api_key.json` (iOS) or `fastlane/google-play-api.json` (Android) exists with valid credentials. These files are gitignored — never commit real keys.
+
+---
+
+## Using the Plugin Globally (Multiple Machines)
+
+If you clone this plugin globally and use it across multiple apps, keep your personal app data out of git by adding these lines to your `.gitignore`:
+
+```gitignore
+# Personal app data — local only
+config/myapp.config.json
+versions/myapp/
+metadata/myapp/
+locales/myapp/
+```
+
+Replace `myapp` with your actual app ID. The `testapp` fixtures and `.template.config.json` remain committed for everyone.
+
+### What IS committed
+- `config/.template.config.json` — config schema template
+- `versions/testapp/`, `metadata/testapp/`, `locales/testapp/` — test fixtures
+- `screenshots/.gitkeep` — ensures the directory exists on fresh clone
+- All plugin files (skills, agents, commands, hooks, lenses)
+
+### What is NOT committed
+- `screenshots/*` — generated files, can be large
+- `fastlane/api_key.json`, `fastlane/google-play-api.json` — credentials
+- `.data/*` — archived source files
+- Your personal app configs and data (add to `.gitignore` as shown above)
