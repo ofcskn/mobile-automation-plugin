@@ -32,6 +32,24 @@
       "playConsole": "zh-CN",
       "rtl": false,
       "primary": false
+    },
+    {
+      "i18next": "es-MX",
+      "ios": "es-MX",
+      "android_config": "es-419",
+      "android_folder": "values-es-rMX",
+      "playConsole": "es-419",
+      "rtl": false,
+      "primary": false
+    },
+    {
+      "i18next": "ar",
+      "ios": "ar-SA",
+      "android_config": "ar",
+      "android_folder": "values-ar",
+      "playConsole": "ar",
+      "rtl": true,
+      "primary": false
     }
   ]
 }
