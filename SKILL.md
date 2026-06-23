@@ -1,163 +1,75 @@
 ---
-name: selecting-app-locales
+name: mobile-store-deploy
 description: >
-  Enforces locale selection before any localisation, metadata, screenshot, or i18n
-  task begins. Use when starting a new app, adding languages, preparing for store
-  submission, or any time the locale set is unknown or unconfirmed. Presents both the
-  Android BCP 47 locale list (locale_config.xml) and the Apple App Store storefront
-  table (175 regions, default and additional languages) so the user can make an
-  informed, explicit decision. Writes the confirmed locale set to
-  config/{app-id}.config.json before any other skill runs.
+  Automates the full mobile app release pipeline — version management, localized metadata,
+  multi-device screenshot generation, i18n translations, and store submission for iOS and
+  Android. Use when the user asks to "release my app", "bump the version", "generate store
+  screenshots", "update metadata in all languages", "prepare a store submission", "sync
+  translations", or "manage my app versions across platforms". Orchestrates sub-skills:
+  managing-app-versions, generating-store-screenshots, managing-store-metadata,
+  managing-app-localizations, submitting-app-release.
 ---
 
-# Selecting App Locales
+# Mobile Store Deploy
 
-## Why this must run first
+## Overview
 
-Every downstream task — metadata validation, i18n JSON files, screenshot locales,
-fastlane Snapfile, App Store Connect locale folders, Google Play metadata folders —
-depends on a confirmed locale list. Starting without one causes rework.
+This plugin automates the five hardest parts of mobile app distribution:
 
-**The agent MUST ask the user before assuming any locale set.**
-Even if the user says "just do English", that is a valid answer — write it to config.
+1. **Version management** — semantic versioning synced across iOS (CFBundleVersion) and Android (versionCode/versionName)
+2. **Platform management** — iOS App Store Connect and Google Play Console configuration
+3. **Device management** — screenshot matrix across all required device sizes and locales
+4. **Internationalisation (i18n)** — translation files, store metadata per locale
+5. **Store submission** — fastlane-powered deliver (iOS) and supply (Android)
 
----
+## When to use which sub-skill
 
-## Enforcement paragraph prompt (copy into any locale-related task)
+| User request | Load sub-skill |
+|---|---|
+| "bump version", "new build number" | `managing-app-versions` |
+| "take screenshots", "generate screenshots", "update store images" | `generating-store-screenshots` |
+| "update description", "change keywords", "edit metadata" | `managing-store-metadata` |
+| "add a language", "translate strings", "missing translations" | `managing-app-localizations` |
+| "submit to store", "release", "publish", "deploy" | `submitting-app-release` |
+| "full release" (all of the above) | load all five in order |
 
-```
-LOCALE SELECTION GATE — run this before any localisation work:
+## Project config
 
-1. Read config/{app-id}.config.json and check if locales[] is already confirmed.
-   - If locales[] exists and is non-empty: show the list and ask "Should I use these
-     locales, or do you want to change them?"
-   - If locales[] is missing or empty: proceed to step 2.
-
-2. Ask the user:
-   "Which languages should this app support?
-    I need to know before I can set up metadata, screenshots, or translations.
-
-    Reference lists are available:
-    - Android supported locales: skills/selecting-app-locales/references/android-locales.md
-      (82 locales with BCP 47 codes for locale_config.xml and resource folders)
-    - Apple App Store storefronts: skills/selecting-app-locales/references/apple-storefronts.md
-      (175 regions with default + additional languages Apple shows per country)
-
-    Common starting points:
-    • English only → en (simplest launch)
-    • English + Turkish → en, tr (for your current audience)
-    • English + Turkish + German → en, tr, de
-    • Major markets → en, tr, de, fr, es, pt-BR, ja, ko, zh-Hans
-
-    Which locales do you want? I'll write them to config and set up all folders."
-
-3. User responds with locale list.
-
-4. Resolve locale codes per platform using references/android-locales.md
-   and references/apple-storefronts.md:
-   - i18next key (short): en, tr, de
-   - iOS App Store Connect folder: en-US, tr-TR, de-DE
-   - Android locale_config.xml name: en-US, tr, de
-   - Android resource folder: values-en-rUS, values-tr, values-de
-   - Google Play Console locale: en-US, tr-TR, de-DE
-   - RTL flag (ar, he, fa, ur, iw — requires I18nManager.forceRTL(true) in RN/Expo)
-
-5. Run: node scripts/resolve-locales.js {app-id} "{locale-list}"
-   This writes the resolved locale map to config/{app-id}.config.json → locales[]
-
-6. Show the user the resolved config and confirm:
-   "Here's what I'll set up:
-    [table of locale codes per platform]
-   Confirm? (yes / change)"
-
-7. Only proceed to the next skill after confirmation.
-```
-
----
-
-## Locale resolution rules
-
-### Android locale_config.xml format
-Uses BCP 47 names as the `android:name` attribute value (not underscore Java convention).
-
-```xml
-<locale android:name="tr"/>          <!-- Turkish -->
-<locale android:name="en-US"/>       <!-- English (United States) -->
-<locale android:name="zh-Hans"/>     <!-- Chinese (Simplified) -->
-<locale android:name="sr-Latn"/>     <!-- Serbian (Latin script) -->
-```
-
-Note legacy codes still in Android's own AOSP list:
-- `in` = Indonesian (modern BCP 47: `id`)
-- `iw` = Hebrew (modern BCP 47: `he`)
-- `ji` = Yiddish (modern BCP 47: `yi`)
-
-Android runtime maps these automatically — but use the legacy codes in
-`locale_config.xml` and resource folders for AOSP compatibility.
-
-### Apple App Store storefront logic
-
-Apple determines which language the store shows based on the storefront (country):
-- Japan (JPN) → default Japanese, additional: English (US)
-- Turkey (TUR) → default English (UK), additional: Turkish
-- Germany (DEU) → default German, additional: English (UK)
-- USA (USA) → default English (US), additional: 9 languages
-
-**Implication for metadata strategy:**
-If you're targeting Turkey, you need BOTH `en-US` metadata (default user language for
-that region) AND `tr-TR` metadata (localized listing). The Apple storefront table
-tells you what languages users in each country expect to see — load
-`references/apple-storefronts.md` to advise the user on which locales matter most for
-their target markets.
-
-### RTL locales requiring extra engineering work
-
-| Code | Language | Platform extra |
-|---|---|---|
-| `ar` | Arabic | `I18nManager.forceRTL(true)` in RN/Expo, RTL layout review |
-| `he` / `iw` | Hebrew | Same as Arabic |
-| `fa` | Farsi/Persian | Same as Arabic |
-| `ur` | Urdu | Same as Arabic |
-
-Flag RTL locales explicitly in the confirmed locale list and in config.json.
-
----
-
-## Script: resolve-locales.js
+Every app in this repo has a config file at `config/{app-id}.config.json`. Load it first
+on every task — it defines platforms, locales, device matrix, and Fastlane lane names.
 
 ```bash
-node skills/selecting-app-locales/scripts/resolve-locales.js {app-id} "en,tr,de"
+# Confirm app ID before starting any task
+ls config/
+cat config/{app-id}.config.json
 ```
 
-Writes to config/{app-id}.config.json:
-```json
-{
-  "locales": [
-    {
-      "i18next": "en",
-      "ios": "en-US",
-      "android_config": "en-US",
-      "android_folder": "values-en-rUS",
-      "playConsole": "en-US",
-      "rtl": false,
-      "primary": true
-    },
-    {
-      "i18next": "tr",
-      "ios": "tr-TR",
-      "android_config": "tr",
-      "android_folder": "values-tr",
-      "playConsole": "tr-TR",
-      "rtl": false,
-      "primary": false
-    }
-  ]
-}
-```
+## Gotchas
 
----
+- **Apple character limits are hard constraints, not guidelines.** A 31-character subtitle
+  causes App Store Connect to reject the entire metadata batch silently. Always validate
+  before uploading. Run `node scripts/validate-metadata.js {app-id}` first.
+- **Apple does NOT index the long description for search.** Keywords go in name (30),
+  subtitle (30), and the hidden keyword field (100). The description is conversion copy only.
+- **Google Play DOES index the full description.** Same 4,000-char field, completely
+  different indexing behaviour than iOS.
+- **Screenshot captions are indexed by Apple since June 2025 via OCR.** The headline text
+  overlaid on each screenshot is a ranking signal. Align it with your keyword strategy.
+- **Android versionCode must be monotonically increasing.** Never reuse a code.
+- **iOS build numbers must increase per TestFlight upload**, but CFBundleShortVersionString
+  (version string) can stay the same across builds.
+- **Google Play has 8 screenshots max per device type; Apple allows 10.**
+- **Locales differ between platforms.** Apple uses `en-US`; Google uses `en-US` or just
+  `en`. Always check `references/locale-codes.md` before creating new locale folders.
 
-## References (load on demand)
+## Progressive disclosure
 
-- `references/android-locales.md` — full 82-locale Android AOSP BCP 47 list
-- `references/apple-storefronts.md` — full 175-country Apple storefront table
+For detailed reference, load these files on demand:
+
+- `skills/managing-app-versions/references/version-format.md` — version schema and rules
+- `skills/generating-store-screenshots/references/device-matrix.md` — all required sizes
+- `skills/generating-store-screenshots/references/screenshot-specs.md` — export specs
+- `skills/managing-store-metadata/references/apple-limits.md` — all Apple field limits
+- `skills/managing-store-metadata/references/google-limits.md` — all Google field limits
+- `skills/managing-app-localizations/references/locale-codes.md` — platform locale codes
+- `skills/submitting-app-release/references/submission-checklist.md` — pre-release gates

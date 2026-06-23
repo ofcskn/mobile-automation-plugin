@@ -1,0 +1,25 @@
+{
+  "_comment": "Copy to config/{your-app-id}.config.json and fill in values",
+  "appId": "com.example.myapp",
+  "displayName": "My App",
+  "platforms": ["ios", "android"],
+  "locales": [],
+  "devices": {
+    "ios": ["iPhone 16 Pro Max", "iPhone 11 Pro Max"],
+    "android": ["Pixel 7"]
+  },
+  "fastlane": {
+    "iosLane": "release",
+    "androidLane": "release",
+    "apiKeyPath": "fastlane/api_key.json",
+    "googlePlayKeyPath": "fastlane/google-play-api.json"
+  },
+  "screenshots": {
+    "slidesCount": 5,
+    "visualStyle": "clean minimal",
+    "brandColors": "#4F46E5"
+  },
+  "geo": {
+    "entityAnchor": ""
+  }
+}
