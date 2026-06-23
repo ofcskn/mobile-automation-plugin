@@ -1,7 +1,10 @@
 {
   "appId": "com.test.testapp",
   "displayName": "Test App",
-  "platforms": ["ios", "android"],
+  "platforms": [
+    "ios",
+    "android"
+  ],
   "locales": [
     {
       "i18next": "en",
@@ -11,6 +14,24 @@
       "playConsole": "en-US",
       "rtl": false,
       "primary": true
+    },
+    {
+      "i18next": "tr",
+      "ios": "tr-TR",
+      "android_config": "tr",
+      "android_folder": "values-tr",
+      "playConsole": "tr-TR",
+      "rtl": false,
+      "primary": false
+    },
+    {
+      "i18next": "de",
+      "ios": "de-DE",
+      "android_config": "de",
+      "android_folder": "values-de",
+      "playConsole": "de-DE",
+      "rtl": false,
+      "primary": false
     }
   ]
 }
