@@ -1,0 +1,23 @@
+{
+  "PostToolUse": [
+    {
+      "matcher": "Write|Edit",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "bash -c 'FILE=$(echo \"$CLAUDE_TOOL_INPUT\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get(\\\"file_path\\\",d.get(\\\"path\\\",\\\"\\\")))\" 2>/dev/null); if echo \"$FILE\" | grep -q \"/metadata/\"; then APPID=$(echo \"$FILE\" | sed \"s|.*/metadata/||\" | cut -d/ -f1); node \"$(dirname \"$(dirname \"$(dirname \"$FILE\")\")\")/../skills/managing-store-metadata/scripts/validate-metadata.js\" \"$APPID\" 2>&1 | tail -8; fi'"
+        }
+      ]
+    },
+    {
+      "matcher": "Write|Edit",
+      "hooks": [
+        {
+          "type": "command",
+          "command": "bash -c 'FILE=$(echo \"$CLAUDE_TOOL_INPUT\" | python3 -c \"import sys,json; d=json.load(sys.stdin); print(d.get(\\\"file_path\\\",d.get(\\\"path\\\",\\\"\\\")))\" 2>/dev/null); if echo \"$FILE\" | grep -q \"/locales/\"; then APPID=$(echo \"$FILE\" | sed \"s|.*/locales/||\" | cut -d/ -f1); node \"$(dirname \"$(dirname \"$(dirname \"$FILE\")\")\")/../skills/managing-app-localizations/scripts/validate-translations.js\" \"$APPID\" 2>&1 | tail -8; fi'"
+        }
+      ]
+    }
+  ],
+  "UserPromptSubmit": []
+}
