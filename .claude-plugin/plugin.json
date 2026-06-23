@@ -1,0 +1,25 @@
+{
+  "name": "mobile-store-deploy",
+  "version": "1.0.0",
+  "description": "Automates the full mobile app release pipeline — version management, localized metadata, multi-device screenshot generation, i18n translations, and store submission for iOS and Android. Enforces Apple and Google character limits. Works with Expo, React Native, and native iOS/Android projects.",
+  "keywords": [
+    "mobile", "ios", "android", "app-store", "google-play",
+    "deployment", "localization", "i18n", "screenshots",
+    "fastlane", "expo", "react-native", "versioning", "aso"
+  ],
+  "author": "mobile-store-deploy",
+  "license": "MIT",
+  "userConfig": {
+    "DEFAULT_APP_ID": {
+      "type": "string",
+      "description": "Default app ID to use when not specified (e.g. com.yourcompany.yourapp)",
+      "required": false
+    },
+    "LENSERFIGHT_API_KEY": {
+      "type": "string",
+      "sensitive": true,
+      "description": "LenserFight Cloud MCP API key for brand kit and icon generation",
+      "required": false
+    }
+  }
+}
