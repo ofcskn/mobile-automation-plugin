@@ -3,6 +3,7 @@
 > An open-source Claude Code plugin that automates the full mobile app release pipeline for iOS and Android.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
 ## Installation (Claude Code)
 
@@ -188,6 +189,18 @@ and checks translation completeness when you edit files under `locales/`.
 - [i18next](https://github.com/i18next/i18next) — MIT — runtime i18n
 - [expo/eas-cli](https://github.com/expo/eas-cli) — MIT — Expo builds
 - [LenserFight](https://github.com/conectlens/lenserfight) — brand kit + icon generation
+
+## Roadmap
+
+Flutter, Swift (non-Expo), Kotlin Multiplatform, Capacitor, bare React Native, and CI/CD integrations (GitHub Actions, Bitrise, Fastlane) are all tracked in **[docs/ROADMAP.md](docs/ROADMAP.md)**. Platform PRs are especially welcome.
+
+## Contributing
+
+See **[CONTRIBUTING.md](CONTRIBUTING.md)** for setup instructions, code style guidelines, and the PR checklist. All participants are expected to follow our Code of Conduct.
+
+## Security
+
+Do **not** open a public issue for security vulnerabilities. See **[SECURITY.md](SECURITY.md)** for the responsible-disclosure process.
 
 ## License
 

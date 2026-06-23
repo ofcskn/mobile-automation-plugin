@@ -7,7 +7,10 @@
     "deployment", "localization", "i18n", "screenshots",
     "fastlane", "expo", "react-native", "versioning", "aso"
   ],
-  "author": "mobile-store-deploy",
+  "author": {
+    "name": "mobile-store-deploy contributors",
+    "url": "https://github.com/mobile-store-deploy/mobile-store-deploy"
+  },
   "license": "MIT",
   "homepage": "https://github.com/mobile-store-deploy/mobile-store-deploy",
   "repository": "https://github.com/mobile-store-deploy/mobile-store-deploy",
