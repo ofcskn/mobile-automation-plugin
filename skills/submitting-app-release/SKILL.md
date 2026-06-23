@@ -61,6 +61,13 @@ description: >
 | `SUPPLY_JSON_KEY_DATA` | Google Play service account JSON (inline) |
 | `SUPPLY_JSON_KEY` | Google Play service account JSON (file path) |
 
+## EAS Build profiles
+
+Before running `release-checklist.js`, ensure you are building with the correct EAS profile.
+
+See `docs/eas-build-guide.md` for a full guide to development, preview, and production builds.
+Reference: https://docs.expo.dev/build/introduction/
+
 ## Reference
 
 Load on demand: `skills/submitting-app-release/references/submission-checklist.md`
