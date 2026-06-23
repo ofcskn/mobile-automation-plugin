@@ -13,7 +13,9 @@ Release sequence:
 2. Delegate to metadata-validator agent — validate all locales
 3. Delegate to localization-auditor agent — validate all i18n keys
 4. Delegate to screenshot-pipeline agent — confirm designed assets exist
-5. Run pre-flight: `node skills/submitting-app-release/scripts/release-checklist.js {appId}`
+5. Run permission check: `node skills/managing-app-permissions/scripts/validate-permissions.js {appPath}`
+   - If any ❌ errors, stop and run /msd-permissions to fix before continuing
+6. Run pre-flight: `node skills/submitting-app-release/scripts/release-checklist.js {appId}`
 6. If all 7 gates pass, run fastlane submission:
    ```bash
    bundle exec fastlane ios release
