@@ -25,11 +25,11 @@
       "primary": false
     },
     {
-      "i18next": "de",
-      "ios": "de-DE",
-      "android_config": "de",
-      "android_folder": "values-de",
-      "playConsole": "de-DE",
+      "i18next": "zh-Hans",
+      "ios": "zh-Hans",
+      "android_config": "zh-Hans",
+      "android_folder": "values-zh-rCN",
+      "playConsole": "zh-CN",
       "rtl": false,
       "primary": false
     }
