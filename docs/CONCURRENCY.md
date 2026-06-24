@@ -51,9 +51,6 @@ flowchart TD
     AG --> RC[release-coordinator\nor command-specific\nagent]
     RC --> DISP[Dispatch subagents\nor run scripts]
 
-    style HJ fill:#f0ad4e,color:#000
-    style RC fill:#5bc0de,color:#000
-    style DISP fill:#5cb85c,color:#fff
 ```
 
 **Key point for AI models:** The `UserPromptSubmit` hook fires *before* the command
@@ -83,45 +80,33 @@ sequenceDiagram
     RC->>RC: Read config/{appId}.config.json
     RC->>RC: Confirm: bump type, platform, locales
 
-    rect rgb(220, 240, 220)
-        note over RC,VM: GATE 1 — Version
-        RC->>VM: Delegate: bump + sync version
-        VM-->>RC: version.json updated ✓
-    end
+    note over RC,VM: GATE 1 — Version
+    RC->>VM: Delegate: bump + sync version
+    VM-->>RC: version.json updated ✓
 
-    rect rgb(220, 220, 240)
-        note over RC,MV: GATE 2 — Metadata
-        RC->>MV: Delegate: validate all locales
-        MV-->>RC: validate-metadata.js → exit 0 ✓
-    end
+    note over RC,MV: GATE 2 — Metadata
+    RC->>MV: Delegate: validate all locales
+    MV-->>RC: validate-metadata.js → exit 0 ✓
 
-    rect rgb(240, 220, 220)
-        note over RC,LA: GATE 3 — Localization
-        RC->>LA: Delegate: validate i18n keys
-        LA-->>RC: validate-translations.js → exit 0 ✓
-    end
+    note over RC,LA: GATE 3 — Localization
+    RC->>LA: Delegate: validate i18n keys
+    LA-->>RC: validate-translations.js → exit 0 ✓
 
-    rect rgb(240, 240, 200)
-        note over RC,SP: GATE 4 — Screenshots
-        RC->>SP: Confirm designed assets exist
-        SP-->>RC: screenshots/{appId}/designed/ confirmed ✓
-    end
+    note over RC,SP: GATE 4 — Screenshots
+    RC->>SP: Confirm designed assets exist
+    SP-->>RC: screenshots/{appId}/designed/ confirmed ✓
 
-    rect rgb(230, 215, 255)
-        note over RC,CL: GATE 5 — Pre-flight (7 checks)
-        RC->>CL: Run release-checklist.js {appId}
-        CL-->>RC: All 7 gates pass ✓
-    end
+    note over RC,CL: GATE 5 — Pre-flight (7 checks)
+    RC->>CL: Run release-checklist.js {appId}
+    CL-->>RC: All 7 gates pass ✓
 
-    rect rgb(200, 230, 255)
-        note over RC,EAS: GATE 6 — Submit [PARALLEL]
-        par iOS submit
-            RC->>EAS: eas submit --platform ios
-        and Android submit
-            RC->>EAS: eas submit --platform android
-        end
-        EAS-->>RC: Both submissions confirmed ✓
+    note over RC,EAS: GATE 6 — Submit [PARALLEL]
+    par iOS submit
+        RC->>EAS: eas submit --platform ios
+    and Android submit
+        RC->>EAS: eas submit --platform android
     end
+    EAS-->>RC: Both submissions confirmed ✓
 
     RC-->>User: Release complete. iOS + Android submitted.
 ```
@@ -158,10 +143,6 @@ flowchart LR
     S1 --> SYNC2([Release complete])
     S2 --> SYNC2
 
-    style BUILD fill:#e8f5e9
-    style SUBMIT fill:#e3f2fd
-    style SYNC1 fill:#fff9c4
-    style SYNC2 fill:#fff9c4
 ```
 
 **For AI agents:** When dispatching EAS builds, always fire both platforms in a single
@@ -195,10 +176,6 @@ flowchart TD
     REPORT -- yes --> FAIL([Exit 1 — block upload])
     REPORT -- no --> PASS([Exit 0 — proceed])
 
-    style IOSPAR fill:#fce4ec
-    style ANDPAR fill:#e8f5e9
-    style FAIL fill:#ffcdd2
-    style PASS fill:#c8e6c9
 ```
 
 The same pattern applies to `validate-translations.js` — all locale JSON files are
@@ -267,12 +244,6 @@ flowchart LR
     G3([Human Gate\nreview entity anchor]) -.-> S3
     G4([Human Gate\nreview slide copy]) -.-> S4
 
-    style S0 fill:#fff3e0
-    style S1 fill:#e8f5e9
-    style S2 fill:#e3f2fd
-    style S3 fill:#fce4ec
-    style S4 fill:#f3e5f5
-    style S5 fill:#e0f2f1
 ```
 
 > **ASO Optimizer (Step 2) note:** When the app targets multiple locales, Step 2 is
@@ -317,14 +288,6 @@ flowchart TD
     EI --> DONE([Release complete])
     EA --> DONE
 
-    style VM fill:#e3f2fd
-    style MV fill:#fce4ec
-    style LA fill:#e8f5e9
-    style SP fill:#fff3e0
-    style CL fill:#f3e5f5
-    style EI fill:#e0f2f1
-    style EA fill:#e0f2f1
-    style DONE fill:#c8e6c9
 ```
 
 ---

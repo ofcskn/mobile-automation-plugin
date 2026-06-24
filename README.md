@@ -5,17 +5,19 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-## Installation (Claude Code)
-
-```bash
-/plugin marketplace add mobile-store-deploy
-/plugin install mobile-store-deploy
-```
-
 ## Installation (agentskills.io — Claude Code, Cursor, Codex)
 
 ```bash
-npx skills add mobile-store-deploy
+npx skills add ofcskn/mobile-store-deploy
+```
+
+> **Note:** Requires the GitHub repo to be named `mobile-store-deploy`. If you cloned this
+> under a different name, use `npx skills add ofcskn/<your-repo-name>` instead.
+
+## Installation (Claude Code plugin)
+
+```bash
+/plugin install https://github.com/ofcskn/mobile-store-deploy
 ```
 
 ## Quick Start
@@ -207,10 +209,6 @@ flowchart LR
 
     G5 --> PAR
     HOOK -.->|parallel, non-blocking| SEQ
-
-    style SEQ fill:#e3f2fd
-    style PAR fill:#e8f5e9
-    style HOOK fill:#fff8e1
 ```
 
 - **Sequential gates** enforce correctness: each gate must exit 0 before the next starts.
@@ -235,45 +233,33 @@ sequenceDiagram
     RC->>RC: Read config/{appId}.config.json
     RC->>RC: Confirm: bump type, platform, locales
 
-    rect rgb(220, 240, 220)
-        note over RC,VM: GATE 1 — Version
-        RC->>VM: Delegate: bump + sync version
-        VM-->>RC: version.json updated ✓
-    end
+    note over RC,VM: GATE 1 — Version
+    RC->>VM: Delegate: bump + sync version
+    VM-->>RC: version.json updated ✓
 
-    rect rgb(220, 220, 240)
-        note over RC,MV: GATE 2 — Metadata
-        RC->>MV: Delegate: validate all locales
-        MV-->>RC: validate-metadata.js → exit 0 ✓
-    end
+    note over RC,MV: GATE 2 — Metadata
+    RC->>MV: Delegate: validate all locales
+    MV-->>RC: validate-metadata.js → exit 0 ✓
 
-    rect rgb(240, 220, 220)
-        note over RC,LA: GATE 3 — Localization
-        RC->>LA: Delegate: validate i18n keys
-        LA-->>RC: validate-translations.js → exit 0 ✓
-    end
+    note over RC,LA: GATE 3 — Localization
+    RC->>LA: Delegate: validate i18n keys
+    LA-->>RC: validate-translations.js → exit 0 ✓
 
-    rect rgb(240, 240, 200)
-        note over RC,SP: GATE 4 — Screenshots
-        RC->>SP: Confirm designed assets exist
-        SP-->>RC: screenshots/{appId}/designed/ confirmed ✓
-    end
+    note over RC,SP: GATE 4 — Screenshots
+    RC->>SP: Confirm designed assets exist
+    SP-->>RC: screenshots/{appId}/designed/ confirmed ✓
 
-    rect rgb(230, 215, 255)
-        note over RC,CL: GATE 5 — Pre-flight (7 checks)
-        RC->>CL: Run release-checklist.js {appId}
-        CL-->>RC: All 7 gates pass ✓
-    end
+    note over RC,CL: GATE 5 — Pre-flight (7 checks)
+    RC->>CL: Run release-checklist.js {appId}
+    CL-->>RC: All 7 gates pass ✓
 
-    rect rgb(200, 230, 255)
-        note over RC,EAS: GATE 6 — Submit [PARALLEL]
-        par iOS submit
-            RC->>EAS: eas submit --platform ios
-        and Android submit
-            RC->>EAS: eas submit --platform android
-        end
-        EAS-->>RC: Both submissions confirmed ✓
+    note over RC,EAS: GATE 6 — Submit [PARALLEL]
+    par iOS submit
+        RC->>EAS: eas submit --platform ios
+    and Android submit
+        RC->>EAS: eas submit --platform android
     end
+    EAS-->>RC: Both submissions confirmed ✓
 
     RC-->>User: Release complete. iOS + Android submitted.
 ```
