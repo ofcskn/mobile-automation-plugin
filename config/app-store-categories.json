@@ -1,0 +1,151 @@
+{
+  "_meta": {
+    "source": "Apple App Store Connect — App Information",
+    "note": "Primary and secondary categories. Games use subcategories instead of secondary category.",
+    "max_categories": 2,
+    "games_use_subcategories": true
+  },
+  "app_categories": [
+    {
+      "id": "books",
+      "en": "Books",
+      "description": "Stories, comics, eReaders, graphic novels, interactive content in printed-form subject matter"
+    },
+    {
+      "id": "business",
+      "en": "Business",
+      "description": "Document management, VoIP, dictation, remote desktop, job search, CRM, collaboration, ERP, point of sale"
+    },
+    {
+      "id": "developer_tools",
+      "en": "Developer Tools",
+      "description": "Coding, testing, debugging, workflow management, text and code editing"
+    },
+    {
+      "id": "education",
+      "en": "Education",
+      "description": "Arithmetic, alphabet, writing, early learning, vocabulary, language learning, standardized test prep, geography"
+    },
+    {
+      "id": "entertainment",
+      "en": "Entertainment",
+      "description": "Television, movies, second screens, fan clubs, theatre, ringtones, voice manipulation, ticketing"
+    },
+    {
+      "id": "finance",
+      "en": "Finance",
+      "description": "Personal financial management, mobile banking, investment, bill reminders, budgets, tax, insurance"
+    },
+    {
+      "id": "food_drink",
+      "en": "Food & Drink",
+      "description": "Recipe collections, cooking guides, restaurant reviews, dietary & food allergy, alcohol reviews"
+    },
+    {
+      "id": "games",
+      "en": "Games",
+      "description": "Single or multiplayer interactive activities for entertainment",
+      "subcategories": [
+        "Action", "Adventure", "Board", "Card", "Family",
+        "Music", "Puzzle", "Racing", "Role Playing",
+        "Simulation", "Sports", "Strategy"
+      ]
+    },
+    {
+      "id": "graphics_design",
+      "en": "Graphics & Design",
+      "description": "Vector graphic design, image editing, drawing and illustration"
+    },
+    {
+      "id": "health_fitness",
+      "en": "Health & Fitness",
+      "description": "Yoga, workout tracking, running, cycling, stress management, pregnancy, meditation, weight loss"
+    },
+    {
+      "id": "lifestyle",
+      "en": "Lifestyle",
+      "description": "Real estate, crafts, hobbies, parenting, fashion, home improvement"
+    },
+    {
+      "id": "kids",
+      "en": "Kids",
+      "description": "Apps for children 11 and under. Age bands: 5 and under, 6–8, 9–11",
+      "age_bands": ["5 and under", "6-8", "9-11"]
+    },
+    {
+      "id": "magazines_newspapers",
+      "en": "Magazines & Newspapers",
+      "description": "Auto-renewing subscriptions to magazine or newspaper content, issue-based strategy"
+    },
+    {
+      "id": "medical",
+      "en": "Medical",
+      "description": "Medical education, anatomy, medical record-keeping, diseases, symptom reference, companion devices"
+    },
+    {
+      "id": "music",
+      "en": "Music",
+      "description": "Music creation, radio, sound editing, music discovery, composition, lyric writing, concerts"
+    },
+    {
+      "id": "navigation",
+      "en": "Navigation",
+      "description": "Driving/walking assistance, topographical maps, maritime, pilot logs, road atlas, fuel finders, transit maps"
+    },
+    {
+      "id": "news",
+      "en": "News",
+      "description": "Current events, newsreader/digest format, digital-first or broadcast-first outlets with frequent updates"
+    },
+    {
+      "id": "photo_video",
+      "en": "Photo & Video",
+      "description": "Photo/video capture, editing, special effects, sharing, imaging, printing, greeting card creation"
+    },
+    {
+      "id": "productivity",
+      "en": "Productivity",
+      "description": "Task management, calendar management, translation, note taking, printing, password management, cloud storage"
+    },
+    {
+      "id": "reference",
+      "en": "Reference",
+      "description": "Atlas, dictionary, thesaurus, quotations, encyclopedia, law, religion, how-tos"
+    },
+    {
+      "id": "safari_extensions",
+      "en": "Safari Extensions",
+      "description": "Content bookmarkers, password managers, adblockers, savings finders"
+    },
+    {
+      "id": "shopping",
+      "en": "Shopping",
+      "description": "Commerce, marketplace, coupon, product review, apps with Apple Pay"
+    },
+    {
+      "id": "social_networking",
+      "en": "Social Networking",
+      "description": "Text/voice/photo/video connections, dating, blogs, special interest communities"
+    },
+    {
+      "id": "sports",
+      "en": "Sports",
+      "description": "Fantasy sports, college/professional teams, athletes, score trackers, instruction, sports news"
+    },
+    {
+      "id": "travel",
+      "en": "Travel",
+      "description": "Flight tracking, city guides, hotel/rental car/airfare shopping, vacation planning, public transportation"
+    },
+    {
+      "id": "utilities",
+      "en": "Utilities",
+      "description": "Calculators, clocks, measurement, web browsing, flashlights, barcode scanners, unit conversion, remote controls"
+    },
+    {
+      "id": "weather",
+      "en": "Weather",
+      "description": "Radar, forecast, storms, tides, severe weather, local weather"
+    }
+  ]
+}

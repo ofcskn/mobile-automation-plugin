@@ -15,6 +15,7 @@
 | 2 | Accept Developer Distribution Agreement | 🔴 MANUAL | During registration |
 | 3 | Complete identity verification | 🔴 MANUAL | Phone number + payment method. Can take 24 hours |
 | 4 | Create new app in Play Console | 🔴 MANUAL | All apps → Create app → set type (App/Game), free/paid, category |
+| 4a | Set category and tags | 🟡 AI-ASSISTED | `/msd-tags {appId}` — AI detects App vs Game, suggests main category + up to 5 tags from `config/play-store-tags.json`. Enter in Play Console → Store settings → Manage tags |
 | 5 | Set default language | 🔴 MANUAL | Store presence → Main store listing |
 | 6 | Complete Data Safety section | 🔴 MANUAL | Policy → Data safety → declare what data your app collects and shares |
 | 7 | Complete Content Rating questionnaire | 🔴 MANUAL | Policy → App content → Content rating → complete IARC questionnaire |
