@@ -17,8 +17,14 @@ npx skills add ofcskn/mobile-automation-plugin
 ## Installation (Claude Code plugin)
 
 ```bash
-/plugin install https://github.com/ofcskn/mobile-automation-plugin
+# Step 1 — add the marketplace (one-time)
+/plugin marketplace add ofcskn/mobile-automation-plugin
+
+# Step 2 — install the plugin
+/plugin install mobile-automation-plugin@mobile-automation-plugin
 ```
+
+After installation, run `/reload-plugins` to activate it.
 
 ## Quick Start
 
