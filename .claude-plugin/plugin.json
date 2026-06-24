@@ -1,24 +1,13 @@
 {
   "name": "mobile-automation-plugin",
   "version": "1.0.1",
-  "description": "Automates the full mobile app release pipeline — version management, localized metadata, multi-device screenshot generation, i18n translations, and store submission for iOS and Android. Enforces Apple and Google character limits. Works with Expo, React Native, and native iOS/Android projects.",
-  "keywords": [
-    "mobile", "ios", "android", "app-store", "google-play",
-    "deployment", "localization", "i18n", "screenshots",
-    "eas", "expo", "react-native", "versioning", "aso"
-  ],
+  "description": "Claude Code plugin for mobile app release automation — metadata, localization, screenshots, versioning, and EAS submission.",
   "author": {
-    "name": "mobile-automation-plugin contributors",
-    "url": "https://github.com/ofcskn/mobile-automation-plugin"
+    "url": "https://github.com/ofcskn"
   },
-  "license": "MIT",
-  "homepage": "https://github.com/ofcskn/mobile-automation-plugin",
   "repository": "https://github.com/ofcskn/mobile-automation-plugin",
-  "userConfig": {
-    "DEFAULT_APP_ID": {
-      "type": "string",
-      "description": "Default app ID to use when not specified (e.g. com.yourcompany.yourapp)",
-      "required": false
-    }
-  }
+  "homepage": "https://github.com/ofcskn/mobile-automation-plugin#readme",
+  "license": "MIT",
+  "keywords": ["mobile", "expo", "eas", "ios", "android", "app-store", "google-play", "automation"],
+  "hooks": "./hooks/hooks.json"
 }
