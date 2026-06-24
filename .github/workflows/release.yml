@@ -1,0 +1,68 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Extract changelog notes for this version
+        id: changelog
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          # Extract the block between this version's header and the next
+          notes=$(awk "/^## \[$VERSION\]/{found=1; next} found && /^## \[/{exit} found{print}" CHANGELOG.md)
+          {
+            echo "notes<<EOF"
+            echo "$notes"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Bundle plugin archive
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          zip -r "mobile-automation-plugin-v${VERSION}.zip" \
+            agents/ \
+            commands/ \
+            config/ \
+            hooks/ \
+            lenses/ \
+            locales/ \
+            metadata/ \
+            skills/ \
+            workflows/ \
+            package.json \
+            README.md \
+            CHANGELOG.md \
+            LICENSE \
+            --exclude "**/.DS_Store" \
+            --exclude "**/node_modules/*"
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          body: ${{ steps.changelog.outputs.notes }}
+          draft: false
+          prerelease: ${{ contains(github.ref_name, '-') }}
+          files: mobile-automation-plugin-v${{ steps.version.outputs.version }}.zip
