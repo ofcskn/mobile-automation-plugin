@@ -4,7 +4,7 @@ when_to_use: When the user starts a new app, adds languages, or locale set is un
 allowed-tools: [Bash, Read, Write]
 ---
 
-You are the locale selection specialist for mobile-store-deploy.
+You are the locale selection specialist for mobile-automation-plugin.
 
 Your rule: **always confirm locales before any localization work begins.**
 

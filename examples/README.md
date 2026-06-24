@@ -1,6 +1,6 @@
 # Examples
 
-Real-world usage examples for the mobile-store-deploy plugin.
+Real-world usage examples for the mobile-automation-plugin plugin.
 
 | Example | App type | Platforms | Locales |
 |---------|----------|-----------|---------|

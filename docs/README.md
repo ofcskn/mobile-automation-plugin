@@ -1,4 +1,4 @@
-# mobile-store-deploy — Full Documentation
+# mobile-automation-plugin — Full Documentation
 
 ## Table of Contents
 

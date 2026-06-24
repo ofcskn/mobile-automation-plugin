@@ -1,4 +1,4 @@
-# mobile-store-deploy — Product Roadmap
+# mobile-automation-plugin — Product Roadmap
 
 > Last updated: 2026-06-23
 
@@ -6,7 +6,7 @@
 
 ## What's already built (v1.0)
 
-`mobile-store-deploy` v1.0 ships a full-stack CLI plugin for Expo / React Native app store releases:
+`mobile-automation-plugin` v1.0 ships a full-stack CLI plugin for Expo / React Native app store releases:
 
 - **16 slash commands** — `/msd-release`, `/msd-bump`, `/msd-screenshots`, `/msd-metadata`, `/msd-locale`, `/msd-validate`, `/msd-select-locales`, `/msd-aso`, `/msd-geo`, `/msd-status`, `/msd-checklist`, `/msd-discover`, `/msd-build`, `/msd-permissions`, `/msd-release-notes`, `/msd-init`
 - **9 specialized subagents** — release-coordinator, version-manager, screenshot-pipeline, metadata-validator, locale-selector, localization-auditor, aso-geo-optimizer, checklist-runner, app-registry-manager
@@ -29,7 +29,7 @@ This is the single biggest friction point. A developer with a partially-built ap
 The solution: **smart project scanning**. On any `/msd-` command invocation (or via a dedicated `/msd-doctor` command), the plugin scans the project directory and generates a personalized checklist with pre-filled status for every release gate:
 
 ```
-mobile-store-deploy: Project scan — myapp
+mobile-automation-plugin: Project scan — myapp
 
 ✅ App icons (iOS: 1024px, Android: 512px)
 ✅ Brand kit (SVG/PDF/PNG)
@@ -192,7 +192,7 @@ For agencies or developers managing multiple apps, there is no unified view of r
 
 **What the dashboard shows:**
 ```
-mobile-store-deploy: Workspace dashboard
+mobile-automation-plugin: Workspace dashboard
 
 App         Platform   Version   Status              Next action
 ──────────────────────────────────────────────────────────────────────
@@ -318,10 +318,10 @@ The 80% estimate is conservative for developers who hit the IAP rejection round-
 
 ## App-specific intelligence (example output)
 
-This is the checklist `mobile-store-deploy` would generate after scanning a typical Expo project:
+This is the checklist `mobile-automation-plugin` would generate after scanning a typical Expo project:
 
 ```
-mobile-store-deploy: Project scan
+mobile-automation-plugin: Project scan
 Scanned: app.json, eas.json, package.json, scripts/, locales/, metadata/, screenshots/
 ──────────────────────────────────────────────────────────────────────────────
 

@@ -13,7 +13,7 @@
 
 **Do not file a public GitHub issue for security vulnerabilities.**
 
-Please report security issues by emailing **security@mobile-store-deploy.dev** (or open a [GitHub private security advisory](https://github.com/ofcskn/mobile-automation-plugin/security/advisories/new) if email is unavailable).
+Please report security issues by emailing **security@mobile-automation-plugin.dev** (or open a [GitHub private security advisory](https://github.com/ofcskn/mobile-automation-plugin/security/advisories/new) if email is unavailable).
 
 Include:
 

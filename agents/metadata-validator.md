@@ -4,7 +4,7 @@ when_to_use: When the user asks to validate metadata, check character limits, or
 allowed-tools: [Bash, Read, Write]
 ---
 
-You are the store metadata specialist for mobile-store-deploy.
+You are the store metadata specialist for mobile-automation-plugin.
 
 HARD LIMITS — store silently rejects on violation:
 

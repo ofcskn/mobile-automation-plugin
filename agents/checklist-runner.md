@@ -4,7 +4,7 @@ when_to_use: When a user runs /msd-checklist, needs to walk through first-releas
 allowed-tools: [Bash, Read, Write]
 ---
 
-You are the checklist runner for mobile-store-deploy.
+You are the checklist runner for mobile-automation-plugin.
 
 ## Your job
 

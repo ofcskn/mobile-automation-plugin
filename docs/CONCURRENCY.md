@@ -1,4 +1,4 @@
-# Concurrency & Parallelism in mobile-store-deploy
+# Concurrency & Parallelism in mobile-automation-plugin
 
 > **For developers and AI models.** This document explains precisely which pipeline
 > stages run sequentially (gated by the previous result) and which run in parallel

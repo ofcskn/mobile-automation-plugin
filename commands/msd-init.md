@@ -2,7 +2,7 @@
 description: Initialize a new app in the plugin registry — creates config, versions, metadata directories, and registers the app
 ---
 
-Initialize a new app for the mobile-store-deploy pipeline.
+Initialize a new app for the mobile-automation-plugin pipeline.
 
 ## What to ask the user
 

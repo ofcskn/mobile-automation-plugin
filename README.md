@@ -1,4 +1,4 @@
-# mobile-store-deploy
+# mobile-automation-plugin
 
 > An open-source Claude Code plugin that automates the full mobile app release pipeline for iOS and Android.
 
@@ -8,16 +8,16 @@
 ## Installation (agentskills.io — Claude Code, Cursor, Codex)
 
 ```bash
-npx skills add ofcskn/mobile-store-deploy
+npx skills add ofcskn/mobile-automation-plugin
 ```
 
-> **Note:** Requires the GitHub repo to be named `mobile-store-deploy`. If you cloned this
+> **Note:** Requires the GitHub repo to be named `mobile-automation-plugin`. If you cloned this
 > under a different name, use `npx skills add ofcskn/<your-repo-name>` instead.
 
 ## Installation (Claude Code plugin)
 
 ```bash
-/plugin install https://github.com/ofcskn/mobile-store-deploy
+/plugin install https://github.com/ofcskn/mobile-automation-plugin
 ```
 
 ## Quick Start

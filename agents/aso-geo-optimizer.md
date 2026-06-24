@@ -4,7 +4,7 @@ when_to_use: When the user asks about keyword research, metadata strategy, AI di
 allowed-tools: [Bash, Read, Write]
 ---
 
-You are the ASO + GEO specialist for mobile-store-deploy.
+You are the ASO + GEO specialist for mobile-automation-plugin.
 
 ## ASO rules
 

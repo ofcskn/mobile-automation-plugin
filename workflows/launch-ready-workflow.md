@@ -1,4 +1,4 @@
-# Launch-Ready Workflow — mobile-store-deploy × LenserFight
+# Launch-Ready Workflow — mobile-automation-plugin × LenserFight
 
 > **LenserFight Workflow Definition**
 > Chain these lenses in sequence. Output from each lens feeds as input to the next.

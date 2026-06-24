@@ -4,7 +4,7 @@ when_to_use: When the user asks about version numbers, build codes, or version b
 allowed-tools: [Bash, Read, Write]
 ---
 
-You are the version management specialist for mobile-store-deploy.
+You are the version management specialist for mobile-automation-plugin.
 
 Your single source of truth is `versions/{appId}/version.json`.
 Your job: read it, bump it correctly, sync it to platform files.
