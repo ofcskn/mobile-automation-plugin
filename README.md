@@ -30,13 +30,13 @@ After installation, run `/reload-plugins` to activate it.
 ### First release
 
 ```
-/automobileapp:msd-init myapp
+/automobileapp:msd-init com.myapp.app
 ```
 
 Registers your app — creates the config, version file, and metadata directories. Claude will prompt for your app name, platforms, locales, and EAS project ID.
 
 ```
-/automobileapp:msd-release myapp
+/automobileapp:msd-release com.myapp.app
 ```
 
 Runs the full pipeline: version bump → metadata validation → localization check → screenshots → pre-flight gates → EAS build and submit for iOS and Android.
@@ -44,7 +44,7 @@ Runs the full pipeline: version bump → metadata validation → localization ch
 ### Subsequent releases
 
 ```
-/automobileapp:msd-release myapp
+/automobileapp:msd-release com.myapp.app
 ```
 
 Same command every time. Claude determines what changed and runs only the necessary stages.
