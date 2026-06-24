@@ -195,22 +195,59 @@ Follow the same exploration order as iOS above.
 
 ---
 
-## Step 4 — Phase 2: Design
+## Step 4 — Phase 2: Design with app-store-screenshots
 
-Load `lenses/screenshot-designer.lens.md` to generate the design brief (headlines, colors, layout).
+Use **https://github.com/ParthJadhav/app-store-screenshots** to design every approved screenshot. Run once per locale.
 
-Apply design layer:
+### Setup (one-time)
 
-**Option A — CLI:**
 ```bash
-npx skills add ParthJadhav/app-store-screenshots
+git clone https://github.com/ParthJadhav/app-store-screenshots /tmp/app-store-screenshots
+cd /tmp/app-store-screenshots && npm install
 ```
-Output to `screenshots/{appId}/designed/{locale}/{platform}/{device-folder}/`.
 
-**Option B — Web:**
-Open storeshots.org. Import from `raw/{locale}/`. Export to `designed/{locale}/`.
+### For each locale
 
-iOS: add device frames. Android: no device frames.
+1. Read approved screenshot list and the locale's metadata:
+   - Headlines: `metadata/{appId}/ios/{locale}/subtitle.txt` (primary screen), then write a distinct 3–6 word benefit for each subsequent screenshot
+   - For non-English locales, use translated text from the corresponding metadata directory
+
+2. Write `src/data.js`:
+```js
+export default [
+  {
+    image: "../../screenshots/{appId}/raw/{locale}/ios/{device}/1.png",
+    title: "<locale-specific headline — 3–6 words>",
+    bgColor: "#FFFFFF",
+    titleColor: "#000000",
+  },
+  // one entry per approved screenshot
+];
+```
+
+3. Generate and save:
+```bash
+cd /tmp/app-store-screenshots
+cp /tmp/data-{locale}.js src/data.js
+npm run screenshots
+
+DEST="screenshots/{appId}/designed/{locale}/ios/{device-folder}"
+mkdir -p "$DEST"
+cp screenshots/*.png "$DEST/"
+cd "$DEST" && i=1; for f in *.png; do mv "$f" "$i.png"; i=$((i+1)); done
+```
+
+4. Repeat for every locale in `config/{appId}.config.json → locales[]` and for Android (omit device frame for Android).
+
+### Confirm output structure
+
+```
+screenshots/{appId}/designed/
+├── en-US/ios/{device}/   1.png 2.png ...
+├── en-US/android/{device}/   1.png 2.png ...
+├── tr-TR/ios/{device}/   1.png 2.png ...
+└── tr-TR/android/{device}/   1.png 2.png ...
+```
 
 ---
 

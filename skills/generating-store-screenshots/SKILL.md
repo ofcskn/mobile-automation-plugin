@@ -249,18 +249,84 @@ Follow the same exploration order as iOS above. Capture 8–10 candidate screens
 
 ---
 
-## Phase 2 — Design (add overlays, headlines, device frames)
+## Phase 2 — Design with app-store-screenshots (per locale)
 
-**Option A — CLI (recommended):**
+Use **https://github.com/ParthJadhav/app-store-screenshots** to generate designed marketing screenshots. Run once per locale so each locale gets headlines in its own language.
+
+### One-time setup
+
 ```bash
-npx skills add ParthJadhav/app-store-screenshots
+git clone https://github.com/ParthJadhav/app-store-screenshots /tmp/app-store-screenshots
+cd /tmp/app-store-screenshots
+npm install
 ```
-Use the brief from `lenses/screenshot-designer.lens.md`. Output to `designed/{locale}/{platform}/{device-folder}/`.
 
-**Option B — Web GUI:**
-Open storeshots.org, import PNGs from `raw/{locale}/`, export to `designed/{locale}/`.
+### Configure per locale
 
-**iOS only:** Add device frames. **Android:** do NOT add device frames — Play Store renders its own.
+For each locale, generate a `src/data.js` by reading the approved screenshots and the locale's metadata:
+
+```js
+// src/data.js — one entry per approved screenshot
+export default [
+  {
+    image: "../../screenshots/{appId}/raw/{locale}/ios/{device}/1.png",
+    // Read headline from metadata/{appId}/ios/{locale}/subtitle.txt
+    // Keep to 3–6 words — readable at thumbnail size
+    title: "<subtitle or key benefit in this locale's language>",
+    bgColor: "#FFFFFF",   // match app brand color or ask user
+    titleColor: "#000000",
+  },
+  {
+    image: "../../screenshots/{appId}/raw/{locale}/ios/{device}/3.png",
+    title: "<second key benefit>",
+    bgColor: "#F5F5F5",
+    titleColor: "#111111",
+  },
+  // one entry per approved screenshot
+];
+```
+
+**Title text rules:**
+- Source text from `metadata/{appId}/ios/{locale}/subtitle.txt` for the primary screen
+- For non-English locales, use the translated subtitle or key benefit phrase
+- Never repeat the same title across two screenshots
+- Apple OCR indexes caption text — align titles with `keywords.txt`
+
+### Generate and move output
+
+```bash
+cd /tmp/app-store-screenshots
+cp /tmp/data-{locale}.js src/data.js
+npm run screenshots
+# Output: /tmp/app-store-screenshots/screenshots/*.png
+
+# Move to plugin designed folder
+DEST="screenshots/{appId}/designed/{locale}/ios/{device-folder}"
+mkdir -p "$DEST"
+cp screenshots/*.png "$DEST/"
+
+# Rename to sequential numbers
+cd "$DEST" && i=1; for f in *.png; do mv "$f" "$i.png"; i=$((i+1)); done
+```
+
+### Repeat for every locale
+
+```bash
+for LOCALE in en-US tr-TR de-DE; do   # from config/{appId}.config.json → locales[]
+  cp /tmp/data-$LOCALE.js src/data.js
+  npm run screenshots
+  DEST="screenshots/{appId}/designed/$LOCALE/ios/{device}"
+  mkdir -p "$DEST"
+  cp screenshots/*.png "$DEST/"
+  cd "$DEST" && i=1; for f in *.png; do mv "$f" "$i.png"; i=$((i+1)); done; cd -
+done
+```
+
+### Android
+
+Same tool, same flow. Set `frame: false` or omit the frame key — Play Store renders its own frames. Output to `designed/{locale}/android/{device-folder}/`.
+
+**iOS only:** Add device frames. **Android:** no device frames — Play Store renders its own.
 
 ---
 

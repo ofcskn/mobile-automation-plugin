@@ -73,12 +73,48 @@ First, gather these inputs:
 3. Target platform — ask: ios / android / both
 4. Confirm locales — show `config/{appId}.config.json` locales array and ask for confirmation
 
+## Gate 0.5 — Ask build mode
+
+> "Build locally (no EAS cloud queue, uses your Xcode/Android Studio) or via EAS cloud?
+> **Local is the default** — no build minutes consumed, no queue wait."
+
+Store the answer. It controls Gate 5 below.
+
+---
+
 Then execute in order (stop and report at any failure):
 1. Load `skills/managing-app-versions` — delegate to version-manager agent
 2. Load `skills/managing-store-metadata` — delegate to metadata-validator agent
 3. Load `skills/managing-app-localizations` — delegate to localization-auditor agent
 4. Load `skills/generating-store-screenshots` — delegate to screenshot-pipeline agent (confirm assets exist)
 5. Load `skills/submitting-app-release` — delegate to release-coordinator agent
+
+### Gate 5 — Build and submit
+
+**If local build:**
+```bash
+cd {appPath}
+
+# Build
+eas build --local --platform ios --profile production
+eas build --local --platform android --profile production
+
+# Find binaries
+IOS_BUILD=$(find . -maxdepth 2 -name "*.ipa" -newer eas.json | tail -1)
+ANDROID_BUILD=$(find . -maxdepth 2 -name "*.aab" -newer eas.json | tail -1)
+
+# Submit using local binary path (no cloud queue)
+eas submit --platform ios --path "$IOS_BUILD" --profile production
+eas submit --platform android --path "$ANDROID_BUILD" --profile production
+```
+
+**If cloud build:**
+```bash
+cd {appPath}
+eas build --platform all --profile production
+eas submit --platform ios --profile production
+eas submit --platform android --profile production
+```
 
 Never auto-proceed past a failed gate. Always stop and tell the user exactly what failed.
 
