@@ -4,8 +4,8 @@ description: >
   Manages the two-phase store screenshot pipeline: Phase 1 captures raw screenshots
   by automatically exploring the running iOS Simulator or Android Emulator — booting
   the device, launching the app, navigating every key screen, and capturing numbered
-  PNGs; Phase 2 adds design layers (device frames, headlines, backgrounds) via
-  ParthJadhav/app-store-screenshots or storeshots.org. Outputs are grouped by
+  PNGs; Phase 2 adds design layers (device frames, headlines, backgrounds) exclusively
+  via ParthJadhav/app-store-screenshots (MIT). Outputs are grouped by
   locale/platform/device-size so folders can be downloaded and uploaded directly.
   Use when the user says "generate screenshots", "update store images", "take
   screenshots", "design marketing slides", or "screenshot pipeline".
@@ -251,7 +251,9 @@ Follow the same exploration order as iOS above. Capture 8–10 candidate screens
 
 ## Phase 2 — Design with app-store-screenshots (per locale)
 
-Use **https://github.com/ParthJadhav/app-store-screenshots** to generate designed marketing screenshots. Run once per locale so each locale gets headlines in its own language.
+Use **https://github.com/ParthJadhav/app-store-screenshots** (MIT) to generate designed marketing screenshots. This is the **only** permitted tool — do not substitute storeshots.org or any other generator. Canvas dimensions must come from what this library actually outputs; never hardcode assumed pixel values. Run once per locale so each locale gets headlines in its own language.
+
+**Phone and Tablet are both required.** Run the tool twice per locale: once for Phone sizes, once for Tablet (iPad) sizes. If no iPad simulator exists, re-use the phone raw screenshots as the `image` input when generating the Tablet set — the design tool will place them on the correct iPad canvas.
 
 ### One-time setup
 
@@ -332,8 +334,12 @@ Same tool, same flow. Set `frame: false` or omit the frame key — Play Store re
 
 ## Critical constraints
 
+- **App ID / asset folder must NOT end with `.app`.** macOS treats such directories as application bundles. App Store tooling will silently reject uploads from a path ending in `.app`. The folder name must be a plain slug (e.g. `myapp`, `zenapp`).
+- **Design tool: ParthJadhav/app-store-screenshots (MIT) — exclusively.** Never assume pixel dimensions or canvas sizes. All screenshot sizes must come from this library's output. Do NOT use storeshots.org or any other tool.
+- **Required screenshot sets are Phone and Tablet.** Both must be produced and submitted.
+  - **If no tablet simulator or tablet captures exist:** use the phone screenshots as the input `image` in `src/data.js` and run ParthJadhav/app-store-screenshots targeting iPad canvas dimensions. Do not skip the tablet set or substitute different sizes.
 - **iPhone 6.9" (1320×2868) is REQUIRED from 2026.** Submission blocked without it.
-- **iPad Pro 13" (2064×2752) required if the app supports iPad.**
+- **iPad Pro 13" (2064×2752) is the Tablet requirement for iOS.**
 - Apple allows max **10 screenshots** per locale per device. Google allows **8**.
 - **Do NOT add device frames to Android screenshots.**
 - **Apple OCR indexes screenshot caption text since June 2025.** Align headlines with `keywords.txt`.

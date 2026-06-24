@@ -197,7 +197,7 @@ Follow the same exploration order as iOS above.
 
 ## Step 4 — Phase 2: Design with app-store-screenshots
 
-Use **https://github.com/ParthJadhav/app-store-screenshots** to design every approved screenshot. Run once per locale.
+Use **https://github.com/ParthJadhav/app-store-screenshots** (MIT) to design every approved screenshot — this is the **only** permitted design tool. Do NOT use storeshots.org or any other generator. Canvas dimensions must come from what this library actually outputs. Run once per locale.
 
 ### Setup (one-time)
 
@@ -237,27 +237,48 @@ cp screenshots/*.png "$DEST/"
 cd "$DEST" && i=1; for f in *.png; do mv "$f" "$i.png"; i=$((i+1)); done
 ```
 
-4. Repeat for every locale in `config/{appId}.config.json → locales[]` and for Android (omit device frame for Android).
+4. **Tablet set (required):** After generating the Phone set, run ParthJadhav/app-store-screenshots again targeting iPad canvas dimensions. If no iPad simulator / tablet captures exist, re-use the phone raw screenshots as the `image` input — the tool places them on the correct iPad canvas.
+
+```bash
+# Example: tablet pass — same data.js images, iPad canvas
+# (canvas dimensions come from the library, not from hardcoded values)
+cp /tmp/data-{locale}-tablet.js src/data.js
+npm run screenshots
+
+DEST_TABLET="screenshots/{appId}/designed/{locale}/ios/iPad-Pro-13-2064x2752"
+mkdir -p "$DEST_TABLET"
+cp screenshots/*.png "$DEST_TABLET/"
+cd "$DEST_TABLET" && i=1; for f in *.png; do mv "$f" "$i.png"; i=$((i+1)); done; cd -
+```
+
+5. Repeat for every locale in `config/{appId}.config.json → locales[]` and for Android (omit device frame for Android).
 
 ### Confirm output structure
 
+Both Phone and Tablet folders must exist before submission:
+
 ```
 screenshots/{appId}/designed/
-├── en-US/ios/{device}/   1.png 2.png ...
-├── en-US/android/{device}/   1.png 2.png ...
-├── tr-TR/ios/{device}/   1.png 2.png ...
-└── tr-TR/android/{device}/   1.png 2.png ...
+├── en-US/ios/iPhone-16-Pro-Max-1320x2868/   1.png 2.png ...   ← Phone
+├── en-US/ios/iPad-Pro-13-2064x2752/         1.png 2.png ...   ← Tablet
+├── en-US/android/Phone-1080x1920/           1.png 2.png ...   ← Phone
+├── en-US/android/Tablet-10inch-1080x1920/   1.png 2.png ...   ← Tablet
+├── tr-TR/ios/iPhone-16-Pro-Max-1320x2868/   1.png 2.png ...
+└── tr-TR/ios/iPad-Pro-13-2064x2752/         1.png 2.png ...
 ```
 
 ---
 
 ## Step 5 — Validate
 
-Confirm designed output exists in the correct structure:
+Confirm both Phone and Tablet designed output exists:
 
 ```
-screenshots/{appId}/designed/{locale}/ios/{device-folder}/1.png  ✅
-screenshots/{appId}/designed/{locale}/android/{device-folder}/1.png  ✅
+screenshots/{appId}/designed/{locale}/ios/iPhone-16-Pro-Max-1320x2868/1.png   ✅ Phone
+screenshots/{appId}/designed/{locale}/ios/iPad-Pro-13-2064x2752/1.png         ✅ Tablet
+screenshots/{appId}/designed/{locale}/android/Phone-1080x1920/1.png           ✅ Phone
 ```
 
 Count files per device per locale — Apple requires at least 1, max 10. Google max 8.
+
+If the Tablet folder is missing and the app supports iPad/tablets, **do not proceed to submission** — run Phase 2 again with phone captures as input images at the tablet canvas size.

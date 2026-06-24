@@ -6,7 +6,7 @@ Initialize a new app for the automobileapp pipeline.
 
 ## What to ask the user
 
-1. **App ID** — short slug used for all directories (e.g. `myapp`, `zenapp`). Must be filesystem-safe.
+1. **App ID** — short slug used for all directories (e.g. `myapp`, `zenapp`). Must be filesystem-safe. **Must NOT end with `.app`** — macOS treats any folder ending in `.app` as an application bundle; App Store tooling will reject uploads from such a path.
 2. **Display name** — human-readable name shown in stores
 3. **Path to Expo/React Native app** — absolute path to the app's root directory
 4. **Platforms** — iOS, Android, or both?

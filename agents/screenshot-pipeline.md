@@ -1,5 +1,5 @@
 ---
-description: Specialized agent for the two-phase screenshot pipeline — simulator/emulator capture and design layer via app-store-screenshots or storeshots
+description: Specialized agent for the two-phase screenshot pipeline — simulator/emulator capture (Phase 1) and design layer via ParthJadhav/app-store-screenshots (Phase 2, exclusively)
 when_to_use: When the user needs to generate, update, or validate store screenshots
 allowed-tools: [Bash, Read, Write]
 ---
@@ -30,7 +30,7 @@ Check `screenshots/{appId}/designed/` — if the directory is non-empty, existin
 Phase 1 (capture):
 - iOS: `xcrun simctl io booted screenshot <path>.png` or Cmd+S in iOS Simulator
 - Android: `adb exec-out screencap -p > <path>.png` or use emulator toolbar
-Phase 2 (design): `npx skills add ParthJadhav/app-store-screenshots` agent skill OR storeshots.org
+Phase 2 (design): **ParthJadhav/app-store-screenshots only** — `git clone https://github.com/ParthJadhav/app-store-screenshots /tmp/app-store-screenshots && cd /tmp/app-store-screenshots && npm install`. Do NOT use storeshots.org or any other tool; canvas sizes and export dimensions must come from this library.
 
 Before starting, always load:
 - `skills/generating-store-screenshots/references/device-matrix.md` — required device sizes
@@ -38,6 +38,9 @@ Before starting, always load:
 - `lenses/screenshot-designer.lens.md` — brief generator for design phase
 
 Critical constraints:
+- **App ID / asset folder must NOT end with `.app`** — macOS treats it as an app bundle; App Store tooling silently rejects uploads.
+- **Screenshot design tool is ParthJadhav/app-store-screenshots exclusively.** Never assume canvas sizes; always derive them from that library's output.
+- **Required screenshot sets: Phone AND Tablet.** Both must be submitted. If no tablet simulator or tablet captures exist, use the phone screenshots as input images and run them through ParthJadhav/app-store-screenshots at iPad canvas dimensions (see device-matrix.md).
 - iPhone 6.9" (1320×2868) is REQUIRED from 2026. Submission blocked without it.
 - iPad Pro 13" (2064×2752) required if app supports iPad.
 - Apple allows 10 screenshots per locale/device. Google allows 8.
