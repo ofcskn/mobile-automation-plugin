@@ -27,147 +27,50 @@ After installation, run `/reload-plugins` to activate it.
 
 ## Quick Start
 
-### Step 1 — Register your app
+### First release
 
-```bash
-# Copy the config template for your app (replace "myapp" with your app ID)
-cp config/.template.config.json config/myapp.config.json
+```
+/automobileapp:msd-init myapp
 ```
 
-Edit `config/myapp.config.json`:
-```json
-{
-  "appId": "myapp",
-  "displayName": "My App",
-  "platforms": ["ios", "android"],
-  "locales": ["en"],
-  "eas": {
-    "projectId": "",
-    "profile": "production"
-  },
-  "geo": { "entityAnchor": "" }
-}
+Registers your app — creates the config, version file, and metadata directories. Claude will prompt for your app name, platforms, locales, and EAS project ID.
+
+```
+/automobileapp:msd-release myapp
 ```
 
-### Step 2 — Initialize version tracking
+Runs the full pipeline: version bump → metadata validation → localization check → screenshots → pre-flight gates → EAS build and submit for iOS and Android.
 
-```bash
-mkdir -p versions/myapp
-cat > versions/myapp/version.json << 'EOF'
-{
-  "semver": "1.0.0",
-  "ios": { "CFBundleShortVersionString": "1.0.0", "CFBundleVersion": "1" },
-  "android": { "versionName": "1.0.0", "versionCode": 1 }
-}
-EOF
+### Subsequent releases
+
+```
+/automobileapp:msd-release myapp
 ```
 
-### Step 3 — Write store metadata
+Same command every time. Claude determines what changed and runs only the necessary stages.
 
-```bash
-mkdir -p metadata/myapp/ios/en-US metadata/myapp/android/en-US
-
-# iOS (Apple App Store)
-echo "My App"              > metadata/myapp/ios/en-US/name.txt           # max 30 chars
-echo "Short tagline here"  > metadata/myapp/ios/en-US/subtitle.txt       # max 30 chars
-echo "habit,daily,tracker" > metadata/myapp/ios/en-US/keywords.txt       # max 100 chars, no spaces after commas
-echo "Full description..." > metadata/myapp/ios/en-US/description.txt    # max 4000 chars
-echo "Promo text here"     > metadata/myapp/ios/en-US/promotional.txt    # max 170 chars
-echo "Bug fixes"           > metadata/myapp/ios/en-US/release_notes.txt  # max 4000 chars
-
-# Android (Google Play)
-echo "My App"              > metadata/myapp/android/en-US/title.txt              # max 30 chars
-echo "Short description"   > metadata/myapp/android/en-US/short_description.txt  # max 80 chars
-echo "Full description..."  > metadata/myapp/android/en-US/full_description.txt  # max 4000 chars, IS indexed
-echo "Bug fixes"           > metadata/myapp/android/en-US/release_notes.txt      # max 500 chars (NOT 4000)
-```
-
-### Step 4 — Validate metadata
-
-```bash
-node skills/managing-store-metadata/scripts/validate-metadata.js myapp
-# Fix any character limit violations before continuing
-```
-
-### Step 5 — Set up translations (if multi-locale)
-
-```bash
-mkdir -p locales/myapp
-# Create en.json as the source of truth
-echo '{ "welcome": "Welcome", "start": "Start" }' > locales/myapp/en.json
-# Create one file per locale
-echo '{ "welcome": "Hoş geldiniz", "start": "Başla" }' > locales/myapp/tr.json
-
-node skills/managing-app-localizations/scripts/validate-translations.js myapp
-```
-
-### Step 6 — Run pre-flight checklist
-
-```bash
-node skills/submitting-app-release/scripts/release-checklist.js myapp
-# All 7 gates must pass. Fix any failures before submitting.
-```
-
-### Step 7 — Sync version to your app
-
-```bash
-# Bumps patch version (1.0.0 → 1.0.1) and syncs to app.json, Info.plist, build.gradle
-node skills/managing-app-versions/scripts/bump-version.js myapp patch
-node skills/managing-app-versions/scripts/sync-build-numbers.js myapp \
-  --project-root /path/to/your/expo/app
-```
-
-### Step 8 — Build and submit (Expo EAS)
-
-```bash
-cd /path/to/your/expo/app
-eas build --platform all --profile production
-eas submit --platform all --profile production
-```
-
-### For subsequent releases
-
-```bash
-# 1. Bump version
-node skills/managing-app-versions/scripts/bump-version.js myapp patch
-
-# 2. Update release notes per locale
-echo "New feature: ..." > metadata/myapp/ios/en-US/release_notes.txt
-echo "New feature: ..." > metadata/myapp/android/en-US/release_notes.txt
-
-# 3. Validate everything
-node skills/submitting-app-release/scripts/release-checklist.js myapp
-
-# 4. Sync version to app
-node skills/managing-app-versions/scripts/sync-build-numbers.js myapp \
-  --project-root /path/to/your/expo/app
-
-# 5. Build and submit
-cd /path/to/your/expo/app && eas build --platform all --profile production && eas submit --platform all --profile production
-```
-
-> **See `docs/README.md`** for the full platform setup guides, Apple Store checklist, Play Store checklist, and multi-app management.
+> **See `docs/README.md`** for platform setup guides, multi-app management, and CI/CD integration.
 
 ## Slash commands
 
 | Command | What it does |
 |---|---|
-| `/msd-release` | Full release pipeline — version bump → validate → submit |
-| `/msd-bump` | Bump version number only |
-| `/msd-screenshots` | Generate and validate store screenshots |
-| `/msd-metadata` | Update and validate store metadata |
-| `/msd-locale` | Add language or fix missing translation keys |
-| `/msd-validate` | Run all validation checks without submitting |
-| `/msd-select-locales` | Select or update app's supported locales |
-| `/msd-aso` | ASO keyword research and metadata optimization |
-| `/msd-geo` | GEO content — schema markup, entity anchor, ProductHunt |
-| `/msd-init` | Register a new app — creates config, versions, and metadata directories |
-| `/msd-build` | Build with EAS — development, preview, or production profile |
-| `/msd-status` | Show version, locale coverage, and pending actions for a registered app |
-| `/msd-checklist` | Interactive first-release checklist for App Store or Play Store |
-| `/msd-permissions` | Validate iOS NSUsageDescription strings and Android dangerous permissions |
-| `/msd-release-notes` | Draft "What's New" release notes for all configured locales |
-| `/msd-discover` | Scan a directory to find all Expo/React Native apps and registration status |
+| `/automobileapp:msd-release` | Full release pipeline — version bump → validate → submit |
+| `/automobileapp:msd-init` | Register a new app — creates config, versions, and metadata directories |
+| `/automobileapp:msd-bump` | Bump version number only |
+| `/automobileapp:msd-screenshots` | Generate and validate store screenshots |
+| `/automobileapp:msd-metadata` | Update and validate store metadata |
+| `/automobileapp:msd-locale` | Add language or fix missing translation keys |
+| `/automobileapp:msd-validate` | Run all validation checks without submitting |
+| `/automobileapp:msd-select-locales` | Select or update app's supported locales |
+| `/automobileapp:msd-aso` | ASO keyword research and metadata optimization |
+| `/automobileapp:msd-geo` | GEO content — schema markup, entity anchor, ProductHunt |
+| `/automobileapp:msd-build` | Build with EAS — development, preview, or production profile |
+| `/automobileapp:msd-status` | Show version, locale coverage, and pending actions for a registered app |
+| `/automobileapp:msd-checklist` | Interactive first-release checklist for App Store or Play Store |
+| `/automobileapp:msd-permissions` | Validate iOS NSUsageDescription strings and Android dangerous permissions |
+| `/automobileapp:msd-release-notes` | Draft "What's New" release notes for all configured locales |
+| `/automobileapp:msd-discover` | Scan a directory to find all Expo/React Native apps and registration status |
 
 ## What it solves
 
