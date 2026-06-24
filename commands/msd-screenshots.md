@@ -136,18 +136,39 @@ Explore in this order (capture a numbered PNG at each step):
 5. Primary feature — the main value screen
 6. Secondary feature or list view
 7. Detail view (tap into any item)
-8. Settings or profile
-9. Paywall / premium screen if present
-10. Any unique differentiating screen
+8. Settings or profile screen
+9. Any unique differentiating screen
 
-After capturing all candidates, list them with descriptions:
+**Never capture:** paywall screens, subscription gates, purchase dialogs, "Upgrade to Pro" modals, loading spinners, error states, empty states, or login/signup forms. If you navigate into one of these, go back immediately and do not save that screenshot.
+
+---
+
+## Step 3b — Marketing evaluation (AI reviews all candidates)
+
+After the exploration loop, review every captured PNG before showing them to the user.
+
+Score each screenshot against these criteria and **automatically discard** any that fail:
+
+| Criterion | Pass | Fail — discard |
+|---|---|---|
+| **No paywall / gate** | App content visible and usable | Any purchase prompt, subscription wall, locked content indicator |
+| **Real content shown** | Actual data, real UI populated | Empty lists, placeholder text, "Loading…", skeleton screens |
+| **Positive framing** | Feature working, happy path | Error message, warning banner, crash dialog |
+| **Core value visible** | The app's main benefit is on screen | Settings, legal, about, permissions dialogs |
+| **No auth barrier** | User is inside the app | Login form, sign-up screen, forgot password |
+| **Clean UI** | No debug overlays, no dev tools | Xcode inspector overlay, ADB dev options visible |
+
+After discarding failures, present only the passing screenshots to the user:
+
 ```
-1.png — onboarding welcome
-2.png — core feature overview
-3.png — main dashboard
-...
+✅ 1.png — onboarding welcome (marketing-ready)
+✅ 3.png — main dashboard with real data (marketing-ready)
+✅ 5.png — primary feature in use (marketing-ready)
+❌ 2.png — discarded (paywall gate visible)
+❌ 6.png — discarded (empty state / no content)
 ```
-Ask the user which to keep. Delete the rest before proceeding to Phase 2.
+
+Ask the user to confirm the final selection, then delete all discarded PNGs before proceeding to Phase 2.
 
 ### Android capture loop
 

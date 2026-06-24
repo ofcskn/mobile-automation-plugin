@@ -186,15 +186,35 @@ xcrun simctl io booted button home
 9. Any premium / paywall screen (shows value proposition)
 10. Any unique screen that differentiates the app
 
-**Number files sequentially** (`1.png`, `2.png`, ...). Do not stop at one screen. Keep exploring and capturing until you have 8–10 candidates, then let the user choose which to use for the store.
+**Number files sequentially** (`1.png`, `2.png`, ...). Do not stop at one screen. Keep exploring and capturing until you have 8–10 candidates.
 
-After capture, review all screenshots and annotate which screen each represents:
+**Never capture — skip and go back immediately if you reach:**
+- Paywall, subscription gate, purchase dialog, or "Upgrade to Pro" modal
+- Login or sign-up screen
+- Loading spinner, skeleton screen, or empty state
+- Error message, warning banner, or crash dialog
+- Settings → Legal, About, or permissions dialogs
+- Any debug overlay or developer tool UI
+
+**After the full exploration, evaluate every candidate before showing the user.** Score each PNG:
+
+| Check | Pass ✅ | Discard ❌ |
+|---|---|---|
+| No paywall / gate visible | App content freely usable | Any purchase prompt or lock icon |
+| Real content populated | Actual data on screen | Placeholder text, empty lists |
+| Positive happy path | Feature working correctly | Error state, warning UI |
+| Core value on screen | App's main benefit visible | Settings, legal, auth screen |
+| Clean UI | No overlays or dev tools | Inspector UI, ADB options |
+
+Present only passing screenshots to the user with a summary:
 ```
-1.png — onboarding welcome
-2.png — feature overview
-3.png — main dashboard
-...
+✅ 1.png — onboarding welcome
+✅ 3.png — main dashboard (real data)
+✅ 5.png — primary feature in use
+❌ 2.png — discarded: paywall gate
+❌ 6.png — discarded: empty state
 ```
+Delete all discarded files before Phase 2.
 
 ### Android — full exploration sequence
 
