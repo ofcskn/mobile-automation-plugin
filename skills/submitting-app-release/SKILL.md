@@ -9,6 +9,13 @@ description: >
 
 # Submitting App Release
 
+## Credential check — always run first
+
+Before any submission step, load and run the credential check from:
+`skills/submitting-app-release/references/credentials-guide.md`
+
+Check all required vars, validate their format, and run `eas whoami`. If anything fails, stop and guide the user to fix it before running any build or submit command.
+
 ## When to use
 
 | Request | Action |
@@ -71,4 +78,5 @@ Reference: https://docs.expo.dev/build/introduction/
 
 ## Reference
 
-Load on demand: `skills/submitting-app-release/references/submission-checklist.md`
+- `skills/submitting-app-release/references/submission-checklist.md` — EAS commands and eas.json profiles
+- `skills/submitting-app-release/references/credentials-guide.md` — all required credentials, format examples, validation commands, and EAS secret setup

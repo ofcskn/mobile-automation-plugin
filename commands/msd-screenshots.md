@@ -8,6 +8,26 @@ Ask: app ID, platform (ios / android / both), which locales.
 
 ---
 
+## Step 0 — Detect simulators and ask mode
+
+```bash
+# iOS
+xcrun simctl list devices booted 2>/dev/null
+
+# Android
+adb devices 2>/dev/null
+```
+
+Ask the user:
+
+> "Which screenshot mode?
+> - **Lightweight (default)** — use the simulator that's already running. One device size, no extra installs.
+> - **Full** — capture all required device sizes (needs iPhone 16 Pro Max, iPhone 11 Pro Max, iPad Pro 13" simulators installed).
+
+If they choose Lightweight: skip multi-device loops below. Capture only from the currently booted device. Detect its name and resolution from `xcrun simctl list devices booted --json` (iOS) or `adb shell wm size` (Android), and name the output folder accordingly.
+
+---
+
 ## Step 1 — Check prerequisites
 
 Run every detection command below. If anything is missing, stop and tell the user before continuing.

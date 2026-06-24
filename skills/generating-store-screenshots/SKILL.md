@@ -13,6 +13,36 @@ description: >
 
 # Generating Store Screenshots
 
+## Simulator mode — ask the user first
+
+Before checking prerequisites, detect what is already running and ask:
+
+```bash
+# iOS — what's booted?
+xcrun simctl list devices booted 2>/dev/null
+
+# Android — what's connected?
+adb devices 2>/dev/null
+```
+
+Then ask:
+
+> "I found **[device name]** booted. Which screenshot mode do you want?
+>
+> - **Lightweight (recommended)** — use only this simulator. Faster, no extra installs. One device size per platform.
+> - **Full** — capture all required device sizes (iPhone 6.9", 6.5", iPad 13" for iOS). Requires installing additional simulators.
+>
+> Default: Lightweight."
+
+**Lightweight mode behavior:**
+- iOS: use the single booted simulator. Detect its resolution with `xcrun simctl list devices booted --json` and name the output folder accordingly (e.g., `iPhone-15-Pro-2556x1179` if that's what's running). This is valid for App Store submission — Apple accepts any supported device size.
+- Android: use the connected emulator. Name the folder by its reported resolution.
+- No need to install additional simulators.
+
+**Full mode behavior:**
+- Requires installing iPhone 16 Pro Max (1320×2868, mandatory from 2026), iPhone 11 Pro Max (1242×2688), and iPad Pro 13" (2064×2752) simulators.
+- Run each capture loop per device, per locale.
+
 ## Prerequisites — check BEFORE starting
 
 Run each detection command. If any check fails, stop and tell the user exactly what is missing.
