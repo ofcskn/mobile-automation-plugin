@@ -25,6 +25,21 @@ npx skills add ofcskn/mobile-automation-plugin
 
 After installation, run `/reload-plugins` to activate it.
 
+## Prerequisites
+
+| Requirement | Purpose | How to verify |
+|---|---|---|
+| **Xcode 15+** | iOS simulator, `xcrun simctl`, `xcodebuild` | `xcode-select -p` |
+| **Android Studio + SDK** | Android emulator, `adb`, `emulator` | `adb --version && echo $ANDROID_HOME` |
+| **iOS Simulator** (≥ 1 AVD) | Automated screen capture for App Store | `xcrun simctl list devices available` |
+| **Android Emulator** (≥ 1 AVD) | Automated screen capture for Google Play | `emulator -list-avds` |
+| **Apple Developer account** | App Store Connect app entry, submission | [developer.apple.com](https://developer.apple.com) |
+| **Google Play Developer account** | Play Console app entry, submission | [play.google.com/console](https://play.google.com/console) |
+| **EAS CLI + Expo Token** | Cloud builds and store submission | `npm i -g eas-cli && eas login` |
+| **Node.js 18+** | Validation scripts | `node --version` |
+
+Claude checks prerequisites automatically when you run `/automobileapp:msd-screenshots` or `/automobileapp:msd-release` and will tell you exactly what is missing before proceeding.
+
 ## Quick Start
 
 ### First release
