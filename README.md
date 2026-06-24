@@ -53,24 +53,24 @@ Same command every time. Claude determines what changed and runs only the necess
 
 ## Slash commands
 
-| Command | What it does |
-|---|---|
-| `/automobileapp:msd-release` | Full release pipeline — version bump → validate → submit |
-| `/automobileapp:msd-init` | Register a new app — creates config, versions, and metadata directories |
-| `/automobileapp:msd-bump` | Bump version number only |
-| `/automobileapp:msd-screenshots` | Generate and validate store screenshots |
-| `/automobileapp:msd-metadata` | Update and validate store metadata |
-| `/automobileapp:msd-locale` | Add language or fix missing translation keys |
-| `/automobileapp:msd-validate` | Run all validation checks without submitting |
-| `/automobileapp:msd-select-locales` | Select or update app's supported locales |
-| `/automobileapp:msd-aso` | ASO keyword research and metadata optimization |
-| `/automobileapp:msd-geo` | GEO content — schema markup, entity anchor, ProductHunt |
-| `/automobileapp:msd-build` | Build with EAS — development, preview, or production profile |
-| `/automobileapp:msd-status` | Show version, locale coverage, and pending actions for a registered app |
-| `/automobileapp:msd-checklist` | Interactive first-release checklist for App Store or Play Store |
-| `/automobileapp:msd-permissions` | Validate iOS NSUsageDescription strings and Android dangerous permissions |
-| `/automobileapp:msd-release-notes` | Draft "What's New" release notes for all configured locales |
-| `/automobileapp:msd-discover` | Scan a directory to find all Expo/React Native apps and registration status |
+| Command | What it does | Sources |
+|---|---|---|
+| `/automobileapp:msd-release` | Full release pipeline — version bump → validate → submit | [managing-app-versions](skills/managing-app-versions/) · [managing-store-metadata](skills/managing-store-metadata/) · [managing-app-localizations](skills/managing-app-localizations/) · [generating-store-screenshots](skills/generating-store-screenshots/) · [submitting-app-release](skills/submitting-app-release/) · [release-coordinator](agents/release-coordinator.md) |
+| `/automobileapp:msd-init` | Register a new app — creates config, versions, and metadata directories | [managing-app-registry](skills/managing-app-registry/) · [app-registry-manager](agents/app-registry-manager.md) |
+| `/automobileapp:msd-bump` | Bump version number only | [managing-app-versions](skills/managing-app-versions/) · [version-manager](agents/version-manager.md) |
+| `/automobileapp:msd-screenshots` | Generate and validate store screenshots | [generating-store-screenshots](skills/generating-store-screenshots/) · [screenshot-pipeline](agents/screenshot-pipeline.md) |
+| `/automobileapp:msd-metadata` | Update and validate store metadata | [managing-store-metadata](skills/managing-store-metadata/) · [metadata-validator](agents/metadata-validator.md) |
+| `/automobileapp:msd-locale` | Add language or fix missing translation keys | [managing-app-localizations](skills/managing-app-localizations/) · [selecting-app-locales](skills/selecting-app-locales/) · [localization-auditor](agents/localization-auditor.md) |
+| `/automobileapp:msd-validate` | Run all validation checks without submitting | [managing-store-metadata](skills/managing-store-metadata/) · [managing-app-localizations](skills/managing-app-localizations/) · [submitting-app-release](skills/submitting-app-release/) |
+| `/automobileapp:msd-select-locales` | Select or update app's supported locales | [selecting-app-locales](skills/selecting-app-locales/) · [locale-selector](agents/locale-selector.md) |
+| `/automobileapp:msd-aso` | ASO keyword research and metadata optimization | [optimizing-aso-seo](skills/optimizing-aso-seo/) · [aso-geo-optimizer](agents/aso-geo-optimizer.md) |
+| `/automobileapp:msd-geo` | GEO content — schema markup, entity anchor, ProductHunt | [optimizing-geo](skills/optimizing-geo/) · [aso-geo-optimizer](agents/aso-geo-optimizer.md) |
+| `/automobileapp:msd-build` | Build with EAS — development, preview, or production profile | [submitting-app-release](skills/submitting-app-release/) · [release-coordinator](agents/release-coordinator.md) |
+| `/automobileapp:msd-status` | Show version, locale coverage, and pending actions for a registered app | [managing-app-registry](skills/managing-app-registry/) · [app-registry-manager](agents/app-registry-manager.md) |
+| `/automobileapp:msd-checklist` | Interactive first-release checklist for App Store or Play Store | [submitting-app-release](skills/submitting-app-release/) · [checklist-runner](agents/checklist-runner.md) |
+| `/automobileapp:msd-permissions` | Validate iOS NSUsageDescription strings and Android dangerous permissions | [managing-app-permissions](skills/managing-app-permissions/) |
+| `/automobileapp:msd-release-notes` | Draft "What's New" release notes for all configured locales | [managing-store-metadata](skills/managing-store-metadata/) · [managing-app-localizations](skills/managing-app-localizations/) · [localization-auditor](agents/localization-auditor.md) |
+| `/automobileapp:msd-discover` | Scan a directory to find all Expo/React Native apps and registration status | [managing-app-registry](skills/managing-app-registry/) · [app-registry-manager](agents/app-registry-manager.md) |
 
 ## What it solves
 
