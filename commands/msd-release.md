@@ -18,3 +18,9 @@ Then execute in order (stop and report at any failure):
 5. Load `skills/submitting-app-release` — delegate to release-coordinator agent
 
 Never auto-proceed past a failed gate. Always stop and tell the user exactly what failed.
+
+After all gates pass and EAS submission succeeds, run:
+```
+node skills/submitting-app-release/scripts/generate-release-summary.js {appId}
+```
+This generates a self-contained HTML page in the system temp directory and opens it in the browser. The page shows all gate results, per-locale metadata with one-click copy buttons, screenshot thumbnails, and EAS submit commands — everything needed to complete the store upload manually if any step requires it.

@@ -14,8 +14,8 @@ const path = require('path');
 const [,, appId, platformFlag] = process.argv;
 if (!appId) { console.error('Usage: node release-checklist.js <app-id>'); process.exit(1); }
 
-if (!/^[a-zA-Z0-9_-]+$/.test(appId)) {
-  console.error('Error: app-id may only contain letters, numbers, hyphens, and underscores.');
+if (!/^[a-zA-Z0-9._-]+$/.test(appId)) {
+  console.error('Error: app-id may only contain letters, numbers, dots, hyphens, and underscores.');
   process.exit(1);
 }
 
