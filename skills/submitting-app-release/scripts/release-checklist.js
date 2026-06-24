@@ -7,16 +7,30 @@
  * MIT License — mobile-store-deploy
  */
 
-const { execSync } = require('child_process');
+const { spawnSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
 const [,, appId, platformFlag] = process.argv;
 if (!appId) { console.error('Usage: node release-checklist.js <app-id>'); process.exit(1); }
 
+if (!/^[a-zA-Z0-9_-]+$/.test(appId)) {
+  console.error('Error: app-id may only contain letters, numbers, hyphens, and underscores.');
+  process.exit(1);
+}
+
 const root = path.resolve(__dirname, '../../..');
-const configPath = path.join(root, 'config', `${appId}.config.json`);
-const versionPath = path.join(root, 'versions', appId, 'version.json');
+
+function safeJoin(base, ...parts) {
+  const resolved = path.resolve(base, ...parts);
+  if (!resolved.startsWith(base + path.sep) && resolved !== base) {
+    throw new Error(`Path traversal detected: ${resolved}`);
+  }
+  return resolved;
+}
+
+const configPath = safeJoin(root, 'config', `${appId}.config.json`);
+const versionPath = safeJoin(root, 'versions', appId, 'version.json');
 
 let gates = [];
 let passed = 0;
@@ -35,8 +49,12 @@ function gate(label, fn) {
   }
 }
 
-function runScript(scriptPath, args = '') {
-  execSync(`node "${scriptPath}" ${args}`, { stdio: 'pipe', cwd: root });
+function runScript(scriptPath, ...args) {
+  const result = spawnSync(process.execPath, [scriptPath, ...args], { stdio: 'pipe', cwd: root });
+  if (result.status !== 0) {
+    const msg = result.stderr ? result.stderr.toString().trim() : 'script exited with non-zero status';
+    throw new Error(msg);
+  }
 }
 
 console.log(`\n🚀 Pre-flight checklist: ${appId}\n`);
@@ -57,7 +75,7 @@ gate('versions/{app-id}/version.json is valid', () => {
 // Gate 3: Metadata validation
 gate('Metadata passes character limit validation', () => {
   runScript(
-    path.join(root, 'skills/managing-store-metadata/scripts/validate-metadata.js'),
+    safeJoin(root, 'skills/managing-store-metadata/scripts/validate-metadata.js'),
     appId
   );
 });
@@ -65,7 +83,7 @@ gate('Metadata passes character limit validation', () => {
 // Gate 4: Translation completeness
 gate('All translation keys present', () => {
   runScript(
-    path.join(root, 'skills/managing-app-localizations/scripts/validate-translations.js'),
+    safeJoin(root, 'skills/managing-app-localizations/scripts/validate-translations.js'),
     appId
   );
 });

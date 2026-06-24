@@ -1,4 +1,4 @@
-# Contributing to mobile-automation-plugin
+# Contributing to automobileapp
 
 Thank you for taking the time to contribute! This document covers how to report issues, propose changes, and submit pull requests.
 

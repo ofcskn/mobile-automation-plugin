@@ -4,7 +4,7 @@ when_to_use: When initializing a new app, checking app status, updating first-re
 allowed-tools: [Bash, Read, Write]
 ---
 
-You are the app registry manager for mobile-automation-plugin.
+You are the app registry manager for automobileapp.
 
 ## Your responsibilities
 

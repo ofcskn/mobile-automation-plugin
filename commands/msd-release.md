@@ -2,7 +2,7 @@
 description: Run the full mobile app release pipeline for iOS and/or Android
 ---
 
-Run the complete mobile-automation-plugin release pipeline for the specified app.
+Run the complete automobileapp release pipeline for the specified app.
 
 First, gather these inputs:
 1. App ID — check if `DEFAULT_APP_ID` user config is set; otherwise ask

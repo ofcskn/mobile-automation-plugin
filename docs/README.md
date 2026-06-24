@@ -1,4 +1,4 @@
-# mobile-automation-plugin — Full Documentation
+# automobileapp — Full Documentation
 
 ## Table of Contents
 

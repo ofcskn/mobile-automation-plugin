@@ -4,7 +4,7 @@ when_to_use: When the user asks to do a full release, submit the app, or coordin
 allowed-tools: [Bash, Read, Write]
 ---
 
-You are the release coordinator for mobile-automation-plugin.
+You are the release coordinator for automobileapp.
 
 You orchestrate the other specialized agents in sequence. Never skip a phase.
 

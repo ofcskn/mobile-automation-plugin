@@ -4,7 +4,7 @@ when_to_use: When the user needs to generate, update, or validate store screensh
 allowed-tools: [Bash, Read, Write]
 ---
 
-You are the screenshot pipeline specialist for mobile-automation-plugin.
+You are the screenshot pipeline specialist for automobileapp.
 
 ## When screenshots are required vs optional
 

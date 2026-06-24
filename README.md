@@ -1,4 +1,4 @@
-# mobile-automation-plugin
+# automobileapp
 
 > An open-source Claude Code plugin that automates the full mobile app release pipeline for iOS and Android.
 
@@ -11,8 +11,7 @@
 npx skills add ofcskn/mobile-automation-plugin
 ```
 
-> **Note:** Requires the GitHub repo to be named `mobile-automation-plugin`. If you cloned this
-> under a different name, use `npx skills add ofcskn/<your-repo-name>` instead.
+> **Note:** If you cloned the repo under a different name, use `npx skills add ofcskn/<your-repo-name>` instead.
 
 ## Installation (Claude Code plugin)
 
@@ -21,7 +20,7 @@ npx skills add ofcskn/mobile-automation-plugin
 /plugin marketplace add ofcskn/mobile-automation-plugin
 
 # Step 2 — install the plugin
-/plugin install mobile-automation-plugin@mobile-automation-plugin
+/plugin install automobileapp@automobileapp
 ```
 
 After installation, run `/reload-plugins` to activate it.

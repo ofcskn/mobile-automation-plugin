@@ -1,12 +1,12 @@
 {
-  "name": "mobile-automation-plugin",
+  "name": "automobileapp",
   "owner": {
     "name": "mobile-automation-plugin contributors"
   },
   "description": "Automates the full mobile app release pipeline for iOS and Android — metadata, localization, screenshots, versioning, and EAS submission.",
   "plugins": [
     {
-      "name": "mobile-automation-plugin",
+      "name": "automobileapp",
       "source": ".",
       "description": "Claude Code plugin for mobile app release automation — metadata, localization, screenshots, versioning, and EAS submission.",
       "version": "1.0.1",

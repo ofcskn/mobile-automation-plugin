@@ -40,7 +40,7 @@ jobs:
         env:
           VERSION: ${{ steps.version.outputs.version }}
         run: |
-          zip -r "mobile-automation-plugin-v${VERSION}.zip" \
+          zip -r "automobileapp-v${VERSION}.zip" \
             agents/ \
             commands/ \
             config/ \
@@ -65,4 +65,4 @@ jobs:
           body: ${{ steps.changelog.outputs.notes }}
           draft: false
           prerelease: ${{ contains(github.ref_name, '-') }}
-          files: mobile-automation-plugin-v${{ steps.version.outputs.version }}.zip
+          files: automobileapp-v${{ steps.version.outputs.version }}.zip

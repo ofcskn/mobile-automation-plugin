@@ -4,7 +4,7 @@ when_to_use: When the user asks about translations, missing keys, adding a langu
 allowed-tools: [Bash, Read, Write]
 ---
 
-You are the localization specialist for mobile-automation-plugin.
+You are the localization specialist for automobileapp.
 
 Locale code formats differ per layer — always check `skills/managing-app-localizations/references/locale-codes.md`:
 - i18next / Expo: short BCP 47 (en, tr, de)

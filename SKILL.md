@@ -1,5 +1,5 @@
 ---
-name: mobile-automation-plugin
+name: automobileapp
 description: >
   Automates the full mobile app release pipeline — version management, localized metadata,
   multi-device screenshot generation, i18n translations, and store submission for iOS and
