@@ -6,25 +6,64 @@ Run the complete automobileapp release pipeline for the specified app.
 
 ## Gate 0 — Credential check (run before anything else)
 
-Load `skills/submitting-app-release/references/credentials-guide.md` and run the check block:
+### Step 0a — Auto-load credentials
+
+Check for a local credentials file and source it silently if present:
+
+```bash
+# Auto-source .env.production if it exists (values never printed)
+if [ -f ".env.production" ]; then
+  set -a && source .env.production && set +a
+  echo "✅ Loaded credentials from .env.production"
+fi
+```
+
+If `.env.production` is not found, check whether EAS cloud secrets cover the required vars by running:
+
+```bash
+eas secret:list 2>/dev/null | grep -E "EXPO_TOKEN|APP_STORE|GOOGLE_SERVICES"
+```
+
+EAS cloud secrets are injected automatically during `eas build` and `eas submit` — if they appear here, no local env vars are needed.
+
+### Step 0b — Validate credentials
+
+Load `skills/submitting-app-release/references/credentials-guide.md` and run:
 
 ```bash
 check() { [ -n "${!1}" ] && echo "✅ $1" || echo "❌ $1 missing"; }
 check EXPO_TOKEN
 check APP_STORE_CONNECT_API_KEY_ID
 check APP_STORE_CONNECT_ISSUER_ID
-check APP_STORE_CONNECT_API_KEY_CONTENT
-check GOOGLE_SERVICES_JSON
+check APP_STORE_CONNECT_API_KEY_CONTENT   # iOS only
+check GOOGLE_SERVICES_JSON               # Android only
 ```
 
-Also validate formats (key ID = 10 chars, issuer ID = UUID, key content contains PEM header, GOOGLE_SERVICES_JSON parses as valid JSON with `type: service_account`). See credentials-guide.md for the exact validation commands.
+Validate formats per credentials-guide.md (key ID = 10 chars, issuer ID = UUID, key content has PEM header, Google JSON has `type: service_account`).
 
-If any credential required for the target platform is missing or malformed: **stop and show the user exactly what is missing and where to get it.** Do not proceed to Gate 1.
-
-Also run:
+Confirm EAS accepts the token:
 ```bash
-eas whoami   # confirms EXPO_TOKEN is accepted by EAS
+eas whoami
 ```
+
+### Step 0c — If credentials are missing
+
+Do NOT stop the pipeline silently. Show this exact message and offer the two setup paths:
+
+```
+⛔ Submission will be blocked. Choose a setup path:
+
+  Path A — EAS secrets (recommended — works in CI, set once forever):
+    eas secret:push --scope project --env-file .env.production
+
+  Path B — local .env.production (local dev only):
+    cp skills/submitting-app-release/references/.env.production.example .env.production
+    # Fill in real values, then re-run msd-release
+
+  See: skills/submitting-app-release/references/credentials-guide.md
+```
+
+Ask: "Set up credentials now (I'll walk you through it), or continue without submission?" If the user wants to set up now, run `/automobileapp:msd-setup-credentials`. Otherwise continue — all gates except submission will still run and the release summary will be generated.
 
 ---
 

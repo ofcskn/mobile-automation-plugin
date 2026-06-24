@@ -86,6 +86,7 @@ Same command every time. Claude determines what changed and runs only the necess
 | `/automobileapp:msd-permissions` | Validate iOS NSUsageDescription strings and Android dangerous permissions | [managing-app-permissions](skills/managing-app-permissions/) |
 | `/automobileapp:msd-release-notes` | Draft "What's New" release notes for all configured locales | [managing-store-metadata](skills/managing-store-metadata/) · [managing-app-localizations](skills/managing-app-localizations/) · [localization-auditor](agents/localization-auditor.md) |
 | `/automobileapp:msd-discover` | Scan a directory to find all Expo/React Native apps and registration status | [managing-app-registry](skills/managing-app-registry/) · [app-registry-manager](agents/app-registry-manager.md) |
+| `/automobileapp:msd-setup-credentials` | Interactive setup for App Store and Google Play credentials — walks through each key, validates format, stores in EAS secrets or .env.production | [submitting-app-release](skills/submitting-app-release/) · [credentials-guide](skills/submitting-app-release/references/credentials-guide.md) |
 
 ## What it solves
 
