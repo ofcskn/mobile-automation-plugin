@@ -30,9 +30,45 @@
 | 17 | Validate metadata | 🟢 AUTOMATED | `node skills/managing-store-metadata/scripts/validate-metadata.js {appId}` |
 | 18 | Build IPA | 🟢 AUTOMATED | `eas build --platform ios --profile production` |
 | 19 | Submit build | 🟢 AUTOMATED | `eas submit --platform ios --profile production` |
-| 20 | Submit for Review | 🟢 AUTOMATED | EAS submit triggers review request automatically |
-| 21 | Wait for Apple review | ⏳ WAITING | 24–48 hours first submission. Check ASC for status. |
-| 22 | Release | 🟢 AUTOMATED | Auto-release on approval, or manual release from ASC |
+| 20 | Fill App Review Information | 🔴 MANUAL | ASC → Version → App Review Information. Fill in the auth info block — see section below |
+| 21 | Submit for Review | 🟢 AUTOMATED | EAS submit triggers review request automatically |
+| 22 | Wait for Apple review | ⏳ WAITING | 24–48 hours first submission. Check ASC for status. |
+| 23 | Release | 🟢 AUTOMATED | Auto-release on approval, or manual release from ASC |
+
+---
+
+## Step 20 — App Review Information (Authentication Info for Reviewers)
+
+**Where:** App Store Connect → Your App → Version → App Review Information
+
+Copy-paste the block below. Adapt the app name and IAP details as needed.
+
+```
+Sign-in required
+No
+
+Demo Account
+Username: N/A
+Password: N/A
+
+Notes for the reviewer
+No authentication is required to use the app. All core features are accessible without an account or login.
+
+To review in-app purchases (IAP):
+- The app uses StoreKit / Apple In-App Purchase for subscription/one-time purchases.
+- Use an Apple Sandbox Tester account to test IAP flows without being charged.
+- On the Payments screen, tap any subscription or purchase option to trigger the IAP sheet.
+- Sandbox purchases complete immediately and can be managed in App Store Connect → Sandbox Testers.
+
+No QR codes, biometrics, 2FA, or geo-restrictions are in place.
+```
+
+**Why these values work:**
+- `Sign-in required: No` removes the demo account requirement — reviewers won't be blocked waiting for credentials.
+- The IAP paragraph tells reviewers exactly how to exercise the purchase flow. Without it, reviewers may return the binary with "Unable to review in-app purchases."
+- Mentioning Sandbox Tester accounts signals familiarity with the Apple test environment and builds reviewer confidence.
+
+> **Before submitting:** Ensure a Sandbox Tester account exists in App Store Connect → Users and Access → Sandbox. Even if reviewers don't use your credentials, having one ready avoids back-and-forth.
 
 ---
 
