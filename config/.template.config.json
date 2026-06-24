@@ -15,7 +15,8 @@
   "screenshots": {
     "slidesCount": 5,
     "visualStyle": "clean minimal",
-    "brandColors": "#4F46E5"
+    "brandColors": "#4F46E5",
+    "required": "auto"
   },
   "geo": {
     "entityAnchor": ""

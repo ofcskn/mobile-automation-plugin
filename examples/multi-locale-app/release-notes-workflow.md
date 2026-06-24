@@ -9,7 +9,7 @@ Simple translation fails — each language needs natural phrasing.
 ## The solution with /msd-release-notes
 
 ```bash
-/msd-release-notes nefes "Added box breathing technique, improved sleep timer accuracy, fixed audio bug on Android"
+/msd-release-notes zenapp "Added box breathing technique, improved sleep timer accuracy, fixed audio bug on Android"
 ```
 
 AI generates:

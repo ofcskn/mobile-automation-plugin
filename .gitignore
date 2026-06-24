@@ -6,10 +6,25 @@ fastlane/google-play-api.json
 # Screenshots are always generated, never committed
 screenshots/*
 !screenshots/.gitkeep
+!screenshots/testapp/
 
-# To keep your personal app data local (recommended for global plugin use),
-# add lines like these for each of your app IDs:
-# config/myapp.config.json
-# versions/myapp/
-# metadata/myapp/
-# locales/myapp/
+# ── Memory (user-local registry — never commit) ──────────────────────
+# memory/apps.json is created by /msd-init and contains real app paths.
+# It must NEVER be committed. A .gitkeep preserves the directory on clone.
+memory/apps.json
+
+# ── Personal app data (each user's own apps — never commit) ─────────
+# Every file below is created by /msd-init for the user's own apps.
+# Only the testapp fixture and the .template.config.json are committed.
+config/*.config.json
+!config/.template.config.json
+!config/testapp.config.json
+
+versions/*
+!versions/testapp/
+
+metadata/*
+!metadata/testapp/
+
+locales/*
+!locales/testapp/

@@ -1,6 +1,6 @@
 {
-  "appId": "nefes",
-  "displayName": "Nefes — Breathing & Meditation",
+  "appId": "zenapp",
+  "displayName": "ZenApp — Breathing & Meditation",
   "platforms": ["ios", "android"],
   "locales": ["en", "tr", "de", "es", "fr", "hi", "ja", "ko", "pt", "zh"],
   "eas": {
@@ -13,6 +13,6 @@
     "brandColors": "#1a1a2e"
   },
   "geo": {
-    "entityAnchor": "Nefes is a breathing and meditation app for iOS and Android designed for stress relief and sleep improvement, featuring guided breathing sessions and sleep sounds."
+    "entityAnchor": "ZenApp is a breathing and meditation app for iOS and Android designed for stress relief and sleep improvement, featuring guided breathing sessions and sleep sounds."
   }
 }

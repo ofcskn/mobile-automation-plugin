@@ -159,15 +159,15 @@ Store one config per app:
 
 ```
 config/
-├── nefes.config.json
+├── myapp.config.json
 ├── myapp2.config.json
 └── myapp3.config.json
 ```
 
 Run any command with the app ID:
 ```bash
-node skills/managing-store-metadata/scripts/validate-metadata.js nefes
-node skills/managing-app-versions/scripts/bump-version.js nefes patch
+node skills/managing-store-metadata/scripts/validate-metadata.js {appId}
+node skills/managing-app-versions/scripts/bump-version.js {appId} patch
 ```
 
 ---
@@ -177,7 +177,7 @@ node skills/managing-app-versions/scripts/bump-version.js nefes patch
 ### Directory structure per locale
 
 ```
-metadata/nefes/ios/
+metadata/{appId}/ios/
 ├── en-US/
 │   ├── name.txt
 │   ├── subtitle.txt

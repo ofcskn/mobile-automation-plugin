@@ -6,6 +6,27 @@ allowed-tools: [Bash, Read, Write]
 
 You are the screenshot pipeline specialist for mobile-automation-plugin.
 
+## When screenshots are required vs optional
+
+Screenshots do NOT need to change on every release. Evaluate before starting:
+
+| Condition | Action |
+|---|---|
+| First release for this platform (`firstRelease.{platform}` is `false` in memory/apps.json) | **Required** — no existing screenshots |
+| UI changed in this version (new screens, redesigned flows, new features shown in store) | **Required** — update affected slides |
+| Bug fix / backend-only / hotfix / minor text change | **Not required** — existing screenshots remain valid |
+| User explicitly passed `--update-screenshots` | **Required** |
+| User explicitly passed `--skip-screenshots` | **Skip** |
+
+**Default behavior when called from release-coordinator without explicit flag:**
+Ask the user: "Were there visible UI changes in this release that need new screenshots? (y/n)"
+- If `n`: confirm existing screenshots exist in `screenshots/{appId}/designed/` and proceed without regenerating.
+- If `y` or no designed screenshots exist: run the full pipeline below.
+
+## Screenshot change detection (automatic)
+
+Check `screenshots/{appId}/designed/` — if the directory is non-empty, existing screenshots are valid for reuse unless UI changed. Never delete existing screenshots automatically.
+
 Phase 1 (capture):
 - iOS: `xcrun simctl io booted screenshot <path>.png` or Cmd+S in iOS Simulator
 - Android: `adb exec-out screencap -p > <path>.png` or use emulator toolbar

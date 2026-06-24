@@ -6,7 +6,7 @@ Initialize a new app for the mobile-store-deploy pipeline.
 
 ## What to ask the user
 
-1. **App ID** — short slug used for all directories (e.g. `nefes`, `myapp`). Must be filesystem-safe.
+1. **App ID** — short slug used for all directories (e.g. `myapp`, `zenapp`). Must be filesystem-safe.
 2. **Display name** — human-readable name shown in stores
 3. **Path to Expo/React Native app** — absolute path to the app's root directory
 4. **Platforms** — iOS, Android, or both?
@@ -16,7 +16,21 @@ Initialize a new app for the mobile-store-deploy pipeline.
 
 ## Steps to execute
 
-1. Read `memory/apps.json`
+1. Read `memory/apps.json` — if the file does not exist, create it with this default content before proceeding:
+   ```json
+   {
+     "_comment": "App registry — managed by /msd-init and msd-* commands. Do not edit manually.",
+     "apps": {},
+     "preferences": {
+       "appsDirectory": "",
+       "defaultPlatforms": ["ios", "android"],
+       "autoGenerateReleaseNotes": true,
+       "releaseNotesStyle": "friendly",
+       "defaultLocale": "en"
+     }
+   }
+   ```
+   This file is gitignored — it stays local to this machine only.
 2. Check if appId already exists — if yes, ask to update or cancel
 3. Create directories:
    ```bash

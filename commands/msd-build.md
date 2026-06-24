@@ -13,8 +13,21 @@ Defaults: production, all platforms.
 ## Before building
 
 1. Read `memory/apps.json` for app path
-2. Check `{appPath}/eas.json` exists — if not, run `eas build:configure` in the app directory
-3. For production: run `node skills/submitting-app-release/scripts/release-checklist.js {appId}` first
+2. Read `config/{appId}.config.json` — check `_pluginNotes.buildScript` and `_pluginNotes.requiredEasSecrets`
+3. If `requiredEasSecrets` is listed, confirm with user that all secrets are set in EAS before proceeding
+4. Check `{appPath}/eas.json` exists — if not, run `eas build:configure` in the app directory
+5. For production: run `node skills/submitting-app-release/scripts/release-checklist.js {appId}` first
+
+## Build command selection
+
+Check `config/{appId}.config.json` → `_pluginNotes.buildScript`:
+- **If `buildScript` defined** (app has its own build wrapper): run from `appPath`:
+  ```bash
+  cd {appPath}
+  node scripts/eas-profile.js build {platform} {profile}
+  ```
+  This wrapper handles `--local` vs cloud, env injection, and profile aliasing automatically.
+- **Otherwise** use bare EAS commands shown in the profiles below.
 
 ## Steps per profile
 

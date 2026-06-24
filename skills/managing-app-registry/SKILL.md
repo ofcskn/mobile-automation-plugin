@@ -17,14 +17,14 @@ description: >
 
 ```json
 {
-  "appId": "nefes",
-  "displayName": "Nefes",
-  "path": "/Users/you/projects/nefes",
+  "appId": "myapp",
+  "displayName": "My App",
+  "path": "/path/to/your/expo/app",
   "platforms": ["ios", "android"],
   "locales": ["en", "tr", "de"],
   "bundleId": {
-    "ios": "com.example.nefes",
-    "android": "com.example.nefes"
+    "ios": "com.example.myapp",
+    "android": "com.example.myapp"
   },
   "currentVersion": "1.0.0",
   "firstRelease": {

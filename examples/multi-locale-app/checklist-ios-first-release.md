@@ -1,11 +1,11 @@
-# Nefes — iOS First Release Checklist
+# ZenApp — iOS First Release Checklist
 
-Run: `/msd-checklist nefes ios`
+Run: `/msd-checklist zenapp ios`
 
 ## Manual steps to complete before running the checklist
 
 - [ ] Apple Developer account created and enrolled ($99/year)
-- [ ] Bundle ID created: `com.yourname.nefes`
+- [ ] Bundle ID created: `com.yourcompany.zenapp`
 - [ ] App created in App Store Connect
 - [ ] App Store Connect API key created and stored as EAS secret (`eas secret:create`)
 

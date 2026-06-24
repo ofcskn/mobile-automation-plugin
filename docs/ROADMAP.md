@@ -29,7 +29,7 @@ This is the single biggest friction point. A developer with a partially-built ap
 The solution: **smart project scanning**. On any `/msd-` command invocation (or via a dedicated `/msd-doctor` command), the plugin scans the project directory and generates a personalized checklist with pre-filled status for every release gate:
 
 ```
-mobile-store-deploy: Project scan — nefes
+mobile-store-deploy: Project scan — myapp
 
 ✅ App icons (iOS: 1024px, Android: 512px)
 ✅ Brand kit (SVG/PDF/PNG)
@@ -41,9 +41,9 @@ mobile-store-deploy: Project scan — nefes
 ❌ Bundle identifier — ios.bundleIdentifier not set in app.json
 ❌ Android package — android.package not set in app.json
 ❌ Simulator screenshots — only design previews found, not device captures
-❌ Store metadata — metadata/nefes/ directory missing or empty
-❌ IAP products — react-native-purchases detected but no products configured in App Store Connect
-❌ Permissions — NSMicrophoneUsageDescription not declared explicitly
+❌ Store metadata — metadata/{appId}/ directory missing or empty
+❌ IAP products — in-app purchase library detected but no products configured in App Store Connect
+❌ Permissions — audio usage description not declared explicitly
 ```
 
 Without this scan, a first release would hit: no bundle ID → rejected build, no screenshots → rejected submission, no metadata → rejected review, no IAP products → rejected under Guideline 3.1.1. Each is a separate rejection round, adding weeks of delay.
@@ -88,7 +88,7 @@ Without this scan, a first release would hit: no bundle ID → rejected build, n
 
 **What it does:** Before invoking any plugin script (bump-version, profile loading, etc.), the plugin scans the target app's `scripts/`, `tools/`, and root directory for app-owned equivalents. If found, the plugin delegates to those scripts rather than running its own generic version.
 
-**Why it matters (nefes example):** The nefes app has its own `scripts/bump-version.js` that updates `app.json` + `package.json` + `packages/config/app-info.ts` atomically. The plugin's generic `bump-version.js` only updates `app.json`. Running the plugin's version would leave `app-info.ts` out of sync — a subtle bug that manifests at runtime, not at build time.
+**Why it matters:** Some apps maintain their own `scripts/bump-version.js` that updates multiple files atomically (e.g. `app.json`, `package.json`, and app-specific constants files). The plugin's generic `bump-version.js` only updates `app.json`. Running the plugin's version for such apps would leave other files out of sync — a subtle bug that manifests at runtime, not at build time.
 
 **Detection logic:**
 ```
@@ -196,8 +196,8 @@ mobile-store-deploy: Workspace dashboard
 
 App         Platform   Version   Status              Next action
 ──────────────────────────────────────────────────────────────────────
-nefes       iOS        1.2.0     ❌ Screenshots      Run /msd-screenshots
-nefes       Android    1.2.0     ✅ In review        —
+zenapp      iOS        1.2.0     ❌ Screenshots      Run /msd-screenshots
+zenapp      Android    1.2.0     ✅ In review        —
 focus-app   iOS        2.0.1     ✅ Live             —
 focus-app   Android    2.0.1     ❌ IAP rejected     Fix product IDs
 ```
@@ -316,9 +316,9 @@ The 80% estimate is conservative for developers who hit the IAP rejection round-
 
 ---
 
-## App-specific intelligence (nefes example)
+## App-specific intelligence (example output)
 
-This is the exact checklist `mobile-store-deploy` would generate after scanning a nefes-style project:
+This is the checklist `mobile-store-deploy` would generate after scanning a typical Expo project:
 
 ```
 mobile-store-deploy: Project scan
@@ -331,7 +331,7 @@ IDENTITY
 
 VERSIONING
   ✅ App-native bump-version.js detected (scripts/bump-version.js)
-     → Updates app.json + package.json + packages/config/app-info.ts
+     → Updates app.json + package.json + any app-specific constants files
      → Plugin will delegate to this script instead of its own generic version
   ✅ App-native eas-profile.js detected (scripts/eas-profile.js)
      → Handles env loading and profile aliases dev/preview/beta/prod
@@ -359,12 +359,12 @@ BLOCKING — must resolve before submission
      → Run /msd-metadata to generate scaffolding
 
   ❌ Permissions not declared — Expo is silently injecting defaults
-     → Meditation app likely uses audio — declare NSMicrophoneUsageDescription explicitly
+     → If the app uses audio, camera, or location, declare the relevant usage strings explicitly
      → Undeclared permissions with vague descriptions trigger Apple Guideline 5.1.1
      → Run /msd-permissions to audit and declare all required usage descriptions
 
 HIGH PRIORITY — blocks monetization
-  ❌ IAP products not configured — react-native-purchases detected in package.json
+  ❌ IAP products not configured — in-app purchase library detected in package.json
      → No products found in App Store Connect
      → Required before review: products in "Ready to Submit" state
      → Required in UI: "Restore Purchases" button (mandatory for iOS)
