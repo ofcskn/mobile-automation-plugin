@@ -16,7 +16,7 @@ Initialize a new app for the automobileapp pipeline.
 
 ## Steps to execute
 
-1. Read `memory/apps.json` — if the file does not exist, create it with this default content before proceeding:
+1. Read `.msd/memory/apps.json` — if the file does not exist, create it with this default content before proceeding:
    ```json
    {
      "_comment": "App registry — managed by /msd-init and msd-* commands. Do not edit manually.",
@@ -34,16 +34,16 @@ Initialize a new app for the automobileapp pipeline.
 2. Check if appId already exists — if yes, ask to update or cancel
 3. Create directories:
    ```bash
-   mkdir -p config versions/{appId} metadata/{appId}/ios/en-US metadata/{appId}/android/en-US locales/{appId} screenshots/{appId}
+   mkdir -p .msd/config .msd/versions/{appId} .msd/metadata/{appId}/ios/en-US .msd/metadata/{appId}/android/en-US .msd/locales/{appId} .msd/screenshots/{appId}
    ```
-4. Copy `config/.template.config.json` → `config/{appId}.config.json` and fill in values
-5. Create `versions/{appId}/version.json`:
+4. Copy `.msd/config/.template.config.json` → `.msd/config/{appId}.config.json` and fill in values
+5. Create `.msd/versions/{appId}/version.json`:
    ```json
    {"semver":"1.0.0","ios":{"CFBundleShortVersionString":"1.0.0","CFBundleVersion":"1"},"android":{"versionName":"1.0.0","versionCode":1}}
    ```
 6. Read `app.json` from the user's app path and pre-fill metadata where possible (app name → `name.txt`, etc.)
 7. Create stub metadata files with placeholder text for required fields
-8. Register in `memory/apps.json`:
+8. Register in `.msd/memory/apps.json`:
    ```json
    {
      "appId": "{appId}",

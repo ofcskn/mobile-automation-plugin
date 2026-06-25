@@ -83,7 +83,7 @@ No QR codes, biometrics, 2FA, or geo-restrictions are in place.
 
 #### Category Selection (Step 16)
 
-AI reads `config/play-store-tags.json` and the app description, then suggests the single most accurate category.
+AI reads `.msd/config/play-store-tags.json` and the app description, then suggests the single most accurate category.
 
 **If app type = App**, choose from:
 Art and Design · Auto and Vehicles · Beauty · Books and Reference · Business · Comics ·
@@ -101,7 +101,7 @@ Puzzle · Racing · Role Playing · Simulation · Sports · Strategy · Trivia �
 
 #### Tag Selection (Step 17) — App type only
 
-AI reads `config/play-store-tags.json → app_tags[]` and selects up to **5** tags.
+AI reads `.msd/config/play-store-tags.json → app_tags[]` and selects up to **5** tags.
 
 **Rules (Google's own guidance):**
 - A user unfamiliar with the app must immediately see why the tag applies — from the store listing or initial in-app experience.
@@ -153,7 +153,7 @@ AI designs the feature graphic using the hero phone screenshot from Step 24 and 
 Feature Graphic Brief — {appId}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 Canvas:        1024 × 500px (landscape banner)
-Source image:  screenshots/{appId}/raw/en-US/android/Phone-*/1.png (hero screen)
+Source image:  .msd/screenshots/{appId}/raw/en-US/android/Phone-*/1.png (hero screen)
 
 Layout:
   Left 55%: App name + tagline (3–5 words, bold, white or brand-contrast)
@@ -165,7 +165,7 @@ Text:
   Tagline:   {3–5 words from subtitle.txt} — {font-weight: 400, ~24px}
 
 Accent:      {brand color hex from lenses/brand-kit.lens.md if available}
-File output: metadata/{appId}/android/feature-graphic.png
+File output: .msd/metadata/{appId}/android/feature-graphic.png
 
 Canva quick-start:
   1. New design → Custom size → 1024 × 500 px

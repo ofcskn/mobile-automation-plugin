@@ -29,8 +29,8 @@ function safeJoin(base, ...parts) {
   return resolved;
 }
 
-const configPath = safeJoin(root, 'config', `${appId}.config.json`);
-const versionPath = safeJoin(root, 'versions', appId, 'version.json');
+const configPath = safeJoin(root, '.msd', 'config', `${appId}.config.json`);
+const versionPath = safeJoin(root, '.msd', 'versions', appId, 'version.json');
 
 let gates = [];
 let passed = 0;
@@ -60,12 +60,12 @@ function runScript(scriptPath, ...args) {
 console.log(`\n🚀 Pre-flight checklist: ${appId}\n`);
 
 // Gate 1: Config exists
-gate('config/{app-id}.config.json exists', () => {
+gate('.msd/config/{app-id}.config.json exists', () => {
   if (!fs.existsSync(configPath)) throw new Error(`Not found: ${configPath}`);
 });
 
 // Gate 2: Version file exists and is valid
-gate('versions/{app-id}/version.json is valid', () => {
+gate('.msd/versions/{app-id}/version.json is valid', () => {
   if (!fs.existsSync(versionPath)) throw new Error(`Not found: ${versionPath}`);
   const v = JSON.parse(fs.readFileSync(versionPath, 'utf8'));
   if (!v.semver || !v.ios || !v.android) throw new Error('version.json missing required fields');
@@ -90,7 +90,7 @@ gate('All translation keys present', () => {
 
 // Gate 5: Screenshots exist
 gate('Screenshot files present for required device sizes', () => {
-  const designedPath = path.join(root, 'screenshots', appId, 'designed');
+  const designedPath = path.join(root, '.msd', 'screenshots', appId, 'designed');
   if (!fs.existsSync(designedPath)) throw new Error(`No designed screenshots at ${designedPath}`);
   const platforms = fs.readdirSync(designedPath);
   if (platforms.length === 0) throw new Error('No platform folders in designed screenshots');

@@ -21,7 +21,7 @@
 - resolve-locales.js with 36 pre-mapped locales across all platform formats
 - Four LenserFight lens definitions: locale-selector, aso-optimizer, geo-optimizer, screenshot-designer
 - launch-ready-workflow.md chaining all 5 lenses
-- config/.template.config.json per-app config schema
+- .msd/config/.template.config.json per-app config schema
 - Device matrix with required iPhone 6.9" (1320x2868) for 2026
 - Apple storefront table (175 countries) and Android AOSP locale list (82 locales)
 - Screenshot caption OCR indexing guidance (Apple, June 2025)

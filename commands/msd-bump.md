@@ -13,7 +13,7 @@ Usage examples:
 - `node bump-version.js {appId} major both` — explicit both
 
 Steps:
-1. Show current version: `cat versions/{appId}/version.json`
+1. Show current version: `cat .msd/versions/{appId}/version.json`
 2. Run: `node skills/managing-app-versions/scripts/bump-version.js {appId} {bumpType} [{platform}]`
 3. Run: `node skills/managing-app-versions/scripts/sync-build-numbers.js {appId} --project-root {appRoot}`
 4. Show the new version numbers (semver, iOS build, Android versionCode)

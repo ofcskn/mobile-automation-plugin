@@ -25,7 +25,7 @@
       "hooks": [
         {
           "type": "inject",
-          "content": "LOCALE GATE: Before proceeding, check if config/{app-id}.config.json has a confirmed locales[] array. If not, load skills/selecting-app-locales and ask the user which locales to support. Reference skills/selecting-app-locales/references/android-locales.md (BCP47 codes) and skills/selecting-app-locales/references/apple-storefronts.md (175 Apple storefronts). Run resolve-locales.js after confirmation. Only proceed after the user explicitly confirms the locale set."
+          "content": "LOCALE GATE: Before proceeding, check if .msd/config/{app-id}.config.json has a confirmed locales[] array. If not, load skills/selecting-app-locales and ask the user which locales to support. Reference skills/selecting-app-locales/references/android-locales.md (BCP47 codes) and skills/selecting-app-locales/references/apple-storefronts.md (175 Apple storefronts). Run resolve-locales.js after confirmation. Only proceed after the user explicitly confirms the locale set."
         }
       ]
     }

@@ -17,8 +17,8 @@
 | 4 | Create App ID (Bundle Identifier) | 🔴 MANUAL | developer.apple.com → Identifiers → + → App IDs → set Bundle ID e.g. `com.yourname.appname` |
 | 5 | Create new app in App Store Connect | 🔴 MANUAL | ASC → Apps → + → New App → iOS → set name, Bundle ID, SKU, language |
 | 6 | Complete App Information | 🔴 MANUAL | Name (30 chars), Subtitle (30 chars) |
-| 6a | Select primary category | 🟡 AI-ASSISTED | AI reads `config/app-store-categories.json` and the app description, suggests the best primary category. Enter in ASC → App Information → Category |
-| 6b | Select secondary category | 🟡 AI-ASSISTED | Optional but recommended. AI suggests a supporting secondary category from `config/app-store-categories.json`. For games: suggest two subcategories instead |
+| 6a | Select primary category | 🟡 AI-ASSISTED | AI reads `.msd/config/app-store-categories.json` and the app description, suggests the best primary category. Enter in ASC → App Information → Category |
+| 6b | Select secondary category | 🟡 AI-ASSISTED | Optional but recommended. AI suggests a supporting secondary category from `.msd/config/app-store-categories.json`. For games: suggest two subcategories instead |
 | 7 | Fill Privacy Nutrition Labels | 🔴 MANUAL | App Privacy tab → Data types collected → linked to identity? Used for tracking? |
 | 8 | Complete Content Rights declaration | 🔴 MANUAL | Does your app contain third-party content? |
 | 9 | Set Age Rating | 🔴 MANUAL | Age Rating tab → complete questionnaire |

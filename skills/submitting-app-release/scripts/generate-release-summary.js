@@ -34,11 +34,11 @@ function esc(s) {
 }
 
 // ── Config & version ─────────────────────────────────────────────────────────
-const configPath = path.join(root, 'config', `${appId}.config.json`);
+const configPath = path.join(root, '.msd', 'config', `${appId}.config.json`);
 if (!fs.existsSync(configPath)) { console.error(`Config not found: ${configPath}`); process.exit(1); }
 const config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
 
-const versionPath = path.join(root, 'versions', appId, 'version.json');
+const versionPath = path.join(root, '.msd', 'versions', appId, 'version.json');
 const ver = fs.existsSync(versionPath)
   ? JSON.parse(fs.readFileSync(versionPath, 'utf8'))
   : { semver: '?', ios: { CFBundleShortVersionString: '?', CFBundleVersion: '?' }, android: { versionName: '?', versionCode: '?' } };
@@ -49,7 +49,7 @@ const displayName = config.displayName  || appId;
 
 // ── Discover metadata locales from actual directories ────────────────────────
 function getLocales(platform) {
-  const base = path.join(root, 'metadata', appId, platform);
+  const base = path.join(root, '.msd', 'metadata', appId, platform);
   if (!fs.existsSync(base)) return [];
   return fs.readdirSync(base).filter(d => {
     try { return fs.statSync(path.join(base, d)).isDirectory(); } catch { return false; }
@@ -96,7 +96,7 @@ function platformSections(platform, fields, locales) {
   if (!locales.length) return '<p class="empty">No metadata found.</p>';
   return locales.map(locale => {
     const fieldsHtml = fields.map(f => {
-      const val = safeRead(path.join(root, 'metadata', appId, platform, locale, `${f.key}.txt`));
+      const val = safeRead(path.join(root, '.msd', 'metadata', appId, platform, locale, `${f.key}.txt`));
       return fieldHtml(`${platform}_${locale}_${f.key}`, f.label, val, f.max, f.multiline);
     }).join('\n');
     return `<div class="ls" data-p="${platform}" data-l="${esc(locale)}" style="display:none">\n${fieldsHtml}\n</div>`;
@@ -104,8 +104,8 @@ function platformSections(platform, fields, locales) {
 }
 
 function screenshotsHtml() {
-  const base = path.join(root, 'screenshots', appId, 'designed');
-  if (!fs.existsSync(base)) return '<p class="empty">No designed screenshots found in screenshots/' + appId + '/designed/</p>';
+  const base = path.join(root, '.msd', 'screenshots', appId, 'designed');
+  if (!fs.existsSync(base)) return '<p class="empty">No designed screenshots found in .msd/screenshots/' + appId + '/designed/</p>';
   const cards = [];
   for (const platform of ['ios', 'android']) {
     const pd = path.join(base, platform);

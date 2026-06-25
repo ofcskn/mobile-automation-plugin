@@ -111,7 +111,7 @@ For each locale and each required device size:
 ```bash
 LOCALE="en-US"       # repeat for each locale
 DEVICE="iPhone-16-Pro-Max-1320x2868"
-OUTDIR="screenshots/{appId}/raw/$LOCALE/ios/$DEVICE"
+OUTDIR=".msd/screenshots/{appId}/raw/$LOCALE/ios/$DEVICE"
 mkdir -p "$OUTDIR"
 
 # Launch app
@@ -175,7 +175,7 @@ Ask the user to confirm the final selection, then delete all discarded PNGs befo
 ```bash
 LOCALE="en-US"
 DEVICE="Phone-1080x1920"
-OUTDIR="screenshots/{appId}/raw/$LOCALE/android/$DEVICE"
+OUTDIR=".msd/screenshots/{appId}/raw/$LOCALE/android/$DEVICE"
 mkdir -p "$OUTDIR"
 
 # Launch app
@@ -195,90 +195,98 @@ Follow the same exploration order as iOS above.
 
 ---
 
-## Step 4 — Phase 2: Design with app-store-screenshots
+## Step 4 — Phase 2: Design with ParthJadhav/app-store-screenshots
 
-Use **https://github.com/ParthJadhav/app-store-screenshots** (MIT) to design every approved screenshot — this is the **only** permitted design tool. Do NOT use storeshots.org or any other generator. Canvas dimensions must come from what this library actually outputs. Run once per locale.
+Use **https://github.com/ParthJadhav/app-store-screenshots** (MIT) to design every approved screenshot — this is the **only** permitted design tool. Do NOT use storeshots.org or any other generator.
 
-### Setup (one-time)
+> **This tool is a scaffolded Next.js editor, not a CLI.** There is NO `src/data.js` and NO `npm run screenshots`. It is configured by `app-store-screenshots.json` and exported via the browser **Export bundle** button. All sizes come from the tool's export — never hardcode them.
+
+### Setup (one-time per machine)
 
 ```bash
-git clone https://github.com/ParthJadhav/app-store-screenshots /tmp/app-store-screenshots
-cd /tmp/app-store-screenshots && npm install
+npx skills add ParthJadhav/app-store-screenshots
 ```
 
-### For each locale
+Then scaffold the editor for this app and install deps:
 
-1. Read approved screenshot list and the locale's metadata:
-   - Headlines: `metadata/{appId}/ios/{locale}/subtitle.txt` (primary screen), then write a distinct 3–6 word benefit for each subsequent screenshot
-   - For non-English locales, use translated text from the corresponding metadata directory
+```bash
+STUDIO=".msd/screenshots/{appId}/design-studio"
+mkdir -p "$STUDIO"
+# Ask the agent to scaffold the Next.js editor into $STUDIO, then:
+cd "$STUDIO" && npm install   # or: bun install
+```
 
-2. Write `src/data.js`:
-```js
-export default [
-  {
-    image: "../../screenshots/{appId}/raw/{locale}/ios/{device}/1.png",
-    title: "<locale-specific headline — 3–6 words>",
-    bgColor: "#FFFFFF",
-    titleColor: "#000000",
+### Configure the design
+
+1. Copy approved Phase-1 captures into the scaffold, per platform/device/locale:
+```bash
+cp .msd/screenshots/{appId}/raw/{locale}/ios/{device}/*.png \
+   "$STUDIO/public/screenshots/apple/iphone/{lang}/"
+```
+
+2. Read each locale's metadata for headline copy:
+   - Headlines: `.msd/metadata/{appId}/{platform}/{locale}/subtitle.txt` (primary screen), then a distinct 3–6 word benefit per subsequent slide. Never repeat a headline.
+   - For non-English locales, use translated text from the corresponding metadata directory. Apple OCR indexes iOS captions — align with `keywords.txt`.
+
+3. Write `$STUDIO/app-store-screenshots.json` defining a deck **per device** and every locale in `locales[]`. **All of `iphone`, `ipad`, `android`, `android-7`, `android-10`, and `feature-graphic` decks are required** so both Phone AND Tablet are produced for both platforms:
+```json
+{
+  "schemaVersion": 2,
+  "appName": "{displayName}",
+  "themeId": "clean-light",
+  "connectedCanvas": false,
+  "locales": ["en", "tr"],
+  "locale": "en",
+  "device": "iphone",
+  "orientation": "portrait",
+  "appIcon": "/app-icon.png",
+  "slidesByDevice": {
+    "iphone":  [ { "id": "s_01", "layout": "hero",
+                   "label": { "en": "KEY BENEFIT" },
+                   "headline": { "en": "Short punchy\nheadline." },
+                   "screenshot": "/screenshots/apple/iphone/en/01.png" } ],
+    "ipad":    [ /* iPad tablet slides — REQUIRED for iOS */ ],
+    "android": [ /* Android phone slides */ ],
+    "android-7":  [ /* 7" tablet — REQUIRED for Android tablets */ ],
+    "android-10": [ /* 10" tablet — REQUIRED for Android tablets */ ],
+    "feature-graphic": [ /* 1024×500 Play banner */ ]
   },
-  // one entry per approved screenshot
-];
+  "crossScreenMockupsByDevice": {
+    "iphone": [], "ipad": [], "android": [],
+    "android-7": [], "android-10": [], "feature-graphic": []
+  }
+}
 ```
 
-3. Generate and save:
-```bash
-cd /tmp/app-store-screenshots
-cp /tmp/data-{locale}.js src/data.js
-npm run screenshots
-
-DEST="screenshots/{appId}/designed/{locale}/ios/{device-folder}"
-mkdir -p "$DEST"
-cp screenshots/*.png "$DEST/"
-cd "$DEST" && i=1; for f in *.png; do mv "$f" "$i.png"; i=$((i+1)); done
-```
-
-4. **Tablet set (required):** After generating the Phone set, run ParthJadhav/app-store-screenshots again targeting iPad canvas dimensions. If no iPad simulator / tablet captures exist, re-use the phone raw screenshots as the `image` input — the tool places them on the correct iPad canvas.
+### Export every device deck
 
 ```bash
-# Example: tablet pass — same data.js images, iPad canvas
-# (canvas dimensions come from the library, not from hardcoded values)
-cp /tmp/data-{locale}-tablet.js src/data.js
-npm run screenshots
-
-DEST_TABLET="screenshots/{appId}/designed/{locale}/ios/iPad-Pro-13-2064x2752"
-mkdir -p "$DEST_TABLET"
-cp screenshots/*.png "$DEST_TABLET/"
-cd "$DEST_TABLET" && i=1; for f in *.png; do mv "$f" "$i.png"; i=$((i+1)); done; cd -
+cd "$STUDIO" && npm run dev   # or: bun run dev → open the printed localhost URL
 ```
 
-5. Repeat for every locale in `config/{appId}.config.json → locales[]` and for Android (omit device frame for Android).
-
-### Confirm output structure
-
-Both Phone and Tablet folders must exist before submission:
+In the editor, for **each device** (iphone, ipad, android, android-7, android-10, feature-graphic): select it, refine copy/placement, click **Export bundle**. Each download is `{appName}-{platform}-{device}-{timestamp}.zip` containing every size × locale at store-ready dimensions:
 
 ```
-screenshots/{appId}/designed/
-├── en-US/ios/iPhone-16-Pro-Max-1320x2868/   1.png 2.png ...   ← Phone
-├── en-US/ios/iPad-Pro-13-2064x2752/         1.png 2.png ...   ← Tablet
-├── en-US/android/Phone-1080x1920/           1.png 2.png ...   ← Phone
-├── en-US/android/Tablet-10inch-1080x1920/   1.png 2.png ...   ← Tablet
-├── tr-TR/ios/iPhone-16-Pro-Max-1320x2868/   1.png 2.png ...
-└── tr-TR/ios/iPad-Pro-13-2064x2752/         1.png 2.png ...
+{platform}/{device}/{width}x{height}/{locale}/{NN}-{layout}.png
+# e.g. ios/iphone/1320x2868/en/01-hero.png   |   android/android-7/1200x1920/en/01-hero.png
 ```
+
+Then file each bundle into `.msd/screenshots/{appId}/designed/{platform}/{locale}/` with the device + size baked into each filename (see the skill's "File the exports into designed/" snippet). **Android decks export frameless** — Play Store renders its own frames.
 
 ---
 
 ## Step 5 — Validate
 
-Confirm both Phone and Tablet designed output exists:
+Confirm both Phone and Tablet designed output exists for iOS AND Android, per locale (platform-first layout, device + size in the filename):
 
 ```
-screenshots/{appId}/designed/{locale}/ios/iPhone-16-Pro-Max-1320x2868/1.png   ✅ Phone
-screenshots/{appId}/designed/{locale}/ios/iPad-Pro-13-2064x2752/1.png         ✅ Tablet
-screenshots/{appId}/designed/{locale}/android/Phone-1080x1920/1.png           ✅ Phone
+.msd/screenshots/{appId}/designed/ios/{lang}/iphone-1320x2868-01-hero.png            ✅ iOS Phone
+.msd/screenshots/{appId}/designed/ios/{lang}/ipad-2064x2752-01-hero.png              ✅ iOS Tablet
+.msd/screenshots/{appId}/designed/android/{lang}/android-1080x1920-01-hero.png       ✅ Android Phone
+.msd/screenshots/{appId}/designed/android/{lang}/android-10-1600x2560-01-hero.png    ✅ Android Tablet
+.msd/screenshots/{appId}/designed/android/{lang}/feature-graphic-1024x500-01-feature-graphic.png ✅ Feature graphic
 ```
 
 Count files per device per locale — Apple requires at least 1, max 10. Google max 8.
 
-If the Tablet folder is missing and the app supports iPad/tablets, **do not proceed to submission** — run Phase 2 again with phone captures as input images at the tablet canvas size.
+If a Tablet deck is missing and the app supports iPad/Android tablets, **do not proceed to submission** — add the missing `ipad` / `android-7` / `android-10` slides to `app-store-screenshots.json` and re-export that device.

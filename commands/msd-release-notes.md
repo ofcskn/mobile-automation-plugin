@@ -12,8 +12,8 @@ Generate release notes for the current version across all configured locales.
 
 All locales are written into **one file per platform**:
 
-- `metadata/{appId}/android/release_notes.txt`
-- `metadata/{appId}/ios/release_notes.txt`
+- `.msd/metadata/{appId}/android/release_notes.txt`
+- `.msd/metadata/{appId}/ios/release_notes.txt`
 
 Each file uses XML locale tags so the user can copy-paste per locale into the store console:
 
@@ -33,8 +33,8 @@ Türkçe kısa sürüm notu.
 
 ## Steps
 
-1. Read `memory/apps.json` for the app's locale list and bundle ID
-2. Read `versions/{appId}/version.json` for the current version
+1. Read `.msd/memory/apps.json` for the app's locale list and bundle ID
+2. Read `.msd/versions/{appId}/version.json` for the current version
 3. Ask (if not provided): "What changed in this version? Describe in plain English — I'll adapt it per language."
 
 4. Draft notes for ALL locales at once:
@@ -45,8 +45,8 @@ Türkçe kısa sürüm notu.
 5. Show the complete consolidated file contents to the user and ask: "Approve? Or edit any locale?"
 
 6. Write the approved content to:
-   - `metadata/{appId}/android/release_notes.txt`
-   - `metadata/{appId}/ios/release_notes.txt`
+   - `.msd/metadata/{appId}/android/release_notes.txt`
+   - `.msd/metadata/{appId}/ios/release_notes.txt`
 
 ## Locale code mapping (folder code → BCP-47 tag)
 
@@ -63,7 +63,7 @@ Türkçe kısa sürüm notu.
 | tr     | tr-TR    |
 | zh     | zh-Hans  |
 
-Use the locale codes from `memory/apps.json`. Map each to its BCP-47 tag above.
+Use the locale codes from `.msd/memory/apps.json`. Map each to its BCP-47 tag above.
 
 ## Per-language tone guidance
 

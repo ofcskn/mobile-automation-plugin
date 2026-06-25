@@ -77,4 +77,4 @@ found.forEach((app, i) => {
 });
 
 console.log('To register an app: /msd-init {appId}');
-console.log('Then set "path" in config/{appId}.config.json');
+console.log('Then set "path" in .msd/config/{appId}.config.json');

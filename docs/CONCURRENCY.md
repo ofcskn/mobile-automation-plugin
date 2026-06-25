@@ -77,7 +77,7 @@ sequenceDiagram
     participant EAS
 
     User->>RC: /msd-release {appId}
-    RC->>RC: Read config/{appId}.config.json
+    RC->>RC: Read .msd/config/{appId}.config.json
     RC->>RC: Confirm: bump type, platform, locales
 
     note over RC,VM: GATE 1 — Version
@@ -94,7 +94,7 @@ sequenceDiagram
 
     note over RC,SP: GATE 4 — Screenshots
     RC->>SP: Confirm designed assets exist
-    SP-->>RC: screenshots/{appId}/designed/ confirmed ✓
+    SP-->>RC: .msd/screenshots/{appId}/designed/ confirmed ✓
 
     note over RC,CL: GATE 5 — Pre-flight (7 checks)
     RC->>CL: Run release-checklist.js {appId}
@@ -157,7 +157,7 @@ into a single script call that internally parallelises locale reads.
 
 ```mermaid
 flowchart TD
-    START([validate-metadata.js appId]) --> SCAN[Scan metadata/appId/]
+    START([validate-metadata.js appId]) --> SCAN[Scan .msd/metadata/appId/]
 
     subgraph IOSPAR ["iOS Locales (parallel reads)"]
         I1[en-US] & I2[tr-TR] & I3[de-DE] & IN[…]
@@ -197,13 +197,13 @@ sequenceDiagram
     participant V1 as validate-metadata.js
     participant V2 as validate-translations.js
 
-    CMD->>CC: Write tool call (file_path: metadata/appId/…)
+    CMD->>CC: Write tool call (file_path: .msd/metadata/appId/…)
     CC->>CMD: Write completes
     CC-->>HK: PostToolUse event (parallel — does not block CMD)
     HK->>V1: if path contains /metadata/ → run validator
     V1-->>HK: tail -8 output shown inline
 
-    CMD->>CC: Write tool call (file_path: locales/appId/…)
+    CMD->>CC: Write tool call (file_path: .msd/locales/appId/…)
     CC->>CMD: Write completes
     CC-->>HK: PostToolUse event (parallel)
     HK->>V2: if path contains /locales/ → run validator

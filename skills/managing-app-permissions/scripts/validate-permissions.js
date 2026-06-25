@@ -33,7 +33,7 @@ try {
   process.exit(1);
 }
 
-const permsRefPath = path.resolve(__dirname, '../../../config/permissions-reference.json');
+const permsRefPath = path.resolve(__dirname, '../../../.msd/config/permissions-reference.json');
 const permsRef = JSON.parse(fs.readFileSync(permsRefPath, 'utf8'));
 const DANGEROUS_ANDROID = permsRef.dangerousAndroid;
 const DEPRECATED_ANDROID = permsRef.deprecatedAndroid;

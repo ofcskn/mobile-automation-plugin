@@ -11,7 +11,7 @@ Steps:
 2. Load `lenses/aso-optimizer.lens.md`
 3. Gather: app description draft (read from README or ask user), competitor names
 4. Run the ASO optimizer lens for the primary locale first, then each additional locale
-5. After user approves output, write to `metadata/{appId}/ios/{locale}/` and `metadata/{appId}/android/{locale}/`
+5. After user approves output, write to `.msd/metadata/{appId}/ios/{locale}/` and `.msd/metadata/{appId}/android/{locale}/`
 6. Validate: `node skills/managing-store-metadata/scripts/validate-metadata.js {appId}`
 7. Cross-reference top keywords with `lenses/screenshot-designer.lens.md` for OCR alignment
 

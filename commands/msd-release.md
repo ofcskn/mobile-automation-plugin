@@ -71,7 +71,7 @@ First, gather these inputs:
 1. App ID — check if `DEFAULT_APP_ID` user config is set; otherwise ask
 2. Version bump type — ask: patch / minor / major / build-only
 3. Target platform — ask: ios / android / both
-4. Confirm locales — show `config/{appId}.config.json` locales array and ask for confirmation
+4. Confirm locales — show `.msd/config/{appId}.config.json` locales array and ask for confirmation
 
 ## Gate 0.5 — Ask build mode
 

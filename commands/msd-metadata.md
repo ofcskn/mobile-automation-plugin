@@ -8,7 +8,7 @@ Ask: app ID, what to update (description / keywords / release-notes / all), whic
 
 Steps:
 1. Load `skills/managing-store-metadata`
-2. Show current values from `metadata/{appId}/`
+2. Show current values from `.msd/metadata/{appId}/`
 3. Edit the requested fields
 4. Always run validate immediately after any edit:
    `node skills/managing-store-metadata/scripts/validate-metadata.js {appId}`

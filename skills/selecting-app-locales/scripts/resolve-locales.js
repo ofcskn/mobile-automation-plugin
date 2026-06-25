@@ -2,7 +2,7 @@
 /**
  * resolve-locales.js
  * Usage: node resolve-locales.js <app-id> "en,tr,de"
- * Resolves short locale codes to per-platform format and writes to config/{app-id}.config.json
+ * Resolves short locale codes to per-platform format and writes to .msd/config/{app-id}.config.json
  * MIT License — mobile-store-deploy
  */
 
@@ -15,7 +15,7 @@ if (!appId || !localeInput) {
   process.exit(1);
 }
 
-const localeMapPath = path.resolve(__dirname, '../../../config/locale-map.json');
+const localeMapPath = path.resolve(__dirname, '../../../.msd/config/locale-map.json');
 const LOCALE_MAP = JSON.parse(fs.readFileSync(localeMapPath, 'utf8'));
 
 const locales = localeInput.split(',').map(l => l.trim());
@@ -32,11 +32,11 @@ locales.forEach((code, idx) => {
 
 if (unknown.length > 0) {
   console.warn(`⚠️  Unknown locale codes (not mapped): ${unknown.join(', ')}`);
-  console.warn('   Add them to config/locale-map.json or check locale-codes.md');
+  console.warn('   Add them to .msd/config/locale-map.json or check locale-codes.md');
 }
 
 // Write to config
-const configPath = path.resolve(__dirname, `../../../config/${appId}.config.json`);
+const configPath = path.resolve(__dirname, `../../../.msd/config/${appId}.config.json`);
 let config = {};
 if (fs.existsSync(configPath)) {
   config = JSON.parse(fs.readFileSync(configPath, 'utf8'));

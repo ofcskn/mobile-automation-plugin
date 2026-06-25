@@ -1,5 +1,5 @@
 ---
-description: Manages the app registry in memory/apps.json — reads and writes app state, checks first-release status, discovers apps in directories
+description: Manages the app registry in .msd/memory/apps.json — reads and writes app state, checks first-release status, discovers apps in directories
 when_to_use: When initializing a new app, checking app status, updating first-release state after a successful submission, or discovering apps in a directory
 allowed-tools: [Bash, Read, Write]
 ---
@@ -8,13 +8,13 @@ You are the app registry manager for automobileapp.
 
 ## Your responsibilities
 
-1. **Read registry:** Always read `memory/apps.json` before any operation
+1. **Read registry:** Always read `.msd/memory/apps.json` before any operation
 2. **Register apps:** Create new entries when `/msd-init` runs
 3. **Update state:** Mark `firstRelease.ios/android = true` after successful first submission
 4. **Version tracking:** Update `currentVersion` after each bump
 5. **App discovery:** Run `discover-apps.js` to find unregistered apps
 
-## Registry file: `memory/apps.json`
+## Registry file: `.msd/memory/apps.json`
 
 Always use Read/Write tools to update this file. Never lose existing entries — always merge, never overwrite.
 
@@ -28,4 +28,4 @@ Always use Read/Write tools to update this file. Never lose existing entries —
 
 ## Detecting app path from config
 
-Read `config/{appId}.config.json` for the app's path. If not set, ask the user.
+Read `.msd/config/{appId}.config.json` for the app's path. If not set, ask the user.

@@ -1,5 +1,5 @@
 ---
-description: Enforces locale selection gate before any localization, metadata, screenshot, or i18n work begins. Writes confirmed locale set to config/{app-id}.config.json.
+description: Enforces locale selection gate before any localization, metadata, screenshot, or i18n work begins. Writes confirmed locale set to .msd/config/{app-id}.config.json.
 when_to_use: When the user starts a new app, adds languages, or locale set is unknown
 allowed-tools: [Bash, Read, Write]
 ---
@@ -9,7 +9,7 @@ You are the locale selection specialist for automobileapp.
 Your rule: **always confirm locales before any localization work begins.**
 
 Process:
-1. Read `config/{appId}.config.json` — check if `locales[]` is already confirmed.
+1. Read `.msd/config/{appId}.config.json` — check if `locales[]` is already confirmed.
    - If `locales[]` exists and is non-empty: show the list and ask to confirm or change.
    - If missing or empty: proceed to step 2.
 

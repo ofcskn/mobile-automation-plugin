@@ -6,9 +6,9 @@ Show the status of a registered app.
 
 ## Steps
 
-1. Read `memory/apps.json` — find the app record
-2. Read `versions/{appId}/version.json` — current version
-3. Check `metadata/{appId}/` — which locales have files
+1. Read `.msd/memory/apps.json` — find the app record
+2. Read `.msd/versions/{appId}/version.json` — current version
+3. Check `.msd/metadata/{appId}/` — which locales have files
 4. Run metadata validation silently and summarize result
 5. Run translation validation silently and summarize result
 
@@ -33,5 +33,5 @@ Next recommended action:
 
 ## App not found
 
-If the appId is not in `memory/apps.json`, say:
+If the appId is not in `.msd/memory/apps.json`, say:
 "App `{appId}` not registered. Run `/msd-init {appId}` first."
