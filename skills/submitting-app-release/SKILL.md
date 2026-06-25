@@ -45,8 +45,8 @@ Check all required vars, validate their format, and run `eas whoami`. If anythin
 
 ## The 7 pre-flight gates
 
-1. `config/{appId}.config.json` exists
-2. `versions/{appId}/version.json` is valid (semver + versionCode ≥ 1)
+1. `.msd/config/{appId}.config.json` exists
+2. `.msd/versions/{appId}/version.json` is valid (semver + versionCode ≥ 1)
 3. Metadata passes all character limit validation
 4. All translation keys present across all locales
 5. Designed screenshots exist for required device sizes

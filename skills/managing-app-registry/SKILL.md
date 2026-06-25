@@ -1,7 +1,7 @@
 ---
 name: managing-app-registry
 description: >
-  Manages the registry of known apps in memory/apps.json. Use when initializing a new app,
+  Manages the registry of known apps in .msd/memory/apps.json. Use when initializing a new app,
   updating app state (first release complete, new locale added), discovering apps in a
   directory, or reading current app status. Always read the registry before any release
   operation to check if first-release setup is complete.
@@ -11,7 +11,7 @@ description: >
 
 ## Registry file
 
-`memory/apps.json` — single source of truth for all registered apps.
+`.msd/memory/apps.json` — single source of truth for all registered apps.
 
 ## App record schema
 

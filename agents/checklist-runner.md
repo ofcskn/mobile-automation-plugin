@@ -38,7 +38,7 @@ After user confirms each step complete, note it. If session is interrupted, ask 
 
 ## Completion
 
-When the full Part 1 checklist is done, update `memory/apps.json`:
+When the full Part 1 checklist is done, update `.msd/memory/apps.json`:
 ```bash
 # Read the file, update firstRelease.ios or firstRelease.android to true, write back
 ```

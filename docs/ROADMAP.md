@@ -41,7 +41,7 @@ automobileapp: Project scan — myapp
 ❌ Bundle identifier — ios.bundleIdentifier not set in app.json
 ❌ Android package — android.package not set in app.json
 ❌ Simulator screenshots — only design previews found, not device captures
-❌ Store metadata — metadata/{appId}/ directory missing or empty
+❌ Store metadata — .msd/metadata/{appId}/ directory missing or empty
 ❌ IAP products — in-app purchase library detected but no products configured in App Store Connect
 ❌ Permissions — audio usage description not declared explicitly
 ```
@@ -54,15 +54,15 @@ Without this scan, a first release would hit: no bundle ID → rejected build, n
 
 ### 1. Smart state detection + personalized checklist
 
-**What it does:** Scans `app.json`, `eas.json`, `metadata/`, `screenshots/`, `locales/`, `package.json` dependencies, and `scripts/` to determine the current state of every release gate. Outputs a personalized, pre-filled checklist with ✅/❌ for each item. Persists state to `memory/apps.json` so subsequent commands can skip already-complete steps.
+**What it does:** Scans `app.json`, `eas.json`, `.msd/metadata/`, `.msd/screenshots/`, `.msd/locales/`, `package.json` dependencies, and `scripts/` to determine the current state of every release gate. Outputs a personalized, pre-filled checklist with ✅/❌ for each item. Persists state to `.msd/memory/apps.json` so subsequent commands can skip already-complete steps.
 
 **What it checks:**
 - `app.json` → `ios.bundleIdentifier`, `android.package`, `expo.plugins`, permissions arrays
-- `metadata/{appId}/ios/{locale}/` and `metadata/{appId}/android/{locale}/` → presence of `name.txt`, `description.txt`, `keywords.txt`, `release_notes.txt`
-- `screenshots/{appId}/` → whether files are design exports vs. real device captures (resolution-matched to Apple's 6.9" 1320×2868 requirement)
+- `.msd/metadata/{appId}/ios/{locale}/` and `.msd/metadata/{appId}/android/{locale}/` → presence of `name.txt`, `description.txt`, `keywords.txt`, `release_notes.txt`
+- `.msd/screenshots/{appId}/` → whether files are design exports vs. real device captures (resolution-matched to Apple's 6.9" 1320×2868 requirement)
 - `package.json` → known IAP packages (`react-native-purchases`, `expo-in-app-purchases`, `react-native-iap`)
 - `scripts/` → app-native `bump-version.js`, `eas-profile.js`, or equivalent
-- `locales/{appId}/` → locale file count and key completeness
+- `.msd/locales/{appId}/` → locale file count and key completeness
 
 **Why it saves time:** Manual pre-release audits take 2–4 hours for a first release. Automated scanning takes 30 seconds and catches things developers habitually overlook — the bundle ID is the single most common "I forgot" moment in Expo first releases.
 
@@ -202,7 +202,7 @@ focus-app   iOS        2.0.1     ✅ Live             —
 focus-app   Android    2.0.1     ❌ IAP rejected     Fix product IDs
 ```
 
-Reads from `memory/apps.json` (already exists in v1.0) and augments with real-time status from App Store Connect API and Google Play Developer API.
+Reads from `.msd/memory/apps.json` (already exists in v1.0) and augments with real-time status from App Store Connect API and Google Play Developer API.
 
 ---
 
@@ -322,7 +322,7 @@ This is the checklist `automobileapp` would generate after scanning a typical Ex
 
 ```
 automobileapp: Project scan
-Scanned: app.json, eas.json, package.json, scripts/, locales/, metadata/, screenshots/
+Scanned: app.json, eas.json, package.json, scripts/, .msd/locales/, .msd/metadata/, .msd/screenshots/
 ──────────────────────────────────────────────────────────────────────────────
 
 IDENTITY
@@ -348,12 +348,12 @@ BLOCKING — must resolve before submission
   ❌ Android package — android.package not set in app.json
      → Set "package": "com.yourco.appname" under "android" in app.json
 
-  ❌ Simulator screenshots — only design preview images found in screenshots/
+  ❌ Simulator screenshots — only design preview images found in .msd/screenshots/
      → Design exports are not accepted by Apple review (mockup rejection risk)
      → Required: 1320×2868px (iPhone 6.9"), 1290×2796px (iPhone 6.7")
      → Run /msd-screenshots to launch simulator capture workflow
 
-  ❌ Store metadata — metadata/ directory missing
+  ❌ Store metadata — .msd/metadata/ directory missing
      → Required files: name.txt, subtitle.txt, keywords.txt, description.txt, release_notes.txt
      → Required for 10 locales: en, tr, de, es, fr, hi, ja, ko, pt, zh
      → Run /msd-metadata to generate scaffolding

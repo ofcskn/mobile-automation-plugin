@@ -39,7 +39,7 @@ featuring [key differentiator]."
 ```
 
 Use this EXACT wording everywhere. Never change it for 6+ months.
-Save to `config/{appId}.config.json` → `geo.entityAnchor`.
+Save to `.msd/config/{appId}.config.json` → `geo.entityAnchor`.
 
 ## Process
 
@@ -48,7 +48,7 @@ Save to `config/{appId}.config.json` → `geo.entityAnchor`.
 3. Fill parameters: app name, category, ASO description, user persona, differentiator, store URLs
 4. Review entity anchor sentence (most important output — locked in for 6 months)
 5. Save JSON-LD schema to `assets/{appId}/schema.json`
-6. Save entity anchor to `config/{appId}.config.json` → `geo.entityAnchor`
+6. Save entity anchor to `.msd/config/{appId}.config.json` → `geo.entityAnchor`
 7. Follow the 30-day GEO action plan from lens output
 
 ## 30-day action plan summary

@@ -129,19 +129,19 @@ read awkwardly without the keyword-stuffing context]
 cultural visual considerations]
 
 ### Asset delivery spec
-- iOS required: 1320×2868 (iPhone 6.9"), 1242×2688 (iPhone 6.5"), 2064×2752 (iPad 13")
-- Android required: 1080×1920 (phone), 1024×500 feature graphic
-- Naming: `{01..10}_{short-description}.png`
-- Directory: `screenshots/{app-id}/designed/{platform}/{locale}/`
+- iOS required: 1320×2868 (iPhone 6.9", Phone) **and** 2064×2752 (iPad 13", Tablet)
+- Android required: 1080×1920 (phone), 1200×1920 + 1600×2560 (7"/10" tablets), 1024×500 feature graphic
+- Both Phone AND Tablet are required for both platforms, in every locale
+- Designed directory (platform-first, read by `generate-release-summary.js`): `.msd/screenshots/{app-id}/designed/{platform}/{locale}/`
+- Designed filename: `{device}-{width}x{height}-{NN}-{layout}.png`
 
 ### Command to trigger design layer
 ```bash
-# Using ParthJadhav/app-store-screenshots:
+# Install the design skill (one-time per machine):
 npx skills add ParthJadhav/app-store-screenshots
-
-# Pass this brief to the agent:
-"Build App Store screenshots for [[app name]].
-Style: [[visual style]], [[brand colors]].
-[number of slides] slides.
-Headlines: [paste Slide 1–N headlines from above]"
 ```
+Then ask the agent to scaffold the Next.js editor, write `app-store-screenshots.json`
+(one slide deck per device — `iphone`, `ipad`, `android`, `android-7`, `android-10`,
+`feature-graphic` — with the Slide 1–N headlines above for every locale), run
+`npm run dev`, and click **Export bundle** per device. It is NOT a CLI — there is no
+`src/data.js` and no `npm run screenshots`; all sizes come from the editor's export.

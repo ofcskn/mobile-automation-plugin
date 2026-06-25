@@ -92,7 +92,7 @@ Same command every time. Claude determines what changed and runs only the necess
 
 | Problem | Solution |
 |---|---|
-| Version numbers diverge across iOS, Android, app.json | `versions/{app-id}/version.json` — single source of truth |
+| Version numbers diverge across iOS, Android, app.json | `.msd/versions/{app-id}/version.json` — single source of truth |
 | 300+ screenshots per release | 2-phase pipeline: simulator capture → app-store-screenshots design |
 | Metadata silently rejected for char limit violations | `validate-metadata.js` enforces hard limits pre-upload |
 | i18n keys missing from some locales | `validate-translations.js` blocks CI until all keys present |
@@ -127,8 +127,8 @@ flowchart LR
 
     subgraph HOOK ["Hook side-channel (always)"]
         direction TB
-        H1["PostToolUse → validate-metadata.js\n(fires on every metadata/ write)"]
-        H2["PostToolUse → validate-translations.js\n(fires on every locales/ write)"]
+        H1["PostToolUse → validate-metadata.js\n(fires on every .msd/metadata/ write)"]
+        H2["PostToolUse → validate-translations.js\n(fires on every .msd/locales/ write)"]
     end
 
     G5 --> PAR
@@ -154,7 +154,7 @@ sequenceDiagram
     participant EAS
 
     User->>RC: /msd-release {appId}
-    RC->>RC: Read config/{appId}.config.json
+    RC->>RC: Read .msd/config/{appId}.config.json
     RC->>RC: Confirm: bump type, platform, locales
 
     note over RC,VM: GATE 1 — Version
@@ -171,7 +171,7 @@ sequenceDiagram
 
     note over RC,SP: GATE 4 — Screenshots
     RC->>SP: Confirm designed assets exist
-    SP-->>RC: screenshots/{appId}/designed/ confirmed ✓
+    SP-->>RC: .msd/screenshots/{appId}/designed/ confirmed ✓
 
     note over RC,CL: GATE 5 — Pre-flight (7 checks)
     RC->>CL: Run release-checklist.js {appId}
@@ -192,8 +192,10 @@ See **[docs/CONCURRENCY.md](docs/CONCURRENCY.md)** for full diagrams, agent disp
 
 ## Automatic hooks
 
-The plugin validates metadata character limits when you edit any file under `metadata/`
-and checks translation completeness when you edit files under `locales/`.
+The plugin validates metadata character limits when you edit any file under `.msd/metadata/`
+and checks translation completeness when you edit files under `.msd/locales/`.
+
+> All generated app artifacts live under a single `.msd/` folder at the project root (`.msd/config/`, `.msd/metadata/`, `.msd/screenshots/`, `.msd/versions/`, `.msd/memory/`, `.msd/locales/`), keeping the project root clean.
 
 ## External OSS tools
 

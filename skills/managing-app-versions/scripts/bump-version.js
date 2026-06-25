@@ -22,11 +22,11 @@ if (!['ios', 'android', 'both'].includes(platform)) {
   process.exit(1);
 }
 
-const versionPath = path.resolve(__dirname, `../../../versions/${appId}/version.json`);
+const versionPath = path.resolve(__dirname, `../../../.msd/versions/${appId}/version.json`);
 
 if (!fs.existsSync(versionPath)) {
   console.error(`version.json not found at ${versionPath}`);
-  console.error('Run: mkdir -p versions/<app-id> && node scripts/init-version.js <app-id>');
+  console.error('Run: mkdir -p .msd/versions/<app-id> && node scripts/init-version.js <app-id>');
   process.exit(1);
 }
 

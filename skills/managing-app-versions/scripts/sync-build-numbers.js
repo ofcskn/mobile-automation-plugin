@@ -16,11 +16,11 @@ if (!appId) {
 }
 
 const pluginRoot = path.resolve(__dirname, '../../../');
-const versionPath = path.join(pluginRoot, 'versions', appId, 'version.json');
+const versionPath = path.join(pluginRoot, '.msd', 'versions', appId, 'version.json');
 
 if (!fs.existsSync(versionPath)) {
   console.error(`version.json not found: ${versionPath}`);
-  console.error('Run bump-version.js first, or initialize versions/<app-id>/version.json');
+  console.error('Run bump-version.js first, or initialize .msd/versions/<app-id>/version.json');
   process.exit(1);
 }
 

@@ -3,28 +3,29 @@ fastlane/api_key.json
 fastlane/google-play-api.json
 
 # ── Runtime directories (user data — never commit) ──────────────────
+# All generated app artifacts live under .msd/ at the project root.
 # Screenshots are always generated, never committed
-screenshots/*
-!screenshots/.gitkeep
-!screenshots/testapp/
+.msd/screenshots/*
+!.msd/screenshots/.gitkeep
+!.msd/screenshots/testapp/
 
 # ── Memory (user-local registry — never commit) ──────────────────────
-# memory/apps.json is created by /msd-init and contains real app paths.
+# .msd/memory/apps.json is created by /msd-init and contains real app paths.
 # It must NEVER be committed. A .gitkeep preserves the directory on clone.
-memory/apps.json
+.msd/memory/apps.json
 
 # ── Personal app data (each user's own apps — never commit) ─────────
 # Every file below is created by /msd-init for the user's own apps.
 # Only the testapp fixture and the .template.config.json are committed.
-config/*.config.json
-!config/.template.config.json
-!config/testapp.config.json
+.msd/config/*.config.json
+!.msd/config/.template.config.json
+!.msd/config/testapp.config.json
 
-versions/*
-!versions/testapp/
+.msd/versions/*
+!.msd/versions/testapp/
 
-metadata/*
-!metadata/testapp/
+.msd/metadata/*
+!.msd/metadata/testapp/
 
-locales/*
-!locales/testapp/
+.msd/locales/*
+!.msd/locales/testapp/

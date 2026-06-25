@@ -35,13 +35,15 @@ This plugin automates the five hardest parts of mobile app distribution:
 
 ## Project config
 
-Every app in this repo has a config file at `config/{app-id}.config.json`. Load it first
+> All generated app artifacts live under a single `.msd/` folder at the project root: `.msd/config/`, `.msd/metadata/`, `.msd/screenshots/`, `.msd/versions/`, `.msd/memory/`, `.msd/locales/`. This keeps the project root clean.
+
+Every app in this repo has a config file at `.msd/config/{app-id}.config.json`. Load it first
 on every task — it defines platforms, locales, device matrix, and Fastlane lane names.
 
 ```bash
 # Confirm app ID before starting any task
-ls config/
-cat config/{app-id}.config.json
+ls .msd/config/
+cat .msd/config/{app-id}.config.json
 ```
 
 ## Gotchas

@@ -1,5 +1,5 @@
 {
-  "_comment": "Copy to config/{your-app-id}.config.json and fill in values",
+  "_comment": "Copy to .msd/config/{your-app-id}.config.json and fill in values",
   "appId": "com.example.myapp",
   "displayName": "My App",
   "platforms": ["ios", "android"],

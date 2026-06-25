@@ -8,7 +8,7 @@ Scan a directory for Expo/React Native apps.
 
 1. Ask: "Which directory should I scan? (e.g. `/Users/you/projects`)"
 2. Run: `node skills/managing-app-registry/scripts/discover-apps.js {directory}`
-3. Read `memory/apps.json` and cross-reference found apps with registered ones
+3. Read `.msd/memory/apps.json` and cross-reference found apps with registered ones
 4. For each found app, show:
    - Name, path, version
    - Registered? ✅ / ❌

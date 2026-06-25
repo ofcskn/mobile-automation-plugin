@@ -24,7 +24,7 @@ Entity anchor sentence = canonical one-sentence app definition.
 Must be consistent across App Store, Play Store, landing page, ProductHunt, press.
 Never change it for 6+ months after setting.
 
-Save to: `config/{appId}.config.json` → `geo.entityAnchor`
+Save to: `.msd/config/{appId}.config.json` → `geo.entityAnchor`
 Schema markup: `assets/{appId}/schema.json`
 
 Lens to use: `lenses/geo-optimizer.lens.md`

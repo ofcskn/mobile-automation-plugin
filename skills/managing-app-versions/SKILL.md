@@ -4,7 +4,7 @@ description: >
   Manages semantic versioning for mobile apps across iOS and Android platforms.
   Use when the user says "bump version", "increment build number", "set version to",
   "release patch/minor/major", or "sync build numbers". Single source of truth is
-  versions/{app-id}/version.json. Syncs to app.json (Expo), Info.plist (native iOS),
+  .msd/versions/{app-id}/version.json. Syncs to app.json (Expo), Info.plist (native iOS),
   and build.gradle (native Android).
 ---
 
@@ -22,7 +22,7 @@ description: >
 
 ## Steps
 
-1. Read `versions/{appId}/version.json` — confirm current values
+1. Read `.msd/versions/{appId}/version.json` — confirm current values
 2. Run: `node skills/managing-app-versions/scripts/bump-version.js {appId} {type}`
 3. Run: `node skills/managing-app-versions/scripts/sync-build-numbers.js {appId} --project-root /path/to/app`
 4. Show the user the new version numbers

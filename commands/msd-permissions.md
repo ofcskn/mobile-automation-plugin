@@ -10,7 +10,7 @@ Validate app permissions for store submission.
 
 ## Steps
 
-1. Read `memory/apps.json` to find the app's path (or ask user for path)
+1. Read `.msd/memory/apps.json` to find the app's path (or ask user for path)
 2. Run: `node skills/managing-app-permissions/scripts/validate-permissions.js {appPath}`
 3. For each ❌ error (empty iOS description):
    - Load `skills/managing-app-permissions/references/ios-permissions.md`

@@ -7,7 +7,7 @@ description: >
   Android BCP 47 locale list (locale_config.xml) and the Apple App Store storefront
   table (175 regions, default and additional languages) so the user can make an
   informed, explicit decision. Writes the confirmed locale set to
-  config/{app-id}.config.json before any other skill runs.
+  .msd/config/{app-id}.config.json before any other skill runs.
 ---
 
 # Selecting App Locales
@@ -23,7 +23,7 @@ Even if the user says "just do English", that is a valid answer — write it to 
 
 ## Steps
 
-1. Read `config/{app-id}.config.json` and check if `locales[]` is already confirmed.
+1. Read `.msd/config/{app-id}.config.json` and check if `locales[]` is already confirmed.
    - If `locales[]` exists and is non-empty: show the list and ask "Should I use these locales, or do you want to change them?"
    - If `locales[]` is missing or empty: proceed to step 2.
 

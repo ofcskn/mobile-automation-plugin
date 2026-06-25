@@ -108,37 +108,45 @@ adb wait-for-device                         # wait until fully booted
 
 ---
 
-## Folder structure (locale → platform → device-size)
+## Folder structure
 
-All output is grouped so a user can zip and upload one locale folder directly.
+**Phase 1 (raw)** is grouped locale → platform → device for capture clarity.
+**Phase 2 (designed)** is grouped **platform → locale** with flat PNGs (device + size in
+the filename) — this is the exact layout the submission skill's
+`generate-release-summary.js` reads.
 
 ```
-screenshots/{appId}/
-├── raw/                                            ← Phase 1 output
-│   └── {locale}/
+.msd/screenshots/{appId}/
+├── raw/                                            ← Phase 1 output (not committed)
+│   └── {locale}/                                   e.g. en-US, tr-TR
 │       ├── ios/
 │       │   ├── iPhone-16-Pro-Max-1320x2868/
 │       │   │   ├── 1.png
-│       │   │   ├── 2.png
 │       │   │   └── ...
-│       │   └── iPhone-11-Pro-Max-1242x2688/
+│       │   └── iPad-Pro-13-2064x2752/
 │       └── android/
 │           └── Phone-1080x1920/
 │               ├── 1.png
 │               └── ...
+├── design-studio/                                  ← scaffolded ParthJadhav editor
 └── designed/                                       ← Phase 2 output (committed)
-    └── {locale}/
-        ├── ios/
-        │   └── iPhone-16-Pro-Max-1320x2868/
-        │       ├── 1.png
-        │       └── ...
-        └── android/
-            └── Phone-1080x1920/
-                ├── 1.png
-                └── ...
+    ├── ios/
+    │   └── {locale}/                               e.g. en, tr
+    │       ├── iphone-1320x2868-01-hero.png
+    │       ├── iphone-1320x2868-02-device-bottom.png
+    │       ├── ipad-2064x2752-01-hero.png
+    │       └── ...
+    └── android/
+        └── {locale}/
+            ├── android-1080x1920-01-hero.png
+            ├── android-10-1600x2560-01-hero.png
+            ├── feature-graphic-1024x500-01-feature-graphic.png
+            └── ...
 ```
 
-**Why this order:** locale is the top-level grouping because store uploads are per-locale. A user can hand off `/en-US/` directly to a teammate or CI step without re-sorting files.
+**Why this order:** the release-summary generator iterates `designed/{platform}/{locale}/`
+and renders every PNG directly inside it, so designed assets are platform-first with the
+device + size baked into each filename — nothing is hidden in subfolders.
 
 ---
 
@@ -156,7 +164,7 @@ xcrun simctl launch booted <BUNDLE_ID>
 sleep 3
 
 # 3. Capture onboarding / splash (screenshot 1)
-OUTDIR="screenshots/{appId}/raw/{locale}/ios/{device-folder}"
+OUTDIR=".msd/screenshots/{appId}/raw/{locale}/ios/{device-folder}"
 mkdir -p "$OUTDIR"
 xcrun simctl io booted screenshot "$OUTDIR/1.png"
 ```
@@ -224,7 +232,7 @@ adb shell am start -n <PACKAGE>/<ACTIVITY>
 sleep 3
 
 # 2. Capture first screen
-OUTDIR="screenshots/{appId}/raw/{locale}/android/Phone-1080x1920"
+OUTDIR=".msd/screenshots/{appId}/raw/{locale}/android/Phone-1080x1920"
 mkdir -p "$OUTDIR"
 adb exec-out screencap -p > "$OUTDIR/1.png"
 ```
@@ -249,97 +257,176 @@ Follow the same exploration order as iOS above. Capture 8–10 candidate screens
 
 ---
 
-## Phase 2 — Design with app-store-screenshots (per locale)
+## Phase 2 — Design with ParthJadhav/app-store-screenshots (the real tool)
 
-Use **https://github.com/ParthJadhav/app-store-screenshots** (MIT) to generate designed marketing screenshots. This is the **only** permitted tool — do not substitute storeshots.org or any other generator. Canvas dimensions must come from what this library actually outputs; never hardcode assumed pixel values. Run once per locale so each locale gets headlines in its own language.
+Use **https://github.com/ParthJadhav/app-store-screenshots** (MIT) to produce the
+professional, marketing-grade designed screenshots. This is the **only** permitted
+design tool — do not substitute storeshots.org or any other generator.
 
-**Phone and Tablet are both required.** Run the tool twice per locale: once for Phone sizes, once for Tablet (iPad) sizes. If no iPad simulator exists, re-use the phone raw screenshots as the `image` input when generating the Tablet set — the design tool will place them on the correct iPad canvas.
+> **What this tool actually is (read carefully — the old instructions were wrong):**
+> It is an **agent skill that scaffolds a Next.js visual editor**, NOT a headless
+> CLI. There is no `src/data.js` and no `npm run screenshots` command. The editor's
+> single source of truth is **`app-store-screenshots.json`**, and you export
+> store-ready PNGs by running its dev server and clicking **Export bundle** in the
+> browser. All canvas/export dimensions come from the tool itself — never hardcode them.
 
-### One-time setup
+**Both Phone AND Tablet are REQUIRED for both iOS and Android, per locale.** The tool
+covers every required device deck (iPhone, iPad, Android phone, Android 7"/10" tablet,
+feature graphic) and exports one zip per device containing every size × locale.
+
+### Step 1 — Install the skill (one-time per machine)
 
 ```bash
-git clone https://github.com/ParthJadhav/app-store-screenshots /tmp/app-store-screenshots
-cd /tmp/app-store-screenshots
-npm install
+npx skills add ParthJadhav/app-store-screenshots
 ```
 
-### Configure per locale
+This installs the design skill for the agent. It is fetched from the public repo, so
+**any user** gets the same tool with no project-specific dependencies.
 
-For each locale, generate a `src/data.js` by reading the approved screenshots and the locale's metadata:
+### Step 2 — Scaffold the editor project
 
-```js
-// src/data.js — one entry per approved screenshot
-export default [
-  {
-    image: "../../screenshots/{appId}/raw/{locale}/ios/{device}/1.png",
-    // Read headline from metadata/{appId}/ios/{locale}/subtitle.txt
-    // Keep to 3–6 words — readable at thumbnail size
-    title: "<subtitle or key benefit in this locale's language>",
-    bgColor: "#FFFFFF",   // match app brand color or ask user
-    titleColor: "#000000",
+Ask the agent to scaffold the Next.js editor into the plugin's design workspace for
+this app:
+
+```bash
+STUDIO=".msd/screenshots/{appId}/design-studio"
+mkdir -p "$STUDIO"
+# The skill scaffolds the Next.js editor here. Then install + nothing else:
+cd "$STUDIO" && npm install   # (or: bun install)
+```
+
+The scaffold creates `public/screenshots/`, `app-store-screenshots.json`, and the
+editor UI under `src/`.
+
+### Step 3 — Place the approved raw screenshots
+
+Copy the Phase-1 approved captures into the scaffold's public folder, one folder per
+platform/device/locale so each slide can reference them by path:
+
+```bash
+# Example: iOS phone, English captures
+DST="$STUDIO/public/screenshots/apple/iphone/en"
+mkdir -p "$DST"
+cp .msd/screenshots/{appId}/raw/en-US/ios/iPhone-16-Pro-Max-1320x2868/*.png "$DST/"
+```
+
+### Step 4 — Write `app-store-screenshots.json` (the real config)
+
+This file IS the design. Generate it from the approved screenshots and each locale's
+metadata. It defines a slide deck **per device** and a `locales[]` array that drives
+per-locale export. Required keys:
+
+```json
+{
+  "schemaVersion": 2,
+  "appName": "{displayName}",
+  "themeId": "clean-light",
+  "connectedCanvas": false,
+  "locales": ["en", "tr", "de"],
+  "locale": "en",
+  "device": "iphone",
+  "orientation": "portrait",
+  "appIcon": "/app-icon.png",
+  "slidesByDevice": {
+    "iphone":  [ /* phone slides */ ],
+    "ipad":    [ /* iPad tablet slides — REQUIRED for iOS */ ],
+    "android": [ /* Android phone slides */ ],
+    "android-7":  [ /* 7" tablet — REQUIRED for Android tablets */ ],
+    "android-10": [ /* 10" tablet — REQUIRED for Android tablets */ ],
+    "feature-graphic": [ /* 1024×500 Play listing banner */ ]
   },
-  {
-    image: "../../screenshots/{appId}/raw/{locale}/ios/{device}/3.png",
-    title: "<second key benefit>",
-    bgColor: "#F5F5F5",
-    titleColor: "#111111",
-  },
-  // one entry per approved screenshot
-];
+  "crossScreenMockupsByDevice": {
+    "iphone": [], "ipad": [], "android": [],
+    "android-7": [], "android-10": [], "feature-graphic": []
+  }
+}
 ```
 
-**Title text rules:**
-- Source text from `metadata/{appId}/ios/{locale}/subtitle.txt` for the primary screen
-- For non-English locales, use the translated subtitle or key benefit phrase
-- Never repeat the same title across two screenshots
-- Apple OCR indexes caption text — align titles with `keywords.txt`
+Each slide entry:
 
-### Generate and move output
-
-```bash
-cd /tmp/app-store-screenshots
-cp /tmp/data-{locale}.js src/data.js
-npm run screenshots
-# Output: /tmp/app-store-screenshots/screenshots/*.png
-
-# Move to plugin designed folder
-DEST="screenshots/{appId}/designed/{locale}/ios/{device-folder}"
-mkdir -p "$DEST"
-cp screenshots/*.png "$DEST/"
-
-# Rename to sequential numbers
-cd "$DEST" && i=1; for f in *.png; do mv "$f" "$i.png"; i=$((i+1)); done
+```json
+{
+  "id": "s_01",
+  "layout": "hero",
+  "label":    { "en": "TRACK HABITS", "tr": "ALIŞKANLIK TAKİBİ" },
+  "headline": { "en": "Build streaks\nthat stick.", "tr": "..." },
+  "screenshot": "/screenshots/apple/iphone/en/01-welcome.png"
+}
 ```
 
-### Repeat for every locale
+**Headline / label rules (professional marketing copy):**
+- One idea per headline, 3–6 words, readable at thumbnail size.
+- Source the primary headline from `.msd/metadata/{appId}/{platform}/{locale}/subtitle.txt`;
+  write a distinct benefit line for each subsequent slide. Never repeat a headline.
+- Provide every locale in `locales[]` — each locale renders headlines in its own
+  language. For non-English locales use the translated metadata.
+- **Apple OCR indexes caption text since June 2025** — align iOS headlines with
+  `.msd/metadata/{appId}/ios/{locale}/keywords.txt`.
+- Available layouts: `hero`, `device-bottom`, `device-top`, `two-devices`,
+  `no-device`, `split-landscape` (tablets), `feature-graphic`. Vary them for rhythm;
+  make the last slide differ from the hero (mosaic / CTA / "no device").
+
+### Step 5 — Run the editor and export each device deck
 
 ```bash
-for LOCALE in en-US tr-TR de-DE; do   # from config/{appId}.config.json → locales[]
-  cp /tmp/data-$LOCALE.js src/data.js
-  npm run screenshots
-  DEST="screenshots/{appId}/designed/$LOCALE/ios/{device}"
-  mkdir -p "$DEST"
-  cp screenshots/*.png "$DEST/"
-  cd "$DEST" && i=1; for f in *.png; do mv "$f" "$i.png"; i=$((i+1)); done; cd -
+cd "$STUDIO" && npm run dev    # (or: bun run dev) → open the printed localhost URL
+```
+
+In the browser editor, for **each device** (iphone, ipad, android, android-7,
+android-10, feature-graphic): select it in the toolbar, fine-tune copy/placement, then
+click **Export bundle**. Each click downloads one zip named
+`{appName}-{platform}-{device}-{timestamp}.zip` containing every required size × locale:
+
+```
+{platform}/{device}/{width}x{height}/{locale}/{NN}-{layout}.png
+# e.g. ios/iphone/1320x2868/en/01-hero.png
+```
+
+Run Export bundle once per device so all required Phone + Tablet decks are covered for
+both platforms. Sizes are emitted by the tool per Apple/Google marketing rules — see
+`references/device-matrix.md` for the full list; do not hardcode them.
+
+### Step 6 — File the exports into `designed/`
+
+Unzip each bundle and reorganize into the **platform-first** `designed/` layout the
+submission skill's `generate-release-summary.js` reads —
+`designed/{platform}/{locale}/*.png`, with device + size encoded in the filename so
+nothing collides and every required size is preserved:
+
+```bash
+# For each downloaded bundle zip:
+unzip -o ~/Downloads/{appName}-*-{device}-*.zip -d /tmp/ssbundle
+
+# Native export layout is {platform}/{device}/{w}x{h}/{locale}/NN-layout.png
+# Reorganize to designed/{platform}/{locale}/{device}-{w}x{h}-NN-layout.png
+find /tmp/ssbundle -name '*.png' | while read -r f; do
+  rel="${f#/tmp/ssbundle/}"                       # platform/device/WxH/locale/NN-layout.png
+  platform="${rel%%/*}"; rest="${rel#*/}"
+  device="${rest%%/*}"; rest="${rest#*/}"
+  size="${rest%%/*}"; rest="${rest#*/}"
+  locale="${rest%%/*}"; file="${rest#*/}"
+  dest=".msd/screenshots/{appId}/designed/$platform/$locale"
+  mkdir -p "$dest" && cp "$f" "$dest/${device}-${size}-${file}"
 done
 ```
 
-### Android
+This yields e.g. `designed/ios/en/iphone-1320x2868-01-hero.png` and
+`designed/android/en/android-10-1600x2560-01-hero.png` — all visible in the release
+summary and grouped by store/locale for upload.
 
-Same tool, same flow. Set `frame: false` or omit the frame key — Play Store renders its own frames. Output to `designed/{locale}/android/{device-folder}/`.
-
-**iOS only:** Add device frames. **Android:** no device frames — Play Store renders its own.
+**iOS:** the tool already adds device frames. **Android:** no device frames — Play
+Store renders its own (the Android decks are exported frameless).
 
 ---
 
 ## Critical constraints
 
 - **App ID / asset folder must NOT end with `.app`.** macOS treats such directories as application bundles. App Store tooling will silently reject uploads from a path ending in `.app`. The folder name must be a plain slug (e.g. `myapp`, `zenapp`).
-- **Design tool: ParthJadhav/app-store-screenshots (MIT) — exclusively.** Never assume pixel dimensions or canvas sizes. All screenshot sizes must come from this library's output. Do NOT use storeshots.org or any other tool.
-- **Required screenshot sets are Phone and Tablet.** Both must be produced and submitted.
-  - **If no tablet simulator or tablet captures exist:** use the phone screenshots as the input `image` in `src/data.js` and run ParthJadhav/app-store-screenshots targeting iPad canvas dimensions. Do not skip the tablet set or substitute different sizes.
+- **Design tool: ParthJadhav/app-store-screenshots (MIT) — exclusively.** It is a scaffolded Next.js editor configured by `app-store-screenshots.json` and exported via the browser **Export bundle** button. There is NO `src/data.js` and NO `npm run screenshots`. Never assume pixel dimensions — all sizes come from the tool's export.
+- **Required screenshot sets are Phone AND Tablet, for BOTH iOS and Android, per locale.** Define `iphone` + `ipad` decks for iOS and `android` + `android-7` + `android-10` decks for Android. Do not skip the tablet decks.
 - **iPhone 6.9" (1320×2868) is REQUIRED from 2026.** Submission blocked without it.
-- **iPad Pro 13" (2064×2752) is the Tablet requirement for iOS.**
+- **iPad Pro 13" (2064×2752) is the iOS Tablet requirement.**
+- **Android feature graphic (1024×500) is required** for the Play listing header.
 - Apple allows max **10 screenshots** per locale per device. Google allows **8**.
 - **Do NOT add device frames to Android screenshots.**
 - **Apple OCR indexes screenshot caption text since June 2025.** Align headlines with `keywords.txt`.

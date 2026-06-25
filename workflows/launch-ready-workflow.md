@@ -98,9 +98,9 @@ node skills/selecting-app-locales/scripts/resolve-locales.js {app-id} "{confirme
 **Agent action after approval:**
 ```bash
 # Write approved metadata to files
-echo "HabitFlow: Daily Tracker" > metadata/{app-id}/ios/en-US/name.txt
-echo "Streak & Goal Builder" > metadata/{app-id}/ios/en-US/subtitle.txt
-echo "habit,routine,reminder,morning,evening,challenge" > metadata/{app-id}/ios/en-US/keywords.txt
+echo "HabitFlow: Daily Tracker" > .msd/metadata/{app-id}/ios/en-US/name.txt
+echo "Streak & Goal Builder" > .msd/metadata/{app-id}/ios/en-US/subtitle.txt
+echo "habit,routine,reminder,morning,evening,challenge" > .msd/metadata/{app-id}/ios/en-US/keywords.txt
 # [etc for all fields]
 
 # Validate
@@ -136,7 +136,7 @@ node skills/managing-store-metadata/scripts/validate-metadata.js {app-id}
 **Human gate:** Review entity anchor sentence. This wording goes everywhere — once set, don't change it for 6+ months.
 
 **Agent action after approval:**
-- Save entity anchor to `config/{app-id}.config.json` → `geo.entityAnchor`
+- Save entity anchor to `.msd/config/{app-id}.config.json` → `geo.entityAnchor`
 - Save schema markup to `assets/{app-id}/schema.json`
 - Add to README under "About" section
 
@@ -171,7 +171,7 @@ node skills/managing-store-metadata/scripts/validate-metadata.js {app-id}
 # Trigger design layer
 npx skills add ParthJadhav/app-store-screenshots
 # Use output brief to configure the Next.js editor
-# Export to screenshots/{app-id}/designed/
+# Export to .msd/screenshots/{app-id}/designed/
 node skills/generating-store-screenshots/scripts/validate-screenshots.js {app-id}
 ```
 

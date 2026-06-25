@@ -22,7 +22,7 @@ description: >
 ## File structure
 
 ```
-metadata/{app-id}/
+.msd/metadata/{app-id}/
 ├── ios/{locale}/
 │   ├── name.txt           ← 30 chars — INDEXED
 │   ├── subtitle.txt       ← 30 chars — INDEXED
@@ -39,8 +39,8 @@ metadata/{app-id}/
 
 ## Steps
 
-1. Confirm which locales to update: `cat config/{appId}.config.json`
-2. Edit the relevant `.txt` files under `metadata/{appId}/`
+1. Confirm which locales to update: `cat .msd/config/{appId}.config.json`
+2. Edit the relevant `.txt` files under `.msd/metadata/{appId}/`
 3. **Always validate after editing:**
    `node skills/managing-store-metadata/scripts/validate-metadata.js {appId}`
 4. Fix any ❌ errors before uploading

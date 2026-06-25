@@ -13,7 +13,7 @@ const path = require('path');
 const [,, appId, targetLocale] = process.argv;
 if (!appId) { console.error('Usage: node validate-translations.js <app-id> [locale]'); process.exit(1); }
 
-const localesRoot = path.resolve(__dirname, `../../../locales/${appId}`);
+const localesRoot = path.resolve(__dirname, `../../../.msd/locales/${appId}`);
 
 function flattenKeys(obj, prefix = '') {
   return Object.entries(obj).reduce((acc, [k, v]) => {

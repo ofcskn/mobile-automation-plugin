@@ -26,7 +26,7 @@ If the user doesn't specify, use **local**.
 
 ```bash
 # Read app path
-cat memory/apps.json | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); console.log(d.apps?.find(a=>a.id==='{appId}')?.path || 'not found')"
+cat .msd/memory/apps.json | node -e "const d=JSON.parse(require('fs').readFileSync('/dev/stdin','utf8')); console.log(d.apps?.find(a=>a.id==='{appId}')?.path || 'not found')"
 
 # Confirm eas.json exists in app root
 ls {appPath}/eas.json || echo "❌ eas.json missing — run: cd {appPath} && eas build:configure"

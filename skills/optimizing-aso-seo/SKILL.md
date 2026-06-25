@@ -45,7 +45,7 @@ description: >
 1. Load `lenses/aso-optimizer.lens.md`
 2. Fill parameters: app name, category, description draft, target locale, top 3 competitors
 3. Review output — especially keyword field (must fit in 100 chars, no spaces after commas)
-4. Write approved values to `metadata/{appId}/ios/{locale}/` and `metadata/{appId}/android/{locale}/`
+4. Write approved values to `.msd/metadata/{appId}/ios/{locale}/` and `.msd/metadata/{appId}/android/{locale}/`
 5. Validate: `node skills/managing-store-metadata/scripts/validate-metadata.js {appId}`
 6. Repeat for each locale (run lens once per locale)
 

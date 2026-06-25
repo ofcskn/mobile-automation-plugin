@@ -10,7 +10,7 @@ Run the interactive First Release checklist for a platform.
 
 ## Steps
 
-1. Read `memory/apps.json` — check if `firstRelease.{platform}` is already `true`
+1. Read `.msd/memory/apps.json` — check if `firstRelease.{platform}` is already `true`
    - If `true`: say "First release already marked complete. Use the standard release pipeline instead."
    - If `false`: proceed
 
@@ -27,7 +27,7 @@ Run the interactive First Release checklist for a platform.
 4. Track completed steps in the conversation. Do NOT re-run steps the user already confirmed.
 
 5. When all Part 1 steps complete:
-   - Update `memory/apps.json`: set `firstRelease.{platform} = true`
+   - Update `.msd/memory/apps.json`: set `firstRelease.{platform} = true`
    - Say: "🎉 First release pipeline complete for {platform}. Future releases use the automated pipeline."
 
 ## Rules

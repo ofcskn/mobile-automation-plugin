@@ -13,9 +13,9 @@ const path = require('path');
 const [,, appId, flag] = process.argv;
 if (!appId) { console.error('Usage: node validate-metadata.js <app-id>'); process.exit(1); }
 
-const metaRoot = path.resolve(__dirname, `../../../metadata/${appId}`);
+const metaRoot = path.resolve(__dirname, `../../../.msd/metadata/${appId}`);
 
-const limitsPath = path.resolve(__dirname, '../../../config/store-limits.json');
+const limitsPath = path.resolve(__dirname, '../../../.msd/config/store-limits.json');
 const storeLimits = JSON.parse(fs.readFileSync(limitsPath, 'utf8'));
 const APPLE_LIMITS = storeLimits.apple;
 const GOOGLE_LIMITS = storeLimits.google;

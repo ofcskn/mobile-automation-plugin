@@ -19,21 +19,23 @@
 
 ```
 plugin root/
-├── config/                  ← Per-app config files
-│   ├── .template.config.json
-│   └── {app-id}.config.json
-├── versions/                ← Single source of truth for version numbers
-│   └── {app-id}/version.json
-├── metadata/                ← Store listing content (validated against char limits)
-│   └── {app-id}/
-│       ├── ios/{locale}/    ← name, subtitle, keywords, description, promotional, release_notes
-│       └── android/{locale}/← title, short_description, full_description, release_notes
-├── locales/                 ← i18n JSON key files
-│   └── {app-id}/
-│       ├── en.json          ← source of truth
-│       └── {locale}.json
-├── screenshots/             ← Captured screenshot files
-│   └── {app-id}/
+├── .msd/                    ← All generated app artifacts live here (keeps the root clean)
+│   ├── config/                  ← Per-app config files
+│   │   ├── .template.config.json
+│   │   └── {app-id}.config.json
+│   ├── versions/                ← Single source of truth for version numbers
+│   │   └── {app-id}/version.json
+│   ├── metadata/                ← Store listing content (validated against char limits)
+│   │   └── {app-id}/
+│   │       ├── ios/{locale}/    ← name, subtitle, keywords, description, promotional, release_notes
+│   │       └── android/{locale}/← title, short_description, full_description, release_notes
+│   ├── locales/                 ← i18n JSON key files
+│   │   └── {app-id}/
+│   │       ├── en.json          ← source of truth
+│   │       └── {locale}.json
+│   ├── memory/                  ← App registry (apps.json)
+│   └── screenshots/             ← Captured screenshot files
+│       └── {app-id}/
 ├── skills/                  ← Knowledge + validation scripts
 ├── agents/                  ← Specialized AI subagents
 ├── commands/                ← Slash commands (/msd-*)
@@ -158,7 +160,7 @@ eas submit --platform all --profile production
 Store one config per app:
 
 ```
-config/
+.msd/config/
 ├── myapp.config.json
 ├── myapp2.config.json
 └── myapp3.config.json
@@ -177,7 +179,7 @@ node skills/managing-app-versions/scripts/bump-version.js {appId} patch
 ### Directory structure per locale
 
 ```
-metadata/{appId}/ios/
+.msd/metadata/{appId}/ios/
 ├── en-US/
 │   ├── name.txt
 │   ├── subtitle.txt
@@ -228,7 +230,7 @@ Release notes ("What's New") are the most time-consuming multi-locale task.
 ```bash
 # English (write once, AI translates)
 echo "New guided breathing session types. Improved sleep timer. Bug fixes." \
-  > metadata/{appId}/ios/en-US/release_notes.txt
+  > .msd/metadata/{appId}/ios/en-US/release_notes.txt
 ```
 
 Use `/msd-aso` to ask the AI to translate and adapt release notes for each locale. The AI accounts for:
@@ -275,13 +277,13 @@ Apple and Google do NOT index What's New text for search. Write for users, not a
 ### "version.json not found"
 ```bash
 # Initialize version file first
-mkdir -p versions/{appId}
+mkdir -p .msd/versions/{appId}
 # Then create version.json with semver, ios, android fields
 ```
 
 ### "metadata directory not found"
 ```bash
-mkdir -p metadata/{appId}/ios/en-US metadata/{appId}/android/en-US
+mkdir -p .msd/metadata/{appId}/ios/en-US .msd/metadata/{appId}/android/en-US
 ```
 
 ### validate-metadata exits with errors
@@ -308,22 +310,22 @@ If you clone this plugin globally and use it across multiple apps, keep your per
 
 ```gitignore
 # Personal app data — local only
-config/myapp.config.json
-versions/myapp/
-metadata/myapp/
-locales/myapp/
+.msd/config/myapp.config.json
+.msd/versions/myapp/
+.msd/metadata/myapp/
+.msd/locales/myapp/
 ```
 
 Replace `myapp` with your actual app ID. The `testapp` fixtures and `.template.config.json` remain committed for everyone.
 
 ### What IS committed
-- `config/.template.config.json` — config schema template
-- `versions/testapp/`, `metadata/testapp/`, `locales/testapp/` — test fixtures
-- `screenshots/.gitkeep` — ensures the directory exists on fresh clone
+- `.msd/config/.template.config.json` — config schema template
+- `.msd/versions/testapp/`, `.msd/metadata/testapp/`, `.msd/locales/testapp/` — test fixtures
+- `.msd/screenshots/.gitkeep` — ensures the directory exists on fresh clone
 - All plugin files (skills, agents, commands, hooks, lenses)
 
 ### What is NOT committed
-- `screenshots/*` — generated files, can be large
+- `.msd/screenshots/*` — generated files, can be large
 - EAS secrets — stored in EAS cloud, never local files
 - `.data/*` — archived source files
 - Your personal app configs and data (add to `.gitignore` as shown above)

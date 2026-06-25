@@ -7,7 +7,7 @@ Select locales for the specified app before any localization work.
 Ask: app ID.
 
 Steps:
-1. Check `config/{appId}.config.json` for existing `locales[]` array
+1. Check `.msd/config/{appId}.config.json` for existing `locales[]` array
 2. Load `skills/selecting-app-locales`
 3. Show Apple storefront table (`skills/selecting-app-locales/references/apple-storefronts.md`)
    and Android locale list (`skills/selecting-app-locales/references/android-locales.md`)
